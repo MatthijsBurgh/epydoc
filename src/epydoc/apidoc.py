@@ -57,7 +57,7 @@ class DottedName:
     a dotted name can be accessed using the indexing operator:
 
         >>> name = DottedName('epydoc', 'api_doc', 'DottedName')
-        >>> print name
+        >>> print(name)
         epydoc.apidoc.DottedName
         >>> name[1]
         'api_doc'
@@ -137,7 +137,7 @@ class DottedName:
         Return the dotted name as a string formed by joining its
         identifiers with periods:
 
-            >>> print DottedName('epydoc', 'api_doc', DottedName')
+            >>> print(DottedName('epydoc', 'api_doc', DottedName'))
             epydoc.apidoc.DottedName
         """
         return '.'.join(self._identifiers)
@@ -2122,7 +2122,7 @@ def pp_apidoc(api_doc, doublespace=0, depth=5, exclude=(), include=(),
     backpointers[pyid] = len(backpointers)
     s = '%s [%s]' % (name, backpointers[pyid])
 
-    # Only print non-empty fields:
+    # Only print(non-empty fields:)
     fields = [field for field in api_doc.__dict__.keys()
               if (field in include or
                   (getattr(api_doc, field) is not UNKNOWN
@@ -2217,4 +2217,3 @@ def _pp_val(api_doc, val, doublespace, depth, exclude, include, backpointers):
         valrepr = repr(val)
         if len(valrepr) < 40: return valrepr
         else: return valrepr[:37]+'...'
-

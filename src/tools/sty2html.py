@@ -84,7 +84,7 @@ def colorize(s, title):
 
 def main():
     if len(sys.argv) != 2:
-        print 'Usage: %s <output-dir>' % sys.argv[0]
+        print('Usage: %s <output-dir>' % sys.argv[0])
         sys.exit(-1)
 
     # hackish to hardcode this; oh well.

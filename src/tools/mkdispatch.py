@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 """A tool to allow creation of both single page and multi-page manual.
 
-For each file name in argv, detect title names and print a directive
+For each file name in argv, detect title names and print(a directive)
 referring to it as anchor in an html file.
 """
 
@@ -49,5 +49,4 @@ def get_anchor(s):
 if __name__ == '__main__':
     for fn in sys.argv[1:]:
         for dir in parse_pairs(fn):
-            print dir
-
+            print(dir)

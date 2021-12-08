@@ -410,7 +410,7 @@ VariableDoc object in the module's children list).
     >>> runparser(s="""
     ...     def f(x):
     ...         'docstring for f'
-    ...         print 'inside f'
+    ...         print('inside f')
     ...     """, show="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', u'f')
@@ -435,7 +435,7 @@ of the variable argument and keyword argument, respectively:
     >>> runparser(s="""
     ...     def f(x, y=22, z=(1,), *v, **kw):
     ...         'docstring for f'
-    ...         print 'inside f'
+    ...         print('inside f')
     ...     """, show="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', u'f')

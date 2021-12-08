@@ -196,7 +196,7 @@ def parse(docstring, markup='plaintext', errors=None, **options):
 _parse_warnings = {}
 def _parse_warn(estr):
     """
-    Print a warning message.  If the given error has already been
+    print(a warning message.  If the given error has already been)
     printed, then do nothing.
     """
     global _parse_warnings
@@ -631,4 +631,3 @@ def parse_type_of(obj):
         para.appendChild(code)
         code.appendChild(doc.createTextNode(type(obj).__name__))
     return ParsedEpytextDocstring(doc)
-

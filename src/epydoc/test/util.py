@@ -61,7 +61,7 @@ def runbuilder(s, attribs='', build=None, exclude=''):
     s = re.sub(r"(<module 'epydoc_test' from ).*", r'\1...', s)
     s = re.sub(r"(<function \w+ at )0x\w+>", r"\1...>", s)
     s = re.sub(r"(<\w+ object at )0x\w+>", r"\1...>", s)
-    print s
+    print(s)
     # Clean up.
     cleanup_tmp_dir(tmp_dir)
 
@@ -89,7 +89,7 @@ def runparser(s, attribs='', show=None, exclude=''):
     # Display it.
     s = val_doc.pp(include=attribs.split(), exclude=exclude.split())
     s = re.sub(r"filename = .*", "filename = ...", s)
-    print s
+    print(s)
     # Clean up.
     cleanup_tmp_dir(tmp_dir)
 
@@ -121,13 +121,13 @@ def runintrospecter(s, attribs='', introspect=None, exclude=''):
     s = re.sub(r"(<module 'epydoc_test' from ).*", r'\1...', s)
     s = re.sub(r"(<function \w+ at )0x\w+>", r"\1...>", s)
     s = re.sub(r"(<\w+ object at )0x\w+>", r"\1...>", s)
-    print s
+    print(s)
     # Clean up.
     cleanup_tmp_dir(tmp_dir)
 
 def print_warnings():
     """
-    Register a logger that will print warnings & errors.
+    Register a logger that will print(warnings & errors.)
     """
     from epydoc import log
     del log._loggers[:]
@@ -199,14 +199,14 @@ def fun_to_plain(val_doc):
 
 def print_docstring_as_html(self, parsed_docstring, *varargs, **kwargs):
     """
-    Convert the given parsed_docstring to HTML and print it.  Ignore
+    Convert the given parsed_docstring to HTML and print(it.  Ignore)
     any other arguments.  This function is used by L{testencoding} to
     monkey-patch the HTMLWriter class's docstring_to_html() method.
     """
     s = parsed_docstring.to_html(None).strip()
     s = s.encode('ascii', 'xmlcharrefreplace')
     s = remove_surrogates(s)
-    print s
+    print(s)
     return ''
 
 def remove_surrogates(s):

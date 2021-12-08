@@ -17,7 +17,7 @@ colorization support for:
 
 The highlighter also takes care of line-wrapping, and automatically
 stops generating repr output as soon as it has exceeded the specified
-number of lines (which should make it faster than pprint for large
+number of lines (which should make it faster than pprint(for large)
 values).  It does I{not} bother to do automatic cycle detection,
 because maxlines is typically around 5, so it's really not worth it.
 
@@ -529,4 +529,3 @@ class PyvalColorizer:
                 if tag:
                     segment = Element('code', segment, style=tag)
                 state.result += [segment, self.LINEWRAP]
-

@@ -165,7 +165,7 @@ except NameError:
 #             self.option_specs = {}
 #             self.defaults = {}
 #         def fail(self, message, exitval=1):
-#             print >>sys.stderr, message
+#             print(>>sys.stderr, message)
 #             system.exit(exitval)
 #         def add_option_group(self, group): pass
 #         def set_defaults(self, **defaults):
@@ -247,4 +247,3 @@ except NameError:
 #     sys.modules['optparse'] = optparse
 #     # Clean up
 #     del OptionParser, OptionGroup
-

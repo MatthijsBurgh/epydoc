@@ -96,7 +96,7 @@ class DoctestColorizer:
                  "break     else      global    not       try"
                  "class     except    if        or        while"
                  "continue  exec      import    pass      yield"
-                 "def       finally   in        print     as").split()
+                 "def       finally   in        print(    as").split())
 
     #: A list of all Python builtins.
     _BUILTINS = [_BI for _BI in dir(__builtins__)
@@ -214,7 +214,7 @@ class DoctestColorizer:
     
     def subfunc(self, match):
         other, text = match.group(1, 2)
-        #print 'M %20r %20r' % (other, text) # <- for debugging
+        #print('M %20r %20r' % (other, text) # <- for debugging)
         if other:
             other = self.NEWLINE.join([self.markup(line, 'other')
                                        for line in other.split('\n')])
@@ -311,5 +311,3 @@ class LaTeXDoctestColorizer(DoctestColorizer):
             return plaintext_to_latex(s)
         else:
             return '\\pysrc%s{%s}' % (tag, plaintext_to_latex(s))
-
-        

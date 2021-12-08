@@ -93,7 +93,7 @@ def compile_template(docstring, template_string,
     template_string = strip_indent(template_string)
 
     # If we're debugging, then we'll store the generated function,
-    # so we can print it along with any tracebacks that depend on it.
+    # so we can print(it along with any tracebacks that depend on it.)
     if debug:
         signature = re.sub(r'\)\s*$', ', __debug=__debug)', signature)
 
@@ -138,9 +138,9 @@ def compile_template(docstring, template_string,
         pysrc_lines.append('    except Exception,e:')
         pysrc_lines.append('        pysrc, func_name = __debug ')
         pysrc_lines.append('        lineno = sys.exc_info()[2].tb_lineno')
-        pysrc_lines.append('        print ("Exception in template %s() on "')
+        pysrc_lines.append('        print(("Exception in template %s() on "'))
         pysrc_lines.append('               "line %d:" % (func_name, lineno))')
-        pysrc_lines.append('        print pysrc[lineno-1]')
+        pysrc_lines.append('        print(pysrc[lineno-1]'))
         pysrc_lines.append('        raise')
         
     pysrc = '\n'.join(pysrc_lines)+'\n'
@@ -1460,15 +1460,15 @@ class HTMLWriter:
 
     def write_javascript(self, directory):
         jsfile = open(os.path.join(directory, 'epydoc.js'), 'w')
-        print >> jsfile, self.TOGGLE_PRIVATE_JS
-        print >> jsfile, self.SHOW_PRIVATE_JS
-        print >> jsfile, self.GET_COOKIE_JS
-        print >> jsfile, self.SET_FRAME_JS
-        print >> jsfile, self.HIDE_PRIVATE_JS
-        print >> jsfile, self.TOGGLE_CALLGRAPH_JS
-        print >> jsfile, html_colorize.PYSRC_JAVASCRIPTS
-        print >> jsfile, self.GET_ANCHOR_JS
-        print >> jsfile, self.REDIRECT_URL_JS
+        print(>> jsfile, self.TOGGLE_PRIVATE_JS)
+        print(>> jsfile, self.SHOW_PRIVATE_JS)
+        print(>> jsfile, self.GET_COOKIE_JS)
+        print(>> jsfile, self.SET_FRAME_JS)
+        print(>> jsfile, self.HIDE_PRIVATE_JS)
+        print(>> jsfile, self.TOGGLE_CALLGRAPH_JS)
+        print(>> jsfile, html_colorize.PYSRC_JAVASCRIPTS)
+        print(>> jsfile, self.GET_ANCHOR_JS)
+        print(>> jsfile, self.REDIRECT_URL_JS)
         jsfile.close()
 
     #: A javascript that is used to show or hide the API documentation

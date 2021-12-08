@@ -17,7 +17,7 @@ Command-line interface for epydoc.  Abbreviated Usage::
      --pdf                     Generate pdf output, via LaTeX.
      -o DIR, --output DIR      The output directory.
      --inheritance STYLE       The format for showing inherited objects.
-     -V, --version             Print the version of epydoc.
+     -V, --version             print(the version of epydoc.)
      -h, --help                Display a usage message.
 
 Run \"epydoc --help\" for a complete option list.  See the epydoc(1)
@@ -501,20 +501,20 @@ def parse_arguments():
     # Parse the arguments.
     options, names = optparser.parse_args()
 
-    # Print help message, if requested.  We also provide support for
+    # print(help message, if requested.  We also provide support for)
     # --help [topic]
     if 'help' in options.actions:
         names = set([n.lower() for n in names])
         for (topic, msg) in HELP_TOPICS.items():
             if topic.lower() in names:
-                print '\n' + msg.rstrip() + '\n'
+                print('\n' + msg.rstrip() + '\n')
                 sys.exit(0)
         optparser.print_help()
         sys.exit(0)
 
-    # Print version message, if requested.
+    # print(version message, if requested.)
     if 'version' in options.actions:
-        print version
+        print(version)
         sys.exit(0)
     
     # Process any config files.
@@ -1231,17 +1231,17 @@ def cli():
     except SystemExit:
         raise
     except KeyboardInterrupt:
-        print '\n\n'
-        print >>sys.stderr, 'Keyboard interrupt.'
+        print('\n\n')
+        print(>>sys.stderr, 'Keyboard interrupt.')
     except:
         if options.debug: raise
-        print '\n\n'
+        print('\n\n')
         exc_info = sys.exc_info()
         if isinstance(exc_info[0], basestring): e = exc_info[0]
         else: e = exc_info[1]
-        print >>sys.stderr, ('\nUNEXPECTED ERROR:\n'
+        print(>>sys.stderr, ('\nUNEXPECTED ERROR:\n')
                              '%s\n' % (str(e) or e.__class__.__name__))
-        print >>sys.stderr, 'Use --debug to see trace information.'
+        print(>>sys.stderr, 'Use --debug to see trace information.')
         sys.exit(3)
     
 def _profile():
@@ -1249,7 +1249,7 @@ def _profile():
     if PROFILER == 'hotshot':
         try: import hotshot, hotshot.stats
         except ImportError:
-            print >>sys.stderr, "Could not import profile module!"
+            print(>>sys.stderr, "Could not import profile module!")
             return
         try:
             prof = hotshot.Profile('hotshot.out')
@@ -1258,7 +1258,7 @@ def _profile():
             pass
         prof.close()
         # Convert profile.hotshot -> profile.out
-        print 'Consolidating hotshot profiling info...'
+        print('Consolidating hotshot profiling info...')
         hotshot.stats.load('hotshot.out').dump_stats('profile.out')
 
     # Standard 'profile' profiler.
@@ -1269,7 +1269,7 @@ def _profile():
         except ImportError:
             try: from profile import Profile
             except ImportError:
-                print >>sys.stderr, "Could not import profile module!"
+                print(>>sys.stderr, "Could not import profile module!")
                 return
 
         # There was a bug in Python 2.4's profiler.  Check if it's
@@ -1289,7 +1289,7 @@ def _profile():
         prof.dump_stats('profile.out')
 
     else:
-        print >>sys.stderr, 'Unknown profiler %s' % PROFILER
+        print(>>sys.stderr, 'Unknown profiler %s' % PROFILER)
         return
     
 ######################################################################
@@ -1423,7 +1423,7 @@ class ConsoleLogger(log.Logger):
         
         if self._progress_mode == 'list':
             if message:
-                print '[%3d%%] %s' % (100*percent, message)
+                print('[%3d%%] %s' % (100*percent, message))
                 sys.stdout.flush()
                 
         elif self._progress_mode == 'bar':
@@ -1495,7 +1495,7 @@ class ConsoleLogger(log.Logger):
         self._progress_start_time = time.time()
         self._progress_header = header
         if self._progress_mode != 'hide' and header:
-            print self.term.BOLD + header + self.term.NORMAL
+            print(self.term.BOLD + header + self.term.NORMAL)
 
     def end_progress(self):
         self.progress(1.)
@@ -1505,21 +1505,21 @@ class ConsoleLogger(log.Logger):
                 sys.stdout.write((self.term.CLEAR_EOL + '\n')*2 +
                                  self.term.CLEAR_EOL + self.term.UP*2)
         if self._progress_mode == 'simple-bar':
-            print ']'
+            print(']')
         self._progress = None
         self._task_times.append( (time.time()-self._progress_start_time,
                                   self._progress_header) )
 
     def print_times(self):
         print
-        print 'Timing summary:'
+        print('Timing summary:')
         total = sum([time for (time, task) in self._task_times])
         max_t = max([time for (time, task) in self._task_times])
         for (time, task) in self._task_times:
             task = task[:34]
-            print '  %s%s%7.1fs' % (task, '.'*(37-len(task)), time),
+            print('  %s%s%7.1fs' % (task, '.'*(37-len(task)), time),)
             if self.term.COLS > 58:
-                print '|'+'=' * int((self.term.COLS-56) * time / max_t)
+                print('|'+'=' * int((self.term.COLS-56) * time / max_t))
             else:
                 print
         print
@@ -1660,4 +1660,3 @@ class HTMLLogger(log.Logger):
 
 if __name__ == '__main__':
     cli()
-

@@ -17,7 +17,7 @@ def main():
     try:
         doctest.register_optionflag
     except:
-        print ("\n"
+        print(("\n")
             "The regression test suite requires a more recent version of\n"
             "doctest (e.g., the version that ships with Python 2.4 or 2.5).\n"
             "Please place a new version of doctest on your path before \n"
@@ -87,7 +87,7 @@ def check_requirements(filename):
         try:
             __import__(module)
         except ImportError:
-            print ('Skipping %r (required module %r not found)' %
+            print(('Skipping %r (required module %r not found)' %)
                    (os.path.split(filename)[-1], module))
             return False
     return True

@@ -21,7 +21,7 @@ Usage::
 
     FILE.prj                  An epydoc GUI project file.
     MODULES...                A list of Python modules to document.
-    -V, --version             Print the version of epydoc.
+    -V, --version             print(the version of epydoc.)
     -h, -?, --help, --usage   Display this usage message
     --debug                   Do not suppress error messages
 
@@ -1087,7 +1087,7 @@ def _version():
     @rtype: C{None}
     """
     import epydoc
-    print "Epydoc version %s" % epydoc.__version__
+    print("Epydoc version %s" % epydoc.__version__)
     sys.exit(0)
 
 # At some point I could add:
@@ -1095,13 +1095,13 @@ def _version():
 #   --show-options, --hide-options
 def _usage():
     print
-    print 'Usage: epydocgui [OPTIONS] [FILE.prj | MODULES...]'
+    print('Usage: epydocgui [OPTIONS] [FILE.prj | MODULES...]')
     print
-    print '    FILE.prj                  An epydoc GUI project file.'
-    print '    MODULES...                A list of Python modules to document.'
-    print '    -V, --version             Print the version of epydoc.'
-    print '    -h, -?, --help, --usage   Display this usage message'
-    print '    --debug                   Do not suppress error messages'
+    print('    FILE.prj                  An epydoc GUI project file.')
+    print('    MODULES...                A list of Python modules to document.')
+    print('    -V, --version             Print the version of epydoc.')
+    print('    -h, -?, --help, --usage   Display this usage message')
+    print('    --debug                   Do not suppress error messages')
     print
     sys.exit(0)
 
@@ -1110,7 +1110,7 @@ def _error(s):
     if len(s) > 80:
         i = s.rfind(' ', 0, 80)
         if i>0: s = s[:i]+'\n'+s[i+1:]
-    print >>sys.stderr, s
+    print(>>sys.stderr, s)
     sys.exit(1)
     
 def gui():
@@ -1145,4 +1145,3 @@ def gui():
         gui.mainloop()
 
 if __name__ == '__main__': gui()
-

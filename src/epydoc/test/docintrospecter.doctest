@@ -175,7 +175,7 @@ Introspected functions are represented by `RoutineDoc` objects:
     >>> runintrospecter(s="""
     ...     def f(x):
     ...         'docstring for f'
-    ...         print 'inside f'
+    ...         print('inside f')
     ...     """, introspect="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', 'f')
@@ -199,7 +199,7 @@ of the variable argument and keyword argument, respectively:
     >>> runintrospecter(s="""
     ...     def f(x, y=22, z=(1,), *v, **kw):
     ...         'docstring for f'
-    ...         print 'inside f'
+    ...         print('inside f')
     ...     """, introspect="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', 'f')

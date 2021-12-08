@@ -18,7 +18,7 @@ DOCTESTS = $(wildcard src/epydoc/test/*.doctest)
 MANUAL_SRC = $(wildcard doc/manual-*.txt)
 
 # What version of python to use?
-PYTHON = python2.5
+PYTHON = python3
 export PYTHONPATH=src/
 
 # The location of the webpage.
@@ -164,7 +164,7 @@ api-pdf: .api-pdf.up2date
 
 # Convert doctest files to HTML, using rst2html.
 doctest-html: doctest-html-mkdir $(DOCTEST_HTML_FILES)
-doctest-html-mkdir: 
+doctest-html-mkdir:
 	mkdir -p $(HTML_DOCTEST)
 $(HTML_DOCTEST)/%.html: src/epydoc/test/%.doctest
 	mkdir -p $(HTML_DOCTEST)

@@ -14,7 +14,7 @@ MAN = ${LIB}/man/
 DOC = ${LIB}/doc/
 
 # What version of python to use?
-PYTHON = python
+PYTHON = python3
 
 ##//////////////////////////////////////////////////////////////////////
 ## Makefile
@@ -46,7 +46,7 @@ installdocs:
 ## the cvs repository (not from distributions).
 ##//////////////////////////////////////////////////////////////////////
 
-# Clean.  
+# Clean.
 #    - Erase any pyc and pyo files.
 #    - Get rid of build/dist directories
 clean:

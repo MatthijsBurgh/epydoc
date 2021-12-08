@@ -17,7 +17,6 @@ __docformat__ = 'epytext en'
 import os.path, sys, time, re, textwrap, codecs
 
 from epydoc.apidoc import *
-from epydoc.compat import *
 import epydoc
 from epydoc import log
 from epydoc import markup

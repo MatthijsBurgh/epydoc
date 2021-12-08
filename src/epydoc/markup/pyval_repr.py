@@ -35,7 +35,6 @@ import types, re
 import epydoc.apidoc
 from epydoc.util import decode_with_backslashreplace
 from epydoc.util import plaintext_to_html, plaintext_to_latex
-from epydoc.compat import *
 import sre_parse, sre_constants
 
 from epydoc.markup.epytext import Element, ParsedEpytextDocstring

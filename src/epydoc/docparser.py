@@ -68,8 +68,6 @@ import __builtin__, exceptions
 import epydoc.docintrospecter 
 # Misc utility functions:
 from epydoc.util import *
-# Backwards compatibility
-from epydoc.compat import *
 
 ######################################################################
 ## Doc Parser

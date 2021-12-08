@@ -27,7 +27,6 @@ from epydoc.docwriter.html_help import HTML_HELP
 from epydoc.docwriter.dotgraph import *
 from epydoc import log
 from epydoc.util import plaintext_to_html, is_src_filename
-from epydoc.compat import * # Backwards compatibility
 
 ######################################################################
 ## Template Compiler

@@ -42,7 +42,6 @@ import types, re, os.path, pickle
 from epydoc import log
 import epydoc
 import __builtin__
-from epydoc.compat import * # Backwards compatibility
 from epydoc.util import decode_with_backslashreplace, py_src_filename
 import epydoc.markup.pyval_repr
 

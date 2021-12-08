@@ -72,7 +72,6 @@ from epydoc import log
 from epydoc.util import wordwrap, run_subprocess, RunSubprocessError
 from epydoc.util import plaintext_to_html, TerminalController
 from epydoc.apidoc import UNKNOWN
-from epydoc.compat import *
 import ConfigParser
 from epydoc.docwriter.html_css import STYLESHEETS as CSS_STYLESHEETS
 from epydoc.docwriter.latex_sty import STYLESHEETS as STY_STYLESHEETS

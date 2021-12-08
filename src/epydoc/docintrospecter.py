@@ -38,8 +38,6 @@ from epydoc.util import *
 import epydoc.docparser
 # Builtin values
 import __builtin__
-# Backwards compatibility
-from epydoc.compat import * 
 
 ######################################################################
 ## Caches

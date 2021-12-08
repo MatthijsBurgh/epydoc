@@ -26,7 +26,6 @@ import tempfile
 from epydoc import log
 from epydoc.apidoc import *
 from epydoc.util import *
-from epydoc.compat import * # Backwards compatibility
 
 #: Should the dot2tex module be used to render dot graphs to latex
 #: (if it's available)?  This is experimental, and not yet working,

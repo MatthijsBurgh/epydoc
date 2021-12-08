@@ -59,7 +59,6 @@ import re, types, sys
 from epydoc import log
 from epydoc.util import plaintext_to_html, plaintext_to_latex
 import epydoc
-from epydoc.compat import *
 
 ##################################################
 ## Contents

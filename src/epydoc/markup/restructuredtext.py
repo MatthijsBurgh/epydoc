@@ -84,7 +84,6 @@ import docutils.transforms.frontmatter
 import docutils.transforms
 import docutils.utils
 
-from epydoc.compat import * # Backwards compatibility
 from epydoc.markup import *
 from epydoc.apidoc import ModuleDoc, ClassDoc
 from epydoc.docwriter.dotgraph import *

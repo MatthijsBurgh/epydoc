@@ -13,11 +13,12 @@ Python source code.
 """
 __docformat__ = 'epytext en'
 
+from html import escape
 import re, codecs
 from epydoc import log
 from epydoc.util import py_src_filename
 from epydoc.apidoc import *
-import tokenize, token, cgi, keyword
+import tokenize, token, keyword
 from io import StringIO
 
 ######################################################################
@@ -469,7 +470,8 @@ class PythonSourceColorizer:
         try:
             output = StringIO()
             self.out = output.write
-            tokenize.tokenize(StringIO(self.text).readline, self.tokeneater)
+            for token in tokenize.generate_tokens(StringIO(self.text).readline):
+                self.tokeneater(*token)
             html = output.getvalue()
             if self.has_decorators:
                 html = self._FIX_DECORATOR_RE.sub(r'\2\1', html)
@@ -484,16 +486,16 @@ class PythonSourceColorizer:
         # Decode the html string into unicode, and then encode it back
         # into ascii, replacing any non-ascii characters with xml
         # character references.
-        try:
-            html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
-        except LookupError:
-            coding = 'iso-8859-1'
-            html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
-        except UnicodeDecodeError as e:
-            log.warning("Unicode error while generating syntax-highlighted "
-                        "source code: %s (%s)" % (e, self.module_filename))
-            html = html.decode(coding, 'ignore').encode(
-                'ascii', 'xmlcharrefreplace')
+        # try:
+        #     html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
+        # except LookupError:
+        #     coding = 'iso-8859-1'
+        #     html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
+        # except UnicodeDecodeError as e:
+        #     log.warning("Unicode error while generating syntax-highlighted "
+        #                 "source code: %s (%s)" % (e, self.module_filename))
+        #     html = html.decode(coding, 'ignore').encode(
+        #         'ascii', 'xmlcharrefreplace')
             
 
         # Call expandto.
@@ -576,11 +578,11 @@ class PythonSourceColorizer:
 
         # Loop through each token, and colorize it appropriately.
         for i, (toktype, toktext) in enumerate(line):
-            if type(s) is not bytes:
-                if type(s) is str:
+            if type(s) is not str:
+                if type(s) is bytes:
                     log.error('While colorizing %s -- got unexpected '
-                              'unicode string' % self.module_name)
-                    s = s.encode('ascii', 'xmlcharrefreplace')
+                              'bytes string' % self.module_name)
+                    s.decode('ascii', 'xmlcharrefreplace')
                 else:
                     raise ValueError('Unexpected value for s -- %s' % 
                                      type(s).__name__)
@@ -746,10 +748,10 @@ class PythonSourceColorizer:
                 s += '<tt%s%s>' % (tooltip_html, css_class_html)
             if i == len(line)-1:
                 s += ' </tt>' # Closes <tt class="py-line">
-                s += cgi.escape(toktext)
+                s += escape(toktext)
             else:
                 try:
-                    s += self.add_line_numbers(cgi.escape(toktext), css_class)
+                    s += self.add_line_numbers(escape(toktext), css_class)
                 except Exception as e:
                     print((toktext, css_class, toktext.encode('ascii')))
                     raise

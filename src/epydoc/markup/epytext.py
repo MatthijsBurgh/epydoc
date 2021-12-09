@@ -472,7 +472,7 @@ def _add_list(doc, bullet_token, stack, indent_stack, errors):
 
     # Create the new list.
     if newlist:
-        if stack[-1].tag is 'fieldlist':
+        if stack[-1].tag == 'fieldlist':
             # The new list item is not a field list item (since this
             # is a new list); but it's indented the same as the field
             # list.  This either means that they forgot to indent the

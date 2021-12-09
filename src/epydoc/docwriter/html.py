@@ -3099,13 +3099,13 @@ class HTMLWriter:
         skip = (ModuleDoc, ClassDoc, type(UNKNOWN))
         for val_doc in self.module_list:
             self.write_url_record(out, val_doc)
-            for var in val_doc.variables.itervalues():
+            for var in val_doc.variables.values():
                 if not isinstance(var.value, skip):
                     self.write_url_record(out, var)
 
         for val_doc in self.class_list:
             self.write_url_record(out, val_doc)
-            for var in val_doc.variables.itervalues():
+            for var in val_doc.variables.values():
                 self.write_url_record(out, var)
 
     def write_url_record(self, out, obj):

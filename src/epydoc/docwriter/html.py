@@ -3206,11 +3206,11 @@ class HTMLWriter:
         # Module: <canonical_name>-module.html
         if isinstance(obj, ModuleDoc):
             if obj not in self.module_set: return None
-            return urllib.quote('%s'%obj.canonical_name) + '-module.html'
+            return urllib.parse.quote('%s'%obj.canonical_name) + '-module.html'
         # Class: <canonical_name>-class.html
         elif isinstance(obj, ClassDoc):
             if obj not in self.class_set: return None
-            return urllib.quote('%s'%obj.canonical_name) + '-class.html'
+            return urllib.parse.quote('%s'%obj.canonical_name) + '-class.html'
         # Variable
         elif isinstance(obj, VariableDoc):
             val_doc = obj.value
@@ -3227,7 +3227,7 @@ class HTMLWriter:
             else:
                 container_url = self.url(obj.container)
                 if container_url is None: return None
-                return '%s#%s' % (container_url, urllib.quote('%s'%obj.name))
+                return '%s#%s' % (container_url, urllib.parse.quote('%s'%obj.name))
         # Value (other than module or class)
         elif isinstance(obj, ValueDoc):
             container = self.docindex.container(obj)
@@ -3236,7 +3236,7 @@ class HTMLWriter:
             else:
                 container_url = self.url(container)
                 if container_url is None: return None
-                anchor = urllib.quote('%s'%obj.canonical_name[-1])
+                anchor = urllib.parse.quote('%s'%obj.canonical_name[-1])
                 return '%s#%s' % (container_url, anchor)
         # Dotted name: look up the corresponding APIDoc
         elif isinstance(obj, DottedName):
@@ -3272,7 +3272,7 @@ class HTMLWriter:
         elif isinstance(api_doc, ModuleDoc):
             if api_doc in self.modules_with_sourcecode:
                 return ('%s-pysrc.html' %
-                       urllib.quote('%s' % api_doc.canonical_name))
+                       urllib.parse.quote('%s' % api_doc.canonical_name))
             else:
                 return None
         else:
@@ -3287,7 +3287,7 @@ class HTMLWriter:
                 return module_pysrc_url
             mname_len = len(module.canonical_name)
             anchor = '%s' % api_doc.canonical_name[mname_len:]
-            return '%s#%s' % (module_pysrc_url, urllib.quote(anchor))
+            return '%s#%s' % (module_pysrc_url, urllib.parse.quote(anchor))
         
         # We didn't find it:
         return None

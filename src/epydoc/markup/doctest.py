@@ -96,7 +96,7 @@ class DoctestColorizer:
                  "break     else      global    not       try"
                  "class     except    if        or        while"
                  "continue  exec      import    pass      yield"
-                 "def       finally   in        print(    as").split())
+                 "def       finally   in        as").split()
 
     #: A list of all Python builtins.
     _BUILTINS = [_BI for _BI in dir(__builtins__) if not _BI.startswith('__')]

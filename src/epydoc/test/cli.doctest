@@ -6,7 +6,7 @@ A helper function to check the behavior of parse_arguments:
     >>> import sys, epydoc.cli
     >>> def parse_arguments(argv):
     ...     defaults = epydoc.cli.option_defaults()
-    ...     if isinstance(argv, basestring): argv = argv.split()
+    ...     if isinstance(argv, str): argv = argv.split()
     ...     sys.argv = list(argv)
     ...     options = epydoc.cli.parse_arguments()
     ...     for opt, val in sorted(options.__dict__.items()):

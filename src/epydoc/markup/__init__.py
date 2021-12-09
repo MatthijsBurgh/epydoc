@@ -160,7 +160,7 @@ def parse(docstring, markup='plaintext', errors=None, **options):
     parse_docstring = _markup_language_registry[markup]
 
     # If it's a string, then it names a function to import.
-    if isinstance(parse_docstring, basestring):
+    if isinstance(parse_docstring, str):
         try:
             exec('from %s import parse_docstring' % parse_docstring)
         except ImportError as e:

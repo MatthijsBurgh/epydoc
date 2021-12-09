@@ -110,7 +110,7 @@ class DottedName:
         for piece in pieces:
             if isinstance(piece, DottedName):
                 self._identifiers += piece._identifiers
-            elif isinstance(piece, basestring):
+            elif isinstance(piece, str):
                 for subpiece in piece.split('.'):
                     if piece not in self._ok_identifiers:
                         if not self._IDENTIFIER_RE.match(subpiece):
@@ -146,7 +146,7 @@ class DottedName:
         Return a new C{DottedName} whose identifier sequence is formed
         by adding C{other}'s identifier sequence to C{self}'s.
         """
-        if isinstance(other, (basestring, DottedName)):
+        if isinstance(other, (str, DottedName)):
             return DottedName(self, other)
         else:
             return DottedName(self, *other)
@@ -156,7 +156,7 @@ class DottedName:
         Return a new C{DottedName} whose identifier sequence is formed
         by adding C{self}'s identifier sequence to C{other}'s.
         """
-        if isinstance(other, (basestring, DottedName)):
+        if isinstance(other, (str, DottedName)):
             return DottedName(other, self)
         else:
             return DottedName(*(list(other)+[self]))
@@ -1878,7 +1878,7 @@ class DocIndex:
             if the name is not found anywhere (including builtins,
             function parameters, etc.)
         """
-        if isinstance(name, basestring):
+        if isinstance(name, str):
             name = re.sub(r'\(.*\)$', '', name.strip())
             if re.match('^([a-zA-Z_]\w*)(\.[a-zA-Z_]\w*)*$', name):
                 name = DottedName(name)

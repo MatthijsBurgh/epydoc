@@ -305,7 +305,7 @@ def add_metadata_from_var(api_doc, field):
         value = []
 
         # Try extracting the value from the pyval.
-        ok_types = (basestring, int, float, bool, type(None))
+        ok_types = (str, int, float, bool, type(None))
         if val_doc.pyval is not UNKNOWN:
             if isinstance(val_doc.pyval, ok_types):
                 value = [val_doc.pyval]

@@ -897,7 +897,7 @@ class LatexWriter:
         return s
 
     def _arg_name(self, arg):
-        if isinstance(arg, basestring):
+        if isinstance(arg, str):
             return plaintext_to_latex(arg)
         else:
             return '\\TupleArg{%s}' % '\\and '.join([self._arg_name(a)

@@ -247,7 +247,7 @@ class DocUrlGenerator(UrlGenerator):
         """
         self._filename = str(f)
 
-        if isinstance(f, basestring):
+        if isinstance(f, str):
             f = open(f)
 
         self.load_records(self._iter_tuples(f))

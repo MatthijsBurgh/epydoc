@@ -131,7 +131,7 @@ Regular Expressions
 ===================
 
     >>> def textcontent(elt):
-    ...     if isinstance(elt, basestring): return elt
+    ...     if isinstance(elt, str): return elt
     ...     else: return ''.join([textcontent(c) for c in elt.children])
 
     >>> import re

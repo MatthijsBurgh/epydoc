@@ -1994,7 +1994,7 @@ def lookup_name(identifier, parent_docs):
     # nested scopes, because nested scope lookup does not apply to
     # nested class definitions, and we're not worried about variables
     # in nested functions.
-    if not isinstance(identifier, basestring):
+    if not isinstance(identifier, str):
         raise TypeError('identifier must be a string')
 
     # Locals

@@ -1668,7 +1668,7 @@ class HTMLWriter:
         """
         if callgraph is None: return ""
         
-        if isinstance(callgraph, basestring):
+        if isinstance(callgraph, str):
             uid = callgraph
             graph_html = self._callgraph_cache.get(callgraph, "")
         elif callgraph.uid in self._callgraph_cache:
@@ -1706,7 +1706,7 @@ class HTMLWriter:
         # Use class=codelink, to match style w/ the source code link.
         if callgraph is None: return ''
 
-        if isinstance(callgraph, basestring):
+        if isinstance(callgraph, str):
             uid = callgraph
         else:
             uid = callgraph.uid
@@ -2731,7 +2731,7 @@ class HTMLWriter:
         return s
 
     def _arg_name(self, arg):
-        if isinstance(arg, basestring):
+        if isinstance(arg, str):
             return arg
         elif len(arg) == 1:
             return '(%s,)' % self._arg_name(arg[0])
@@ -3495,7 +3495,7 @@ class _HTMLDocstringLinker(epydoc.markup.DocstringLinker):
             return self.htmlwriter.href(doc, label, 'link')
 
     def url_for(self, identifier):
-        if isinstance(identifier, (basestring, DottedName)):
+        if isinstance(identifier, (str, DottedName)):
             doc = self.docindex.find(identifier, self.container)
             if doc:
                 return self.htmlwriter.url(doc)

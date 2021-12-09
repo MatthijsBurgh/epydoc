@@ -331,7 +331,7 @@ def _report_valdoc_progress(i, val_doc, val_docs):
 def _import_docs_from_items(items, options):
     for item in items:
         # Make sure the item's module is imported.
-        if isinstance(item, basestring):
+        if isinstance(item, str):
             if os.path.isfile(item):
                 _do_import(item, options)
             elif is_package_dir(item):
@@ -411,7 +411,7 @@ def _get_docs_from_items(items, options):
     # Collect (introspectdoc, parsedoc) pairs for each item.
     doc_pairs = []
     for item in items:
-        if isinstance(item, basestring):
+        if isinstance(item, str):
             if is_module_file(item):
                 doc_pairs.append(_get_docs_from_module_file(
                     item, options, progress_estimator))

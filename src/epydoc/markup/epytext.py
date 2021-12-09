@@ -1086,7 +1086,7 @@ def _colorize(doc, token, errors, tagName='para'):
             # Special handling for symbols:
             if stack[-1].tag == 'symbol':
                 if (len(stack[-1].children) != 1 or
-                    not isinstance(stack[-1].children[0], basestring)):
+                    not isinstance(stack[-1].children[0], str)):
                     estr = "Invalid symbol code."
                     errors.append(ColorizingError(estr, token, end))
                 else:
@@ -1101,7 +1101,7 @@ def _colorize(doc, token, errors, tagName='para'):
             # Special handling for escape elements:
             if stack[-1].tag == 'escape':
                 if (len(stack[-1].children) != 1 or
-                    not isinstance(stack[-1].children[0], basestring)):
+                    not isinstance(stack[-1].children[0], str)):
                     estr = "Invalid escape code."
                     errors.append(ColorizingError(estr, token, end))
                 else:
@@ -1158,7 +1158,7 @@ def _colorize_graph(doc, graph, token, end, errors):
     children = graph.children[:]
     graph.children = []
 
-    if len(children) != 1 or not isinstance(children[0], basestring):
+    if len(children) != 1 or not isinstance(children[0], str):
         bad_graph_spec = "Bad graph specification"
     else:
         pieces = children[0].split(None, 1)
@@ -1189,7 +1189,7 @@ def _colorize_link(doc, link, token, end, errors):
     variables = link.children[:]
 
     # If the last child isn't text, we know it's bad.
-    if len(variables)==0 or not isinstance(variables[-1], basestring):
+    if len(variables)==0 or not isinstance(variables[-1], str):
         estr = "Bad %s target." % link.tag
         errors.append(ColorizingError(estr, token, end))
         return
@@ -1260,7 +1260,7 @@ def to_epytext(tree, indent=0, seclevel=0):
     @return: The epytext string corresponding to C{tree}.
     @rtype: C{string}
     """
-    if isinstance(tree, basestring):
+    if isinstance(tree, str):
         str = re.sub(r'\{', '\0', tree)
         str = re.sub(r'\}', '\1', str)
         return str
@@ -1347,7 +1347,7 @@ def to_plaintext(tree, indent=0, seclevel=0):
     @return: The epytext string corresponding to C{tree}.
     @rtype: C{string}
     """
-    if isinstance(tree, basestring): return tree
+    if isinstance(tree, str): return tree
 
     if tree.tag == 'section': seclevel += 1
 
@@ -1428,7 +1428,7 @@ def to_debug(tree, indent=4, seclevel=0):
     @return: The epytext string corresponding to C{tree}.
     @rtype: C{string}
     """
-    if isinstance(tree, basestring):
+    if isinstance(tree, str):
         str = re.sub(r'\{', '\0', tree)
         str = re.sub(r'\}', '\1', str)
         return str
@@ -1812,7 +1812,7 @@ class ParsedEpytextDocstring(ParsedDocstring):
 
     def _to_html(self, tree, linker, directory, docindex, context,
                  indent=0, seclevel=0):
-        if isinstance(tree, basestring):
+        if isinstance(tree, str):
             return plaintext_to_html(tree)
 
         if tree.tag == 'epytext': indent -= 2
@@ -1936,7 +1936,7 @@ class ParsedEpytextDocstring(ParsedDocstring):
             
     def _to_latex(self, tree, linker, directory, docindex, context,
                   indent=0, seclevel=0, breakany=0):
-        if isinstance(tree, basestring):
+        if isinstance(tree, str):
             return plaintext_to_latex(tree, breakany=breakany)
 
         if tree.tag == 'section': seclevel += 1
@@ -2059,7 +2059,7 @@ class ParsedEpytextDocstring(ParsedDocstring):
         para = Element('para', inline=True)
         doc.children.append(para)
         for parachild in parachildren:
-            if isinstance(parachild, basestring):
+            if isinstance(parachild, str):
                 m = self._SUMMARY_RE.match(parachild)
                 if m:
                     para.children.append(m.group(1))
@@ -2115,7 +2115,7 @@ class ParsedEpytextDocstring(ParsedDocstring):
         return self._terms
 
     def _index_terms(self, tree, terms):
-        if tree is None or isinstance(tree, basestring):
+        if tree is None or isinstance(tree, str):
             return
         
         if tree.tag == 'indexed':

@@ -333,7 +333,7 @@ class DocChecker:
             else:
                 args_with_descr = []
                 for arg, descr in doc.arg_descrs:
-                    if isinstance(arg, basestring):
+                    if isinstance(arg, str):
                         args_with_descr.append(arg)
                     else:
                         args_with_descr += arg

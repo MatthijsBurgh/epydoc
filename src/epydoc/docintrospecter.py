@@ -579,9 +579,9 @@ def get_docstring(value, module_name=None):
     docstring = getattr(value, '__doc__', None)
     if docstring is None:
         return None
-    elif isinstance(docstring, unicode):
-        return docstring
     elif isinstance(docstring, str):
+        return docstring
+    elif isinstance(docstring, bytes):
         try:
             return str(docstring, 'ascii')
         except UnicodeDecodeError:

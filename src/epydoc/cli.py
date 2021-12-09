@@ -1240,8 +1240,7 @@ def cli():
         exc_info = sys.exc_info()
         if isinstance(exc_info[0], str): e = exc_info[0]
         else: e = exc_info[1]
-        print(('\nUNEXPECTED ERROR:\n', file=sys.stderr)
-                             '%s\n' % (str(e) or e.__class__.__name__))
+        print('\nUNEXPECTED ERROR:\n%s\n' % (str(e) or e.__class__.__name__), file=sys.stderr)
         print('Use --debug to see trace information.', file=sys.stderr)
         sys.exit(3)
     

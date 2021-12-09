@@ -137,9 +137,9 @@ def compile_template(docstring, template_string,
         pysrc_lines.append('    except Exception,e:')
         pysrc_lines.append('        pysrc, func_name = __debug ')
         pysrc_lines.append('        lineno = sys.exc_info()[2].tb_lineno')
-        pysrc_lines.append('        print(("Exception in template %s() on "'))
+        pysrc_lines.append('        print(("Exception in template %s() on "')
         pysrc_lines.append('               "line %d:" % (func_name, lineno))')
-        pysrc_lines.append('        print(pysrc[lineno-1]'))
+        pysrc_lines.append('        print(pysrc[lineno-1]')
         pysrc_lines.append('        raise')
         
     pysrc = '\n'.join(pysrc_lines)+'\n'

@@ -136,7 +136,7 @@ class DottedName:
         Return the dotted name as a string formed by joining its
         identifiers with periods:
 
-            >>> print(DottedName('epydoc', 'api_doc', DottedName'))
+            >>> print(DottedName('epydoc', 'api_doc', 'DottedName'))
             epydoc.apidoc.DottedName
         """
         return '.'.join(self._identifiers)

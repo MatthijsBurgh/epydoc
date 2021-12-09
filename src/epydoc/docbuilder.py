@@ -99,8 +99,8 @@ class BuildOptions:
                 and re.compile(exclude_introspect) or None)
             self._parse_regexp = (exclude_parse
                 and re.compile(exclude_parse) or None)
-        except Exception, exc:
-            log.error('Error in regular expression pattern: %s' % exc)
+        except Exception as e:
+            log.error('Error in regular expression pattern: %s' % e)
             raise
 
     def must_introspect(self, name):
@@ -201,7 +201,7 @@ def build_doc_index(items, introspect=True, parse=True, add_submodules=True,
         options = BuildOptions(parse=parse, introspect=introspect,
             exclude_introspect=exclude_introspect, exclude_parse=exclude_parse,
             add_submodules=add_submodules)
-    except Exception, e:
+    except Exception:
         # log.error already reported by constructor.
         return None
 
@@ -345,7 +345,8 @@ def _import_docs_from_items(items, options):
                         val = get_value_from_name(item)
                         if options.add_submodules and inspect.ismodule(val):
                             _import_docs_from_package(val, options)
-                    except ImportError, e: pass
+                    except ImportError:
+                        pass
 
 def _import_docs_from_package(pkg, options):
     subpackage_filenames = set()
@@ -380,8 +381,10 @@ def _do_import(filename, options, parent=None):
     if options.must_introspect(modulename):
         log.progress(0, 'Importing %s' % modulename)
         #log.debug('importing %r (%s)' % (filename, modulename))
-        try: return get_value_from_filename(filename)
-        except ImportError, e: return None
+        try:
+            return get_value_from_filename(filename)
+        except ImportError:
+            return None
 
 #/////////////////////////////////////////////////////////////////
 # Documentation Generation
@@ -476,7 +479,7 @@ def _get_docs_from_pyobject(obj, options, progress_estimator):
     introspect_error = parse_error = None
     try:
         introspect_doc = introspect_docs(value=obj)
-    except ImportError, e:
+    except ImportError as e:
         log.error(e)
         return (None, None)
     if options.parse:
@@ -511,14 +514,14 @@ def _get_docs_from_pyname(name, options, progress_estimator,
     if options.must_introspect(name):
         try:
             introspect_doc = introspect_docs(name=name)
-        except ImportError, e:
+        except ImportError as e:
             introspect_error = str(e)
     if options.must_parse(name):
         try:
             parse_doc = parse_docs(name=name)
-        except ParseError, e:
+        except ParseError as e:
             parse_error = str(e)
-        except ImportError, e:
+        except ImportError as e:
             # If we get here, then there' probably no python source
             # available; don't bother to generate a warnining.
             pass
@@ -542,14 +545,14 @@ def _get_docs_from_pyscript(filename, options, progress_estimator):
             introspect_doc = introspect_docs(filename=filename, is_script=True)
             if introspect_doc.canonical_name is UNKNOWN:
                 introspect_doc.canonical_name = munge_script_name(filename)
-        except ImportError, e:
+        except ImportError as e:
             introspect_error = str(e)
     if options.parse:
         try:
             parse_doc = parse_docs(filename=filename, is_script=True)
-        except ParseError, e:
+        except ParseError as e:
             parse_error = str(e)
-        except ImportError, e:
+        except ImportError as e:
             parse_error = str(e)
                 
     # Report any errors we encountered.
@@ -605,13 +608,13 @@ def _get_docs_from_module_file(filename, options, progress_estimator,
                 filename=filename, context=parent_docs[0])
             if introspect_doc.canonical_name is UNKNOWN:
                 introspect_doc.canonical_name = modulename
-        except ImportError, e:
+        except ImportError as e:
             introspect_error = str(e)
     if src_file_available and options.must_parse(modulename):
         try:
             parse_doc = parse_docs(
                 filename=filename, context=parent_docs[1])
-        except (ParseError, ImportError, IOError, OSError), e:
+        except (ParseError, ImportError, IOError, OSError) as e:
             parse_error = str(e)
 
     # Report any errors we encountered.

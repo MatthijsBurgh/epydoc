@@ -41,7 +41,7 @@ def get_anchor(s):
     # IndexErrors are expected to test for what else include in the map
     try:
         return "".join(map(charmap.__getitem__, s))
-    except KeyError, e:
+    except KeyError as e:
         sys.stderr.write('Unexpected char while getting anchor for %r: %s\n'
                          % (s, e))
         sys.exit(-1)

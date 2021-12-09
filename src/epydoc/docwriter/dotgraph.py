@@ -165,11 +165,13 @@ class DotGraph(object):
         # Use dot2tex if requested (and if it's available).
         # Otherwise, render it to an image file & use \includgraphics.
         if USE_DOT2TEX and dot2tex is not None:
-            try: return self._to_dot2tex(center, size)
-            except KeyboardInterrupt: raise
-            except:
+            try:
+                return self._to_dot2tex(center, size)
+            except KeyboardInterrupt:
                 raise
+            except Exception:
                 log.warning('dot2tex failed; using dot instead')
+                raise
 
         # Render the graph in postscript.
         ps = self._run_dot('-Tps', size=size)
@@ -179,8 +181,9 @@ class DotGraph(object):
         psfile.write(ps)
         psfile.close()
         # Use ps2pdf to generate the pdf output.
-        try: run_subprocess(('ps2pdf', '-dEPSCrop', eps_file, pdf_file))
-        except RunSubprocessError, e:
+        try:
+            run_subprocess(('ps2pdf', '-dEPSCrop', eps_file, pdf_file))
+        except RunSubprocessError as e:
             log.warning("Unable to render Graphviz dot graph (%s):\n"
                             "ps2pdf failed." % self.title)
             return None
@@ -296,10 +299,14 @@ class DotGraph(object):
 
         # Link xrefs in body
         def subfunc(m):
-            try: url = docstring_linker.url_for(m.group(1))
-            except NotImplementedError: url = ''
-            if url: return 'href="%s"%s' % (url, m.group(2))
-            else: return ''
+            try:
+                url = docstring_linker.url_for(m.group(1))
+            except NotImplementedError:
+                url = ''
+            if url:
+                return 'href="%s"%s' % (url, m.group(2))
+            else:
+                return ''
         self.body = re.sub("href\s*=\s*['\"]?<([\w\.]+)>['\"]?\s*(,?)",
                            subfunc, self.body)
 
@@ -308,10 +315,14 @@ class DotGraph(object):
         if 'href' in attribs:
             m = re.match(r'^<([\w\.]+)>$', attribs['href'])
             if m:
-                try: url = docstring_linker.url_for(m.group(1))
-                except NotImplementedError: url = ''
-                if url: attribs['href'] = url
-                else: del attribs['href']
+                try:
+                    url = docstring_linker.url_for(m.group(1))
+                except NotImplementedError:
+                    url = ''
+                if url:
+                    attribs['href'] = url
+                else:
+                    del attribs['href']
 
     def write(self, filename, language=None, size=None):
         """
@@ -361,7 +372,7 @@ class DotGraph(object):
             result, err = run_subprocess((DOT_COMMAND,)+options,
                                          self.to_dotfile(**kwparam))
             if err: log.warning("Graphviz dot warning(s):\n%s" % err)
-        except OSError, e:
+        except OSError as e:
             log.warning("Unable to render Graphviz dot graph (%s):\n%s" %
                         (self.title, e))
             import tempfile, epydoc
@@ -631,8 +642,10 @@ class DotGraphUmlClassNode(DotGraphNode):
             tooltip = " ".join(tooltip.split())
         else:
             tooltip = class_doc.canonical_name
-        try: url = linker.url_for(class_doc) or NOOP_URL
-        except NotImplementedError: url = NOOP_URL
+        try:
+            url = linker.url_for(class_doc) or NOOP_URL
+        except NotImplementedError:
+            url = NOOP_URL
         DotGraphNode.__init__(self, tooltip=tooltip, width=0, height=0, 
                               shape='plaintext', href=url)
 
@@ -779,8 +792,10 @@ class DotGraphUmlClassNode(DotGraphNode):
         # [xx] should I set constraint=false here?
         attribs.setdefault('headport', 'body')
         attribs.setdefault('tailport', 'body')
-        try: url = self.linker.url_for(var) or NOOP_URL
-        except NotImplementedError: url = NOOP_URL
+        try:
+            url = self.linker.url_for(var) or NOOP_URL
+        except NotImplementedError:
+            url = NOOP_URL
         self.edges.append(DotGraphEdge(self, type_node, label=var.name,
                         arrowtail='odiamond', arrowhead='none', href=url,
                         tooltip=var.canonical_name, labeldistance=1.5,
@@ -823,8 +838,10 @@ class DotGraphUmlClassNode(DotGraphNode):
                       self._type_descr(var_doc.value))
         if type_descr: label += ': %s' % type_descr
         # Get the URL
-        try: url = self.linker.url_for(var_doc) or NOOP_URL
-        except NotImplementedError: url = NOOP_URL
+        try:
+            url = self.linker.url_for(var_doc) or NOOP_URL
+        except NotImplementedError:
+            url = NOOP_URL
         # Construct & return the pseudo-html code
         return self._ATTRIBUTE_CELL % (url, self._tooltip(var_doc), label)
 
@@ -847,8 +864,10 @@ class DotGraphUmlClassNode(DotGraphNode):
         if len(label) > self._max_signature_width:
             label = label[:self._max_signature_width-4]+'...)'
         # Get the URL
-        try: url = self.linker.url_for(var_doc) or NOOP_URL
-        except NotImplementedError: url = NOOP_URL
+        try:
+            url = self.linker.url_for(var_doc) or NOOP_URL
+        except NotImplementedError:
+            url = NOOP_URL
         # Construct & return the pseudo-html code
         return self._OPERATION_CELL % (url, self._tooltip(var_doc), label)
 
@@ -995,8 +1014,10 @@ class DotGraphUmlModuleNode(DotGraphNode):
         self.collapsed = collapsed
         self.options = options
         self.excluded_submodules = excluded_submodules
-        try: url = linker.url_for(module_doc) or NOOP_URL
-        except NotImplementedError: url = NOOP_URL
+        try:
+            url = linker.url_for(module_doc) or NOOP_URL
+        except NotImplementedError:
+            url = NOOP_URL
         DotGraphNode.__init__(self, shape='plaintext', href=url,
                               tooltip=module_doc.canonical_name)
 
@@ -1033,8 +1054,10 @@ class DotGraphUmlModuleNode(DotGraphNode):
         """
         MAX_ROW_WIDTH = 80 # unit is roughly characters.
         pkg_name = package.canonical_name
-        try: pkg_url = self.linker.url_for(package) or NOOP_URL
-        except NotImplementedError: pkg_url = NOOP_URL
+        try:
+            pkg_url = self.linker.url_for(package) or NOOP_URL
+        except NotImplementedError:
+            pkg_url = NOOP_URL
         
         if (not package.is_package or len(package.submodules) == 0 or
             self.collapsed):
@@ -1240,8 +1263,10 @@ def _add_class_tree_superclasses(graph, classes, mknode, mkedge, linker,
             # Don't do the same class twice.
             if base in cls2node: continue
             # Decide if the base is documented.
-            try: documented = (linker.url_for(base) is not None)
-            except: documented = True
+            try:
+                documented = (linker.url_for(base) is not None)
+            except Exception:
+                documented = True
             # Make the node.
             if base in classes: typ = 'selected'
             elif not documented: typ = 'undocumented'
@@ -1506,7 +1531,7 @@ def get_dot_version():
                 _dot_version = [int(x) for x in m.group(1).split('.')]
             else:
                 _dot_version = (0,)
-        except OSError, e:
+        except OSError as e:
             log.error('dot executable not found; graphs will not be '
                       'generated.  Adjust your shell\'s path, or use '
                       '--dotpath to specify the path to the dot '
@@ -1563,8 +1588,10 @@ def specialize_valdoc_node(node, val_doc, context, linker):
 
     # Set the URL.  (Do this even if it points to the page we're
     # currently on; otherwise, the tooltip is ignored.)
-    try: url = linker.url_for(val_doc) or NOOP_URL
-    except NotImplementedError: url = NOOP_URL
+    try:
+        url = linker.url_for(val_doc) or NOOP_URL
+    except NotImplementedError:
+        url = NOOP_URL
     node['href'] = url
 
     if (url is None and
@@ -1614,4 +1641,3 @@ def name_list(api_docs, context=None):
     else:
         names = ['%s' % name for name in names]
         return '%s, and %s' % (', '.join(names[:-1]), names[-1])
-

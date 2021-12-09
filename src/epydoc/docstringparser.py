@@ -242,14 +242,16 @@ def parse_docstring(api_doc, docindex, suppress_warnings=[]):
                 try:
                     process_field(init_api_doc, docindex, field.tag(),
                                     field.arg(), field.body())
-                except ValueError, e: field_warnings.append(str(e))
+                except ValueError as e:
+                    field_warnings.append(str(e))
 
     # Process fields
     for field in fields:
         try:
             process_field(api_doc, docindex, field.tag(),
                                field.arg(), field.body())
-        except ValueError, e: field_warnings.append(str(e))
+        except ValueError as e:
+            field_warnings.append(str(e))
 
     # Check to make sure that all type parameters correspond to
     # some documented parameter.
@@ -316,13 +318,19 @@ def add_metadata_from_var(api_doc, field):
 
         # Try extracting the value from the parse tree.
         elif val_doc.toktree is not UNKNOWN:
-            try: value = [epydoc.docparser.parse_string(val_doc.toktree)]
-            except KeyboardInterrupt: raise
-            except: pass
+            try:
+                value = [epydoc.docparser.parse_string(val_doc.toktree)]
+            except KeyboardInterrupt:
+                raise
+            except Exception:
+                pass
             if field.multivalue and not value:
-                try: value = epydoc.docparser.parse_string_list(val_doc.toktree)
-                except KeyboardInterrupt: raise
-                except: pass
+                try:
+                    value = epydoc.docparser.parse_string_list(val_doc.toktree)
+                except KeyboardInterrupt:
+                    raise
+                except Exception:
+                    pass
                 
         # Add any values that we found.
         for elt in value:
@@ -340,8 +348,10 @@ def add_metadata_from_var(api_doc, field):
         if var_doc.docstring in (None, UNKNOWN):
             del api_doc.variables[varname]
             if api_doc.sort_spec is not UNKNOWN:
-                try: api_doc.sort_spec.remove(varname)
-                except ValueError: pass
+                try:
+                    api_doc.sort_spec.remove(varname)
+                except ValueError:
+                    pass
 
 def initialize_api_doc(api_doc):
     """A helper function for L{parse_docstring()} that initializes
@@ -468,8 +478,10 @@ def report_errors(api_doc, docindex, parse_errors, field_warnings):
     name = api_doc.canonical_name
     module = api_doc.defining_module
     if module is not UNKNOWN and module.filename not in (None, UNKNOWN):
-        try: filename = py_src_filename(module.filename)
-        except: filename = module.filename
+        try:
+            filename = py_src_filename(module.filename)
+        except Exception:
+            filename = module.filename
     else:
         filename = '??'
 
@@ -672,8 +684,10 @@ def process_undocumented_field(api_doc, docindex, tag, arg, descr):
                 # Remove the variable from `variables`.
                 api_doc.variables.pop(var_name, None)
                 if api_doc.sort_spec is not UNKNOWN:
-                    try: api_doc.sort_spec.remove(var_name)
-                    except ValueError: pass
+                    try:
+                        api_doc.sort_spec.remove(var_name)
+                    except ValueError:
+                        pass
         # For modules, remove any submodules that match var_name_re.
         if isinstance(api_doc, ModuleDoc):
             removed = set([m for m in api_doc.submodules
@@ -707,15 +721,17 @@ def process_deffield_field(api_doc, docindex, tag, arg, descr):
         docstring_field = _descr_to_docstring_field(arg, descr)
         docstring_field.varnames.append("__%s__" % arg)
         api_doc.extra_docstring_fields.append(docstring_field)
-    except ValueError, e:
+    except ValueError as e:
         raise ValueError('Bad %s: %s' % (tag, e))
 
 def process_raise_field(api_doc, docindex, tag, arg, descr):
     """Record the fact that C{api_doc} can raise the exception named
     C{tag} in C{api_doc.exception_descrs}."""
     _check(api_doc, tag, arg, context=RoutineDoc, expect_arg='single')
-    try: name = DottedName(arg, strict=True)
-    except DottedName.InvalidDottedName: name = arg
+    try:
+        name = DottedName(arg, strict=True)
+    except DottedName.InvalidDottedName:
+        name = arg
     api_doc.exception_descrs.append( (name, descr) )
 
 def process_sort_field(api_doc, docindex, tag, arg, descr):
@@ -925,8 +941,10 @@ def get_docformat(api_doc, docindex):
     else:
         docformat = DEFAULT_DOCFORMAT
     # Convert to lower case & strip region codes.
-    try: return docformat.lower().split()[0]
-    except: return DEFAULT_DOCFORMAT
+    try:
+        return docformat.lower().split()[0]
+    except Exception:
+        return DEFAULT_DOCFORMAT
 
 def unindent_docstring(docstring):
     # [xx] copied from inspect.getdoc(); we can't use inspect.getdoc()
@@ -1108,4 +1126,3 @@ def parse_function_signature(func_doc, doc_source, docformat, parse_errors):
         
     # We found a signature.
     return True
-

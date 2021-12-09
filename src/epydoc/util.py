@@ -276,7 +276,7 @@ def run_subprocess(cmd, data=None):
             try:
                 to_child.write(data)
             # Guard for a broken pipe error
-            except IOError, e:
+            except IOError as e:
                 raise OSError(e)
         to_child.close()
         out = from_child.read()
@@ -330,8 +330,9 @@ class TerminalController:
         if self.FORCE_SIMPLE_TERM: return
 
         # Curses isn't available on all platforms
-        try: import curses
-        except:
+        try:
+            import curses
+        except Exception:
             # If it's not available, then try faking enough to get a
             # simple progress bar.
             self.BOL = '\r'
@@ -339,8 +340,10 @@ class TerminalController:
             
         # Check the terminal type.  If we fail, then assume that the
         # terminal has no capabilities.
-        try: curses.setupterm()
-        except: return
+        try:
+            curses.setupterm()
+        except Exception:
+            return
 
         # Look up numeric capabilities.
         self.COLS = curses.tigetnum('cols')
@@ -382,4 +385,3 @@ class TerminalController:
         s = match.group()
         if s == '$$': return s
         else: return getattr(self, s[2:-1])
-

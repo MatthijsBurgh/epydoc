@@ -277,7 +277,7 @@ By default, DocParse does not look inside the following block types:
     ...             try_gated = 'x'
     ...         except Exception1:
     ...             except_gated = 'x'
-    ...         except:
+    ...         except Exception:
     ...             except_gated2 = 'y'
     ...     finally:
     ...         finally_gated = 'z'""",

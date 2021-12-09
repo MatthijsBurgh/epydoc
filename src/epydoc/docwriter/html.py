@@ -146,7 +146,8 @@ def compile_template(docstring, template_string,
     #log.debug(pysrc)
     if debug: localdict = {'__debug': (pysrc_lines, func_name)}
     else: localdict = {}
-    try: exec pysrc in globals(), localdict
+    try:
+        exec pysrc in globals(), localdict
     except SyntaxError:
         log.error('Error in script:\n' + pysrc + '\n')
         raise
@@ -484,7 +485,7 @@ class HTMLWriter:
             try:
                 doc = self.docindex.get_valdoc(pagename)
                 return self.url(doc)
-            except:
+            except Exception:
                 pass
 
             # Otherwise, give up.
@@ -1196,9 +1197,10 @@ class HTMLWriter:
         # Get the contents of the help file.
         if self._helpfile:
             if os.path.exists(self._helpfile):
-                try: help = open(self._helpfile).read()
-                except: raise IOError("Can't open help file: %r" %
-                                      self._helpfile)
+                try:
+                    help = open(self._helpfile).read()
+                except Exception:
+                    raise IOError("Can't open help file: %r" % self._helpfile)
             else:
                 raise IOError("Can't find help file: %r" % self._helpfile)
         else:
@@ -1388,7 +1390,7 @@ class HTMLWriter:
                 # Write the output file.
                 open(filename, 'w').write(s)
                 return
-            except:
+            except Exception:
                 log.error('Warning: error copying index; '
                           'using a redirect page')
 
@@ -1441,8 +1443,10 @@ class HTMLWriter:
             css = STYLESHEETS['default'][0]
         else:
             if os.path.exists(cssname):
-                try: css = open(cssname).read()
-                except: raise IOError("Can't open CSS file: %r" % cssname)
+                try:
+                    css = open(cssname).read()
+                except Exception:
+                    raise IOError("Can't open CSS file: %r" % cssname)
             elif cssname in STYLESHEETS:
                 css = STYLESHEETS[cssname][0]
             else:
@@ -3467,8 +3471,10 @@ class _HTMLDocstringLinker(epydoc.markup.DocstringLinker):
         if label is None: label = plaintext_to_html(identifier)
 
         # Find the APIDoc for it (if it's available).
-        try: doc = self.docindex.find(identifier, self.container, True)
-        except: doc = 'notfound'
+        try:
+            doc = self.docindex.find(identifier, self.container, True)
+        except Exception:
+            doc = 'notfound'
 
         # If we didn't find a target, then try checking in the contexts
         # of the ancestor classes. 

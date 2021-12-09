@@ -157,9 +157,10 @@ class LatexWriter:
 
         # Custom user stylesheet: copy the style to epydoc-custom.
         elif os.path.exists(stylesheet):
-            try: sty = open(stylesheet, 'rb').read()
-            except: raise IOError("Can't open LaTeX style file: %r" %
-                                  stylesheet)
+            try:
+                sty = open(stylesheet, 'rb').read()
+            except Exception:
+                raise IOError("Can't open LaTeX style file: %r" % stylesheet)
             out = open(os.path.join(directory, 'epydoc-custom.sty'), 'wb')
             out.write(sty)
             out.close()

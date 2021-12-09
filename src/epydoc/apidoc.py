@@ -1298,7 +1298,7 @@ class ClassDoc(NamespaceDoc):
         if self.is_newstyle_class():
             try:
                 return self._c3_mro(warn_about_bad_bases)
-            except ValueError, e: # (inconsistent hierarchy)
+            except ValueError as e:  # (inconsistent hierarchy)
                 log.error('Error finding mro for %s: %s' %
                           (self.canonical_name, e))
                 # Better than nothing:
@@ -2066,8 +2066,10 @@ class DocIndex:
             if module is UNKNOWN or module.filename is UNKNOWN: continue
             # Normalize the filename.
             filename = os.path.abspath(module.filename)
-            try: filename = py_src_filename(filename)
-            except: pass
+            try:
+                filename = py_src_filename(filename)
+            except Exception:
+                pass
             # Look up the stat_func_id
             funcid = (filename, val_doc.lineno, val_doc.canonical_name[-1])
             if funcid in profile_stats.stats:

@@ -1530,7 +1530,7 @@ def pparse(str, show_warnings=1, show_errors=1, stream=sys.stderr):
         val = parse(str, errors)
         warnings = [e for e in errors if not e.is_fatal()]
         errors = [e for e in errors if e.is_fatal()]
-    except:
+    except Exception:
         confused = 1
         
     if not show_warnings: warnings = []

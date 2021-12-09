@@ -16,7 +16,7 @@ import unittest, doctest, epydoc, os, os.path, re, sys
 def main():
     try:
         doctest.register_optionflag
-    except:
+    except Exception:
         print(("\n")
             "The regression test suite requires a more recent version of\n"
             "doctest (e.g., the version that ships with Python 2.4 or 2.5).\n"

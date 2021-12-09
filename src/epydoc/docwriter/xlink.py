@@ -398,7 +398,7 @@ def create_api_role(name, problematic):
         # Get the resolver from the register and create an url from it.
         try:
             url = api_register[name].get_url(target)
-        except IndexError, exc:
+        except IndexError as exc:
             msg = inliner.reporter.warning(str(exc), line=lineno)
             if problematic:
                 prb = inliner.problematic(rawtext, text, msg)
@@ -505,7 +505,7 @@ class ApiLinkReader(Reader):
                 for name, root in map(split_name, settings.external_api_root):
                     set_api_root(name, root)
 
-        except OptionValueError, exc:
+        except OptionValueError as exc:
             print(>>sys.stderr, "%s: %s" % (exc.__class__.__name__, exc))
             sys.exit(2)
 

@@ -18,8 +18,10 @@ from epydoc import log
 from epydoc.util import py_src_filename
 from epydoc.apidoc import *
 import tokenize, token, cgi, keyword
-try: from cStringIO import StringIO
-except: from StringIO import StringIO
+try:
+    from cStringIO import StringIO
+except Exception:
+    from StringIO import StringIO
 
 ######################################################################
 ## Python source colorizer
@@ -336,8 +338,10 @@ class PythonSourceColorizer:
             documentation.
         """
         # Get the source version, if possible.
-        try: module_filename = py_src_filename(module_filename)
-        except: pass
+        try:
+            module_filename = py_src_filename(module_filename)
+        except Exception:
+            pass
         
         #: The filename of the module we're colorizing.
         self.module_filename = module_filename
@@ -472,7 +476,7 @@ class PythonSourceColorizer:
             html = output.getvalue()
             if self.has_decorators:
                 html = self._FIX_DECORATOR_RE.sub(r'\2\1', html)
-        except tokenize.TokenError, ex:
+        except tokenize.TokenError as ex:
             html = self.text
 
         # Check for a unicode encoding declaration.
@@ -488,7 +492,7 @@ class PythonSourceColorizer:
         except LookupError:
             coding = 'iso-8859-1'
             html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
-        except UnicodeDecodeError, e:
+        except UnicodeDecodeError as e:
             log.warning("Unicode error while generating syntax-highlighted "
                         "source code: %s (%s)" % (e, self.module_filename))
             html = html.decode(coding, 'ignore').encode(
@@ -747,7 +751,7 @@ class PythonSourceColorizer:
             else:
                 try:
                     s += self.add_line_numbers(cgi.escape(toktext), css_class)
-                except Exception, e:
+                except Exception as e:
                     print((toktext, css_class, toktext.encode('ascii')))
                     raise
 

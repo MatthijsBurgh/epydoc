@@ -81,7 +81,7 @@ from epydoc.docwriter.dotgraph import COLOR as GRAPH_COLOR
 # This module is only available if Docutils are in the system
 try:
     from epydoc.docwriter import xlink
-except:
+except Exception:
     xlink = None
 
 INHERITANCE_STYLES = ('grouped', 'listed', 'included', 'hidden')
@@ -520,8 +520,9 @@ def parse_arguments():
     if options.configfiles:
         try:
             parse_configfiles(options.configfiles, options, names)
-        except (KeyboardInterrupt,SystemExit): raise
-        except Exception, e:
+        except (KeyboardInterrupt,SystemExit):
+            raise
+        except Exception as e:
             if len(options.configfiles) == 1:
                 cf_name = 'config file %s' % options.configfiles[0]
             else:
@@ -871,7 +872,7 @@ def main(options):
     if xlink is not None:
         try:
             xlink.ApiLinkReader.read_configuration(options, problematic=False)
-        except Exception, exc:
+        except Exception as exc:
             log.error("Error while configuring external API linking: %s: %s"
                 % (exc.__class__.__name__, exc))
 
@@ -928,7 +929,8 @@ def main(options):
 
     # Load profile information, if it was given.
     if options.pstat_files:
-        try: import pstats
+        try:
+            import pstats
         except ImportError:
             log.error("Could not import pstats -- ignoring pstat files.")
         try:
@@ -938,7 +940,7 @@ def main(options):
         except KeyboardInterrupt:
             for logger in loggers: log.remove_logger(logger)
             raise
-        except Exception, e:
+        except Exception as e:
             log.error("Error reading pstat file: %s" % e)
             profile_stats = None
         if profile_stats is not None:
@@ -1051,7 +1053,7 @@ def write_latex(docindex, options):
             try:
                 run_subprocess('pdflatex --version')
                 options.pdfdriver = 'pdflatex'
-            except RunSubprocessError, e:
+            except RunSubprocessError as e:
                 options.pdfdriver = 'latex'
     log.info('%r pdfdriver selected' % options.pdfdriver)
     
@@ -1059,7 +1061,7 @@ def write_latex(docindex, options):
     latex_writer = LatexWriter(docindex, **options.__dict__)
     try:
         latex_writer.write(latex_target)
-    except IOError, e:
+    except IOError as e:
         log.error(e)
         log.end_progress()
         log.start_progress()
@@ -1169,13 +1171,13 @@ def write_latex(docindex, options):
                 dst = os.path.join(oldpath, options.target['pdf'])
                 shutil.copy2('api.pdf', dst)
 
-        except RunSubprocessError, e:
+        except RunSubprocessError as e:
             if running in ('latex', 'pdflatex'):
                 e.out = re.sub(r'(?sm)\A.*?!( LaTeX Error:)?', r'', e.out)
                 e.out = re.sub(r'(?sm)\s*Type X to quit.*', '', e.out)
                 e.out = re.sub(r'(?sm)^! Emergency stop.*', '', e.out)
             log.error("%s failed: %s" % (running, (e.out+e.err).lstrip()))
-        except OSError, e:
+        except OSError as e:
             log.error("%s failed: %s" % (running, e))
     finally:
         os.chdir(oldpath)
@@ -1187,7 +1189,7 @@ def write_latex(docindex, options):
                 for filename in os.listdir(latex_target):
                     os.remove(os.path.join(latex_target, filename))
                 os.rmdir(latex_target)
-            except Exception, e:
+            except Exception as e:
                 log.error("Error cleaning up tempdir %s: %s" %
                           (latex_target, e))
                 
@@ -1232,7 +1234,7 @@ def cli():
     except KeyboardInterrupt:
         print('\n\n')
         print(>>sys.stderr, 'Keyboard interrupt.')
-    except:
+    except Exception:
         if options.debug: raise
         print('\n\n')
         exc_info = sys.exc_info()
@@ -1246,7 +1248,8 @@ def cli():
 def _profile():
     # Hotshot profiler.
     if PROFILER == 'hotshot':
-        try: import hotshot, hotshot.stats
+        try:
+            import hotshot, hotshot.stats
         except ImportError:
             print(>>sys.stderr, "Could not import profile module!")
             return
@@ -1264,9 +1267,11 @@ def _profile():
     elif PROFILER == 'profile':
         # cProfile module was added in Python 2.5 -- use it if its'
         # available, since it's faster.
-        try: from cProfile import Profile
+        try:
+            from cProfile import Profile
         except ImportError:
-            try: from profile import Profile
+            try:
+                from profile import Profile
             except ImportError:
                 print(>>sys.stderr, "Could not import profile module!")
                 return

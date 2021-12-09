@@ -155,8 +155,10 @@ def _get_valuedoc(value):
     pyid = id(value)
     val_doc = _valuedoc_cache.get(pyid)
     if val_doc is None:
-        try: canonical_name = get_canonical_name(value, strict=True)
-        except DottedName.InvalidDottedName: canonical_name = UNKNOWN
+        try:
+            canonical_name = get_canonical_name(value, strict=True)
+        except DottedName.InvalidDottedName:
+            canonical_name = UNKNOWN
         val_doc = ValueDoc(pyval=value, canonical_name = canonical_name,
                            docs_extracted_by='introspecter')
         _valuedoc_cache[pyid] = val_doc
@@ -198,12 +200,17 @@ def introspect_module(module, module_doc, module_name=None, preliminary=False):
                                   
     # Record the module's filename
     if hasattr(module, '__file__'):
-        try: module_doc.filename = unicode(module.__file__)
-        except KeyboardInterrupt: raise
-        except: pass
+        try:
+            module_doc.filename = unicode(module.__file__)
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            pass
         if module_doc.filename is not UNKNOWN:
-            try: module_doc.filename = py_src_filename(module_doc.filename)
-            except ValueError: pass
+            try:
+                module_doc.filename = py_src_filename(module_doc.filename)
+            except ValueError:
+                pass
 
     # If this is just a preliminary introspection, then don't do
     # anything else.  (Typically this is true if this module was
@@ -220,9 +227,12 @@ def introspect_module(module, module_doc, module_name=None, preliminary=False):
     # package; so set is_package=True and record its __path__.
     if hasattr(module, '__path__'):
         module_doc.is_package = True
-        try: module_doc.path = [unicode(p) for p in module.__path__]
-        except KeyboardInterrupt: raise
-        except: pass
+        try:
+            module_doc.path = [unicode(p) for p in module.__path__]
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            pass
     else:
         module_doc.is_package = False
 
@@ -253,8 +263,10 @@ def introspect_module(module, module_doc, module_name=None, preliminary=False):
     if hasattr(module, '__all__'):
         try:
             public_names = set([str(name) for name in module.__all__])
-        except KeyboardInterrupt: raise
-        except: pass
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            pass
 
     # Record the module's variables.
     module_doc.variables = {}
@@ -338,8 +350,10 @@ def introspect_class(cls, class_doc, module_name=None):
     if hasattr(cls, '__all__'):
         try:
             public_names = set([str(name) for name in cls.__all__])
-        except KeyboardInterrupt: raise
-        except: pass
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            pass
 
     # Record the class's metaclass
     class_doc.metaclass = introspect_docs(type(cls))
@@ -364,8 +378,9 @@ def introspect_class(cls, class_doc, module_name=None):
     # Record the class's base classes; and add the class to its
     # base class's subclass lists.
     if hasattr(cls, '__bases__'):
-        try: bases = list(cls.__bases__)
-        except:
+        try:
+            bases = list(cls.__bases__)
+        except Exception:
             bases = None
             log.warning("Class '%s' defines __bases__, but it does not "
                         "contain an iterable; ignoring base list."
@@ -549,7 +564,7 @@ def is_future_feature(object):
         __future_check_works = True
         try:
             return is_future_feature(object)
-        except:
+        except Exception:
             __future_check_works = False
             log.warning("Troubles inspecting __future__. Python implementation"
                         " may have been changed.")
@@ -567,7 +582,8 @@ def get_docstring(value, module_name=None):
     elif isinstance(docstring, unicode):
         return docstring
     elif isinstance(docstring, str):
-        try: return unicode(docstring, 'ascii')
+        try:
+            return unicode(docstring, 'ascii')
         except UnicodeDecodeError:
             if module_name is None:
                 module_name = get_containing_module(value)
@@ -577,8 +593,10 @@ def get_docstring(value, module_name=None):
                     filename = py_src_filename(module.__file__)
                     encoding = epydoc.docparser.get_module_encoding(filename)
                     return unicode(docstring, encoding)
-                except KeyboardInterrupt: raise
-                except Exception: pass
+                except KeyboardInterrupt:
+                    raise
+                except Exception:
+                    pass
             if hasattr(value, '__name__'): name = value.__name__
             else: name = repr(value)
             log.warning("%s's docstring is not a unicode string, but it "
@@ -665,8 +683,10 @@ def verify_name(value, dotted_name):
     named_value = sys.modules.get(dotted_name[0])
     if named_value is None: return UNKNOWN
     for identifier in dotted_name[1:]:
-        try: named_value = getattr(named_value, identifier)
-        except: return UNKNOWN
+        try:
+            named_value = getattr(named_value, identifier)
+        except Exception:
+            return UNKNOWN
     if value is named_value:
         return dotted_name
     else:
@@ -679,7 +699,7 @@ def value_repr(value):
         if isinstance(s, str):
             s = decode_with_backslashreplace(s)
         return s
-    except:
+    except Exception:
         return UNKNOWN
 
 def get_containing_module(value):
@@ -716,8 +736,10 @@ def _find_function_module(func):
     try:
         module = inspect.getmodule(func)
         if module: return module.__name__
-    except KeyboardInterrupt: raise
-    except: pass
+    except KeyboardInterrupt:
+        raise
+    except Exception:
+        pass
 
     # This fallback shouldn't usually be needed.  But it is needed in
     # a couple special cases (including using epydoc to document
@@ -780,7 +802,7 @@ try:
     del array
     def is_getset(v): return isinstance(v, getset_type)
     register_introspecter(is_getset, introspect_property, priority=32)
-except:
+except Exception:
     pass
 
 # Register member_descriptor as a property
@@ -790,7 +812,7 @@ try:
     del datetime
     def is_member(v): return isinstance(v, member_type)
     register_introspecter(is_member, introspect_property, priority=34)
-except:
+except Exception:
     pass
 
 #////////////////////////////////////////////////////////////
@@ -866,18 +888,22 @@ def get_value_from_name(name, globs=None):
     # the requested name refers to a builtin.
     try:
         module = _import(name[0])
-    except ImportError, e:
+    except ImportError as e:
         if globs is None: globs = __builtin__.__dict__
         if name[0] in globs:
-            try: return _lookup(globs[name[0]], name[1:])
-            except: raise e
+            try:
+                return _lookup(globs[name[0]], name[1:])
+            except Exception:
+                raise e
         else:
             raise
 
     # Find the requested value in the module/package or its submodules.
     for i in range(1, len(name)):
-        try: return _lookup(module, name[i:])
-        except ImportError: pass
+        try:
+            return _lookup(module, name[i:])
+        except ImportError:
+            pass
         module = _import('.'.join(name[:i+1]))
         module = _lookup(module, name[1:i+1])
     return module
@@ -885,7 +911,8 @@ def get_value_from_name(name, globs=None):
 def _lookup(module, name):
     val = module
     for i, identifier in enumerate(name):
-        try: val = getattr(val, identifier)
+        try:
+            val = getattr(val, identifier)
         except AttributeError:
             exc_msg = ('no variable named %s in %s' %
                        (identifier, '.'.join(name[:1+i])))
@@ -926,8 +953,9 @@ def _import(name, filename=None):
             else:
                 # For importing scripts:
                 return imp.load_source(name, filename)
-        except KeyboardInterrupt: raise
-        except:
+        except KeyboardInterrupt:
+            raise
+        except Exception:
             exc_typ, exc_val, exc_tb = sys.exc_info()
             if exc_val is None:
                 estr = '%s' % (exc_typ,)
@@ -961,8 +989,10 @@ def introspect_docstring_lineno(api_doc):
                 if lines[lineno].split('#', 1)[0].strip():
                     api_doc.docstring_lineno = lineno + 1
                     return lineno + 1
-        except IOError: pass
-        except TypeError: pass
+        except IOError:
+            pass
+        except TypeError:
+            pass
         except IndexError:
             log.warning('inspect.findsource(%s) raised IndexError'
                         % api_doc.canonical_name)
@@ -1000,7 +1030,7 @@ _dev_null = _DevNull()
 try:
     from zope.interface.interface import InterfaceClass as _ZopeInterfaceClass
     register_class_type(_ZopeInterfaceClass)
-except:
+except Exception:
     pass
 
 ######################################################################
@@ -1021,7 +1051,7 @@ try:
     def _is_zope_method(val):
         return isinstance(val, (_ZopeMethodType, _ZopeCMethodType))
     register_introspecter(_is_zope_method, introspect_routine)
-except:
+except Exception:
     pass
                          
 

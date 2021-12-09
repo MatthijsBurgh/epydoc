@@ -21,7 +21,7 @@ __docformat__ = 'reStructuredText en'
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 # We have to do some path magic to prevent Python from getting

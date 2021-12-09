@@ -228,8 +228,10 @@ def parse_docs(filename=None, name=None, context=None, is_script=False):
     elif filename is not None and name is None:
         # Use a python source version, if possible.
         if not is_script:
-            try: filename = py_src_filename(filename)
-            except ValueError, e: raise ImportError('%s' % e)
+            try:
+                filename = py_src_filename(filename)
+            except ValueError as e:
+                raise ImportError('%s' % e)
 
         # Check the cache, first.
         if filename in _moduledoc_cache:
@@ -278,12 +280,12 @@ def parse_docs(filename=None, name=None, context=None, is_script=False):
         # Tokenize & process the contents of the module's source file.
         try:
             process_file(module_doc)
-        except tokenize.TokenError, e:
+        except tokenize.TokenError as e:
             msg, (srow, scol) = e.args
             raise ParseError('Error during parsing: %s '
                              '(%s, line %d, char %d)' %
                              (msg, module_doc.filename, srow, scol))
-        except (IndentationError, UnicodeDecodeError), e:
+        except (IndentationError, UnicodeDecodeError) as e:
             raise ParseError('Error during parsing: %s (%s)' %
                              (e, module_doc.filename))
 
@@ -315,8 +317,10 @@ def handle_special_module_vars(module_doc):
     # If __docformat__ is defined, parse its value.
     toktree = _module_var_toktree(module_doc, '__docformat__')
     if toktree is not None:
-        try: module_doc.docformat = parse_string(toktree)
-        except: pass
+        try:
+            module_doc.docformat = parse_string(toktree)
+        except Exception:
+            pass
         del module_doc.variables['__docformat__']
             
     # If __all__ is defined, parse its value.
@@ -387,8 +391,10 @@ def _find(name, package_doc=None):
     # First, check to see if it's in a variable (but ignore
     # variables that just contain imported submodules).
     if not _is_submodule_import_var(module_doc, name[1]):
-        try: return _find_in_namespace(name[1:], module_doc)
-        except ImportError: pass
+        try:
+            return _find_in_namespace(name[1:], module_doc)
+        except ImportError:
+            pass
 
     # If not, then check to see if it's in a subpackage.
     if module_doc.is_package:
@@ -631,12 +637,13 @@ def process_file(module_doc):
                     prev_line_doc = process_line(
                         shallow_parse(line_toks), parent_docs, prev_line_doc, 
                         lineno, comments, decorators, encoding)
-                except ParseError, e:
+                except ParseError as e:
                     raise ParseError('Error during parsing: invalid '
                                      'syntax (%s, line %d) -- %s' %
                                      (module_doc.filename, lineno, e))
-                except KeyboardInterrupt, e: raise
-                except Exception, e:
+                except KeyboardInterrupt:
+                    raise
+                except Exception as e:
                     log.error('Internal error during parsing (%s, line '
                               '%s):\n%s' % (module_doc.filename, lineno, e))
                     raise
@@ -920,8 +927,10 @@ def _process_fromstar_import(src, parent_docs):
 
     if (IMPORT_HANDLING == 'parse' or
         IMPORT_STAR_HANDLING == 'parse'): # [xx] is this ok?
-        try: module_doc = _find(src)
-        except ImportError: module_doc = None
+        try:
+            module_doc = _find(src)
+        except ImportError:
+            module_doc = None
         if isinstance(module_doc, ModuleDoc):
             for name, imp_var in module_doc.variables.items():
                 # [xx] this is not exactly correct, but close.  It
@@ -937,9 +946,12 @@ def _process_fromstar_import(src, parent_docs):
     # If we got here, then either IMPORT_HANDLING='link' or we
     # failed to parse the `src` module.
     if IMPORT_STAR_HANDLING == 'introspect':
-        try: module = __import__(str(src), {}, {}, [0])
-        except: return # We couldn't import it.
-        if module is None: return # We couldn't import it.
+        try:
+            module = __import__(str(src), {}, {}, [0])
+        except Exception:
+            return  # We couldn't import it.
+        if module is None:
+            return  # We couldn't import it.
         if hasattr(module, '__all__'):
             names = list(module.__all__)
         else:
@@ -976,8 +988,10 @@ def _import_var(name, parent_docs):
 
     if IMPORT_HANDLING == 'parse':
         # Check to make sure that we can actually find the value.
-        try: val_doc = _find(src)
-        except ImportError: val_doc = None
+        try:
+            val_doc = _find(src)
+        except ImportError:
+            val_doc = None
         if val_doc is not None:
             # We found it; but it's not the value itself we want to
             # import, but the module containing it; so import that
@@ -1029,8 +1043,10 @@ def _import_var_as(src, name, parent_docs):
     
     if IMPORT_HANDLING == 'parse':
         # Parse the value and create a variable for it.
-        try: val_doc = _find(src)
-        except ImportError: val_doc = None
+        try:
+            val_doc = _find(src)
+        except ImportError:
+            val_doc = None
         if val_doc is not None:
             var_doc = VariableDoc(name=name, value=val_doc,
                                   is_imported=True, is_alias=False,
@@ -1116,8 +1132,10 @@ def process_assignment(line, parent_docs, prev_line_doc, lineno,
     lhs_pieces.reverse()
     for lhs in lhs_pieces:
         # Try treating the LHS as a simple dotted name.
-        try: lhs_name = parse_dotted_name(lhs)
-        except: lhs_name = None
+        try:
+            lhs_name = parse_dotted_name(lhs)
+        except Exception:
+            lhs_name = None
         if lhs_name is not None:
             lhs_parent = get_lhs_parent(lhs_name, parent_docs)
             if lhs_parent is None: continue
@@ -1568,7 +1586,7 @@ def process_classdef(line, parent_docs, prev_line_doc, lineno,
         try:
             for base_name in parse_classdef_bases(line[2]):
                 class_doc.bases.append(find_base(base_name, parent_docs))
-        except ParseError, e:
+        except ParseError as e:
             log.warning("Parsing %s (line %s): Unable to extract "
                         "the base list for class '%s'." %
                         (parent_docs[0].filename, lineno, canonical_name))
@@ -2187,4 +2205,3 @@ def flatten(lst, out=None):
         else:
             out.append(elt)
     return out
-

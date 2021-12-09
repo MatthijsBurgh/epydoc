@@ -212,7 +212,7 @@ class PyvalColorizer:
                 pyval_repr_ok = True
             except KeyboardInterrupt:
                 raise
-            except:
+            except Exception:
                 pyval_repr_ok = False
                 state.score -= 100
 
@@ -225,9 +225,12 @@ class PyvalColorizer:
 
     def _sort(self, items):
         if not self.sort: return items
-        try: return sorted(items)
-        except KeyboardInterrupt: raise
-        except: return items
+        try:
+            return sorted(items)
+        except KeyboardInterrupt:
+            raise
+        except Exception:
+            return items
         
     def _trim_result(self, result, num_chars):
         while num_chars > 0:

@@ -179,8 +179,10 @@ def write_pystring_to_tmp_dir(s):
 
 def cleanup_tmp_dir(tmp_dir):
     os.unlink(os.path.join(tmp_dir, 'epydoc_test.py'))
-    try: os.unlink(os.path.join(tmp_dir, 'epydoc_test.pyc'))
-    except OSError: pass
+    try:
+        os.unlink(os.path.join(tmp_dir, 'epydoc_test.pyc'))
+    except OSError:
+        pass
     os.rmdir(tmp_dir)
     sys.modules.pop('epydoc_test', None)
 

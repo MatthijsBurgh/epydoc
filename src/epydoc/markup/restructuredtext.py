@@ -177,8 +177,10 @@ class ParsedRstDocstring(ParsedDocstring):
     def summary(self):
         # Inherit docs
         visitor = _SummaryExtractor(self._document)
-        try: self._document.walk(visitor)
-        except docutils.nodes.NodeFound: pass
+        try:
+            self._document.walk(visitor)
+        except docutils.nodes.NodeFound:
+            pass
         return visitor.summary, bool(visitor.other_docs)
 
 #     def concatenate(self, other):
@@ -231,8 +233,10 @@ class _EpydocReader(ApiLinkReader):
     version += [ 0 ] * (3 - len(version))
     if version < [0,4,0]:
         default_transforms = list(ApiLinkReader.default_transforms)
-        try: default_transforms.remove(docutils.transforms.frontmatter.DocInfo)
-        except ValueError: pass
+        try:
+            default_transforms.remove(docutils.transforms.frontmatter.DocInfo)
+        except ValueError:
+            pass
     else:
         def get_transforms(self):
             return [t for t in ApiLinkReader.get_transforms(self)
@@ -254,10 +258,14 @@ class _EpydocReader(ApiLinkReader):
         return document
 
     def report(self, error):
-        try: is_fatal = int(error['level']) > 2
-        except: is_fatal = 1
-        try: linenum = int(error['line'])
-        except: linenum = None
+        try:
+            is_fatal = int(error['level']) > 2
+        except Exception:
+            is_fatal = 1
+        try:
+            linenum = int(error['line'])
+        except Exception:
+            linenum = None
 
         msg = ''.join([c.astext().encode(self._encoding, self._error_handler)
                        for c in error])
@@ -410,7 +418,7 @@ class _SplitFieldsTranslator(NodeVisitor):
                     try:
                         self.handle_consolidated_field(fbody, entry_tag)
                         return
-                    except ValueError, e:
+                    except ValueError as e:
                         estr = 'Unable to split consolidated field '
                         estr += '"%s" - %s' % (tagname, e)
                         self._errors.append(ParseError(estr, node.line,
@@ -944,4 +952,3 @@ def _construct_callgraph(docindex, context, linker, arguments, options):
     else:
         docs = [context]
     return call_graph(docs, docindex, linker, context, **options)
-  

@@ -506,7 +506,7 @@ class ApiLinkReader(Reader):
                     set_api_root(name, root)
 
         except OptionValueError as exc:
-            print(>>sys.stderr, "%s: %s" % (exc.__class__.__name__, exc))
+            print("%s: %s" % (exc.__class__.__name__, exc), file=sys.stderr)
             sys.exit(2)
 
     read_configuration = classmethod(read_configuration)

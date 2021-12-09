@@ -1114,7 +1114,7 @@ def _error(s):
     if len(s) > 80:
         i = s.rfind(' ', 0, 80)
         if i>0: s = s[:i]+'\n'+s[i+1:]
-    print(>>sys.stderr, s)
+    print(s, file=sys.stderr)
     sys.exit(1)
     
 def gui():

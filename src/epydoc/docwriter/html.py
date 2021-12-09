@@ -1463,15 +1463,15 @@ class HTMLWriter:
 
     def write_javascript(self, directory):
         jsfile = open(os.path.join(directory, 'epydoc.js'), 'w')
-        print(>> jsfile, self.TOGGLE_PRIVATE_JS)
-        print(>> jsfile, self.SHOW_PRIVATE_JS)
-        print(>> jsfile, self.GET_COOKIE_JS)
-        print(>> jsfile, self.SET_FRAME_JS)
-        print(>> jsfile, self.HIDE_PRIVATE_JS)
-        print(>> jsfile, self.TOGGLE_CALLGRAPH_JS)
-        print(>> jsfile, html_colorize.PYSRC_JAVASCRIPTS)
-        print(>> jsfile, self.GET_ANCHOR_JS)
-        print(>> jsfile, self.REDIRECT_URL_JS)
+        print(self.TOGGLE_PRIVATE_JS, file= jsfile)
+        print(self.SHOW_PRIVATE_JS, file= jsfile)
+        print(self.GET_COOKIE_JS, file= jsfile)
+        print(self.SET_FRAME_JS, file= jsfile)
+        print(self.HIDE_PRIVATE_JS, file= jsfile)
+        print(self.TOGGLE_CALLGRAPH_JS, file= jsfile)
+        print(html_colorize.PYSRC_JAVASCRIPTS, file= jsfile)
+        print(self.GET_ANCHOR_JS, file= jsfile)
+        print(self.REDIRECT_URL_JS, file= jsfile)
         jsfile.close()
 
     #: A javascript that is used to show or hide the API documentation

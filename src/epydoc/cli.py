@@ -1233,16 +1233,16 @@ def cli():
         raise
     except KeyboardInterrupt:
         print('\n\n')
-        print(>>sys.stderr, 'Keyboard interrupt.')
+        print('Keyboard interrupt.', file=sys.stderr)
     except Exception:
         if options.debug: raise
         print('\n\n')
         exc_info = sys.exc_info()
         if isinstance(exc_info[0], basestring): e = exc_info[0]
         else: e = exc_info[1]
-        print(>>sys.stderr, ('\nUNEXPECTED ERROR:\n')
+        print(('\nUNEXPECTED ERROR:\n', file=sys.stderr)
                              '%s\n' % (str(e) or e.__class__.__name__))
-        print(>>sys.stderr, 'Use --debug to see trace information.')
+        print('Use --debug to see trace information.', file=sys.stderr)
         sys.exit(3)
     
 def _profile():
@@ -1251,7 +1251,7 @@ def _profile():
         try:
             import hotshot, hotshot.stats
         except ImportError:
-            print(>>sys.stderr, "Could not import profile module!")
+            print("Could not import profile module!", file=sys.stderr)
             return
         try:
             prof = hotshot.Profile('hotshot.out')
@@ -1273,7 +1273,7 @@ def _profile():
             try:
                 from profile import Profile
             except ImportError:
-                print(>>sys.stderr, "Could not import profile module!")
+                print("Could not import profile module!", file=sys.stderr)
                 return
 
         # There was a bug in Python 2.4's profiler.  Check if it's
@@ -1293,7 +1293,7 @@ def _profile():
         prof.dump_stats('profile.out')
 
     else:
-        print(>>sys.stderr, 'Unknown profiler %s' % PROFILER)
+        print('Unknown profiler %s' % PROFILER, file=sys.stderr)
         return
     
 ######################################################################

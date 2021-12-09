@@ -1537,19 +1537,19 @@ def pparse(str, show_warnings=1, show_errors=1, stream=sys.stderr):
     warnings.sort()
     errors.sort()
     if warnings:
-        print(>>stream, '='*SCRWIDTH)
-        print(>>stream, "WARNINGS")
-        print(>>stream, '-'*SCRWIDTH)
+        print('='*SCRWIDTH, file=stream)
+        print("WARNINGS", file=stream)
+        print('-'*SCRWIDTH, file=stream)
         for warning in warnings:
-            print(>>stream, warning.as_warning())
-        print(>>stream, '='*SCRWIDTH)
+            print(warning.as_warning(), file=stream)
+        print('='*SCRWIDTH, file=stream)
     if errors and show_errors:
-        if not warnings: print(>>stream, '='*SCRWIDTH)
-        print(>>stream, "ERRORS")
-        print(>>stream, '-'*SCRWIDTH)
+        if not warnings: print('='*SCRWIDTH, file=stream)
+        print("ERRORS", file=stream)
+        print('-'*SCRWIDTH, file=stream)
         for error in errors:
-            print(>>stream, error)
-        print(>>stream, '='*SCRWIDTH)
+            print(error, file=stream)
+        print('='*SCRWIDTH, file=stream)
 
     if confused: raise
     elif errors: raise SyntaxError('Encountered Errors')

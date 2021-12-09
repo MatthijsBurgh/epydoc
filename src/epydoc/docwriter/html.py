@@ -640,15 +640,15 @@ class HTMLWriter:
             self._write(self.write_toc, directory, 'toc.html')
             self._write(self.write_project_toc, directory, 'toc-everything.html')
             for doc in self.module_list:
-                filename = 'toc-%s' % urllib.unquote(self.url(doc))
+                filename = 'toc-%s' % urllib.parse.unquote(self.url(doc))
                 self._write(self.write_module_toc, directory, filename, doc)
 
         # Write the object documentation.
         for doc in self.module_list:
-            filename = urllib.unquote(self.url(doc))
+            filename = urllib.parse.unquote(self.url(doc))
             self._write(self.write_module, directory, filename, doc)
         for doc in self.class_list:
-            filename = urllib.unquote(self.url(doc))
+            filename = urllib.parse.unquote(self.url(doc))
             self._write(self.write_class, directory, filename, doc)
 
         # Write source code files.
@@ -666,7 +666,7 @@ class HTMLWriter:
                 doc_list.sort()
             # Write the source code for each module.
             for doc in self.modules_with_sourcecode:
-                filename = urllib.unquote(self.pysrc_url(doc))
+                filename = urllib.parse.unquote(self.pysrc_url(doc))
                 self._write(self.write_sourcecode, directory, filename, doc,
                             name_to_docs)
 

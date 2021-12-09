@@ -135,7 +135,7 @@ def compile_template(docstring, template_string,
                 indents.append(indent)
         
     if debug:
-        pysrc_lines.append('    except Exception,e:')
+        pysrc_lines.append('    except Exception as e:')
         pysrc_lines.append('        pysrc, func_name = __debug ')
         pysrc_lines.append('        lineno = sys.exc_info()[2].tb_lineno')
         pysrc_lines.append('        print(("Exception in template %s() on "')

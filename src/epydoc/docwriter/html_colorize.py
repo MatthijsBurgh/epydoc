@@ -18,10 +18,7 @@ from epydoc import log
 from epydoc.util import py_src_filename
 from epydoc.apidoc import *
 import tokenize, token, cgi, keyword
-try:
-    from cStringIO import StringIO
-except Exception:
-    from StringIO import StringIO
+from io import StringIO
 
 ######################################################################
 ## Python source colorizer
@@ -464,7 +461,7 @@ class PythonSourceColorizer:
         self.find_line_offsets()
 
         num_lines = self.text.count('\n')+1
-        self.linenum_size = len(`num_lines+1`)
+        self.linenum_size = len(repr(num_lines+1))
         
         # Call the tokenizer, and send tokens to our `tokeneater()`
         # method.  If anything goes wrong, then fall-back to using
@@ -504,16 +501,18 @@ class PythonSourceColorizer:
 
         return html
 
-    def tokeneater(self, toktype, toktext, (srow,scol), (erow,ecol), line):
+    def tokeneater(self, toktype, toktext, s, e, line):
         """
         A callback function used by C{tokenize.tokenize} to handle
         each token in the module.  C{tokeneater} collects tokens into
         the C{self.cur_line} list until a complete logical line has
         been formed; and then calls L{handle_line} to process that line.
         """
+        srow, scol = s
+        erow, ecol = e
         # If we encounter any errors, then just give up.
         if toktype == token.ERRORTOKEN:
-            raise tokenize.TokenError, toktype
+            raise tokenize.TokenError(toktype)
 
         # Did we skip anything whitespace?  If so, add a pseudotoken
         # for it, with toktype=None.  (Note -- this skipped string
@@ -577,8 +576,8 @@ class PythonSourceColorizer:
 
         # Loop through each token, and colorize it appropriately.
         for i, (toktype, toktext) in enumerate(line):
-            if type(s) is not str:
-                if type(s) is unicode:
+            if type(s) is not bytes:
+                if type(s) is str:
                     log.error('While colorizing %s -- got unexpected '
                               'unicode string' % self.module_name)
                     s = s.encode('ascii', 'xmlcharrefreplace')
@@ -739,7 +738,7 @@ class PythonSourceColorizer:
                       (uid, css_class_html, targets_html, tooltip_html,
                        css_class_html, onclick))
             elif url:
-                if isinstance(url, unicode):
+                if isinstance(url, str):
                     url = url.encode('ascii', 'xmlcharrefreplace')
                 s += ('<a%s%s href="%s">' %
                       (tooltip_html, css_class_html, url))

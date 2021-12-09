@@ -73,6 +73,7 @@ def compile_template(docstring, template_string,
         ...     <chaptername>$chapter.name$</chaptername>
         ... >>> #endfor
         ... </book>
+        ... '''
         >>> write_book = compile_template('write_book(out, book)', TEMPLATE)
 
     @newfield acknowledgements: Acknowledgements
@@ -147,7 +148,7 @@ def compile_template(docstring, template_string,
     if debug: localdict = {'__debug': (pysrc_lines, func_name)}
     else: localdict = {}
     try:
-        exec pysrc in globals(), localdict
+        exec(pysrc, globals(), localdict)
     except SyntaxError:
         log.error('Error in script:\n' + pysrc + '\n')
         raise
@@ -3251,7 +3252,7 @@ class HTMLWriter:
         elif obj == 'trees':
             return self._trees_url
         else:
-            raise ValueError, "Don't know what to do with %r" % obj
+            raise ValueError("Don't know what to do with %r" % obj)
 
     def pysrc_link(self, api_doc):
         if not self._incl_sourcecode:

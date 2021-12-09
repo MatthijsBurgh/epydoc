@@ -1016,7 +1016,7 @@ class _DevNull:
     def readline(self, size=0): return ''
     def readlines(self, sizehint=0): return []
     def seek(self, offset, whence=0): pass
-    def tell(self): return 0L
+    def tell(self): return 0
     def truncate(self, size=0): pass
     def write(self, str): pass
     def writelines(self, sequence): pass

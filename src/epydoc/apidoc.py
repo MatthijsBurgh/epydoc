@@ -128,7 +128,7 @@ class DottedName:
         self._identifiers = tuple(self._identifiers)
 
     def __repr__(self):
-        idents = [`ident` for ident in self._identifiers]
+        idents = [repr(ident) for ident in self._identifiers]
         return 'DottedName(' + ', '.join(idents) + ')'
 
     def __str__(self):
@@ -2211,7 +2211,7 @@ def _pp_val(api_doc, val, doublespace, depth, exclude, include, backpointers):
         return pp_apidoc(val, doublespace, depth-1, exclude,
                          include, backpointers)
     elif isinstance(val, markup.ParsedDocstring):
-        valrepr = `val.to_plaintext(None)`
+        valrepr = repr(val.to_plaintext(None))
         if len(valrepr) < 40: return valrepr
         else: return valrepr[:37]+'...'
     else:

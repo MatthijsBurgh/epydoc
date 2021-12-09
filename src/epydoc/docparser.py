@@ -681,7 +681,7 @@ def add_to_group(container, api_doc, group_name):
     if isinstance(api_doc, VariableDoc):
         var_name = api_doc.name
     else:
-        if api_doc.canonical_name is UNKNOWN: log.debug('ouch', `api_doc`)
+        if api_doc.canonical_name is UNKNOWN: log.debug('ouch', repr(api_doc))
         var_name = api_doc.canonical_name[-1]
 
     for (name, group_vars) in container.group_specs:

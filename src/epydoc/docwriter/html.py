@@ -1155,7 +1155,7 @@ class HTMLWriter:
 
     def write_index_section(self, out, items, add_blankline=False):
         out('<table class="link-index" width="100%" border="1">\n')
-        num_rows = (len(items)+2)/3
+        num_rows = (len(items)+2) // 3
         for row in range(num_rows):
             out('<tr>\n')
             for col in range(3):

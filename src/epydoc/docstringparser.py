@@ -37,7 +37,7 @@ from epydoc.docintrospecter import introspect_docstring_lineno
 from epydoc.util import py_src_filename
 from epydoc import log
 import epydoc.docparser
-import __builtin__, exceptions
+import builtins
 
 ######################################################################
 # Docstring Fields
@@ -490,9 +490,9 @@ def report_errors(api_doc, docindex, parse_errors, field_warnings):
     # 'in' or '==', then a user __cmp__ method might raise an
     # exception, or lie.
     if isinstance(api_doc, ValueDoc) and api_doc != module:
-        if module not in (None, UNKNOWN) and module.pyval is exceptions:
+        if module not in (None, UNKNOWN) and module.pyval is builtins:
             return
-        for builtin_val in __builtin__.__dict__.values():
+        for builtin_val in builtins.__dict__.values():
             if builtin_val is api_doc.pyval:
                 return
         

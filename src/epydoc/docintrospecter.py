@@ -37,7 +37,7 @@ from epydoc.util import *
 # For extracting encoding for docstrings:
 import epydoc.docparser
 # Builtin values
-import __builtin__
+import builtins
 
 ######################################################################
 ## Caches
@@ -645,7 +645,7 @@ def get_canonical_name(value, strict=False):
                 dotted_name = DottedName(munge_script_name(filename))
         
     elif isclass(value):
-        if value.__module__ == '__builtin__':
+        if value.__module__ == 'builtins':
             dotted_name = DottedName(value.__name__, strict=strict)
         else:
             dotted_name = DottedName(value.__module__, value.__name__,
@@ -678,7 +678,7 @@ def verify_name(value, dotted_name):
     able to find it with the name we constructed.
     """
     if dotted_name is UNKNOWN: return UNKNOWN
-    if len(dotted_name) == 1 and hasattr(__builtin__, dotted_name[0]):
+    if len(dotted_name) == 1 and hasattr(builtins, dotted_name[0]):
         return dotted_name
     named_value = sys.modules.get(dotted_name[0])
     if named_value is None: return UNKNOWN
@@ -880,7 +880,7 @@ def get_value_from_name(name, globs=None):
     Given a name, return the corresponding value.
     
     @param globs: A namespace to check for the value, if there is no
-        module containing the named value.  Defaults to __builtin__.
+        module containing the named value.  Defaults to builtins.
     """
     name = DottedName(name)
 
@@ -889,7 +889,7 @@ def get_value_from_name(name, globs=None):
     try:
         module = _import(name[0])
     except ImportError as e:
-        if globs is None: globs = __builtin__.__dict__
+        if globs is None: globs = builtins.__dict__
         if name[0] in globs:
             try:
                 return _lookup(globs[name[0]], name[1:])
@@ -930,7 +930,7 @@ def _import(name, filename=None):
     # explicitly store sys.path.
     old_sys = sys.__dict__.copy()
     old_sys_path = sys.path[:]
-    old_builtins = __builtin__.__dict__.copy()
+    old_builtins = builtins.__dict__.copy()
 
     # Add the current directory to sys.path, in case they're trying to
     # import a module by name that resides in the current directory.
@@ -966,8 +966,8 @@ def _import(name, filename=None):
             raise ImportError(estr)
     finally:
         # Restore the important values that we saved.
-        __builtin__.__dict__.clear()
-        __builtin__.__dict__.update(old_builtins)
+        builtins.__dict__.clear()
+        builtins.__dict__.update(old_builtins)
         sys.__dict__.clear()
         sys.__dict__.update(old_sys)
         sys.path = old_sys_path

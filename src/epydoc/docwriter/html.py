@@ -16,7 +16,7 @@ __docformat__ = 'epytext en'
 
 import re, os, sys, codecs, sre_constants, pprint, base64
 import urllib
-import __builtin__
+import builtins
 from epydoc.apidoc import *
 import epydoc.docstringparser
 import time, epydoc, epydoc.markup, epydoc.markup.epytext
@@ -684,7 +684,7 @@ class HTMLWriter:
 
         # Don't report references to builtins as missing
         for k in self._failed_xrefs.keys(): # have a copy of keys
-            if hasattr(__builtin__, k):
+            if hasattr(builtins, k):
                 del self._failed_xrefs[k]
 
         # Report any failed crossreferences

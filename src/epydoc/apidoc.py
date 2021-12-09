@@ -41,7 +41,7 @@ __docformat__ = 'epytext en'
 import types, re, os.path, pickle
 from epydoc import log
 import epydoc
-import __builtin__
+import builtins
 from epydoc.util import decode_with_backslashreplace, py_src_filename
 import epydoc.markup.pyval_repr
 
@@ -1914,7 +1914,7 @@ class DocIndex:
             if doc is not None: return doc
 
         # Is it the name of a builtin?
-        if len(name)==1 and hasattr(__builtin__, name[0]):
+        if len(name)==1 and hasattr(builtins, name[0]):
             return None
         
         # Is it a parameter's name or an attribute of a parameter?

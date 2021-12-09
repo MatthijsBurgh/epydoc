@@ -67,7 +67,7 @@ __docformat__ = 'epytext en'
 ## Imports
 ######################################################################
 
-import sys, os, os.path, __builtin__, imp, re, inspect
+import sys, os, os.path, builtins, imp, re, inspect
 from epydoc.apidoc import *
 from epydoc.docintrospecter import introspect_docs
 from epydoc.docintrospecter import get_value_from_filename, get_value_from_name
@@ -422,8 +422,8 @@ def _get_docs_from_items(items, options):
             elif os.path.isfile(item):
                 doc_pairs.append(_get_docs_from_pyscript(
                     item, options, progress_estimator))
-            elif hasattr(__builtin__, item):
-                val = getattr(__builtin__, item)
+            elif hasattr(builtins, item):
+                val = getattr(builtins, item)
                 doc_pairs.append(_get_docs_from_pyobject(
                     val, options, progress_estimator))
             elif is_pyname(item):

@@ -394,7 +394,7 @@ def _rv(match):
 
 def _darken_darks(match):
     rgb = [int(grp, 16) for grp in match.groups()]
-    return '#' + ''.join(['%02x' % (((c/255.)**2) * 255) for c in rgb])
+    return '#' + ''.join('%02x' % int(((c/255.)**2) * 255) for c in rgb)
 
 _WHITE_COLORS = dict(
     # Defaults:

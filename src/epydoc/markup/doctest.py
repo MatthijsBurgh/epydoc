@@ -99,8 +99,7 @@ class DoctestColorizer:
                  "def       finally   in        print(    as").split())
 
     #: A list of all Python builtins.
-    _BUILTINS = [_BI for _BI in dir(__builtins__)
-                 if not _BI.startswith('__')]
+    _BUILTINS = [_BI for _BI in dir(__builtins__) if not _BI.startswith('__')]
 
     #: A regexp group that matches keywords.
     _KEYWORD_GRP = '|'.join([r'\b%s\b' % _KW for _KW in _KEYWORDS])

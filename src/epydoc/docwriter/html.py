@@ -2993,8 +2993,8 @@ class HTMLWriter:
                 for (field, arg, descr) in doc.metadata:
                     if field.tags[0] == field_name:
                         descrs.setdefault(arg, []).append(descr)
-            for (arg, descr_list) in descrs.iteritems():
-                index.setdefault(arg, []).append( (doc, descr_list) )
+            for (arg, descr_list) in descrs.items():
+                index.setdefault(arg, []).append((doc, descr_list))
         return index
 
     def _term_index_to_anchor(self, term):

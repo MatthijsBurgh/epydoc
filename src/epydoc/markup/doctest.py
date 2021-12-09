@@ -17,6 +17,7 @@ C{colorize_doctest()}.)
 """
 __docformat__ = 'epytext en'
 
+import keyword
 import re
 from epydoc.util import plaintext_to_html, plaintext_to_latex
 
@@ -89,20 +90,11 @@ class DoctestColorizer:
     #: The string used to divide lines
     NEWLINE = '\n'
 
-    #: A list of the names of all Python keywords.  ('as' is included
-    #: even though it is technically not a keyword.)
-    _KEYWORDS = ("and       del       for       is        raise"
-                 "assert    elif      from      lambda    return"
-                 "break     else      global    not       try"
-                 "class     except    if        or        while"
-                 "continue  exec      import    pass      yield"
-                 "def       finally   in        as").split()
-
     #: A list of all Python builtins.
     _BUILTINS = [_BI for _BI in dir(__builtins__) if not _BI.startswith('__')]
 
     #: A regexp group that matches keywords.
-    _KEYWORD_GRP = '|'.join([r'\b%s\b' % _KW for _KW in _KEYWORDS])
+    _KEYWORD_GRP = '|'.join([r'\b%s\b' % _KW for _KW in keyword.kwlist])
 
     #: A regexp group that matches Python builtins.
     _BUILTIN_GRP = (r'(?<!\.)(?:%s)' % '|'.join([r'\b%s\b' % _BI

@@ -246,5 +246,5 @@ class ParsedJavadocDocstring(ParsedDocstring):
         
 #     def concatenate(self, other):
 #         if not isinstance(other, ParsedJavadocDocstring):
-#             raise ValueError, 'Could not concatenate docstrings'
+#             raise ValueError('Could not concatenate docstrings')
 #         return ParsedJavadocDocstring(self._docstring+other._docstring)

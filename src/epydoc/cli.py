@@ -1026,8 +1026,10 @@ def pickle_persistent_id(obj):
 def pickle_persistent_load(identifier):
     """Helper for pickling, which allows us to save and restore UNKNOWN,
     which is required to be identical to apidoc.UNKNOWN."""
-    if identifier == 'UNKNOWN': return UNKNOWN
-    else: raise pickle.UnpicklingError, 'Invalid persistent id'
+    if identifier == 'UNKNOWN':
+        return UNKNOWN
+    else:
+        raise pickle.UnpicklingError('Invalid persistent id')
 
 _RERUN_LATEX_RE = re.compile(r'(?im)^LaTeX\s+Warning:\s+Label\(s\)\s+may'
                              r'\s+have\s+changed.\s+Rerun')

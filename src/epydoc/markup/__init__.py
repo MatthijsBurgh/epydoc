@@ -325,7 +325,7 @@ class ParsedDocstring:
         @return: A plaintext fragment that encodes this docstring.
         @rtype: C{string}
         """
-        raise NotImplementedError, 'ParsedDocstring.to_plaintext()'
+        raise NotImplementedError('ParsedDocstring.to_plaintext()')
 
     def index_terms(self):
         """

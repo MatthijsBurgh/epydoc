@@ -28,7 +28,8 @@ def parse_docstring(docstring, errors, **options):
 class ParsedPlaintextDocstring(ParsedDocstring):
     def __init__(self, text, **options):
         self._verbatim = options.get('verbatim', 1)
-        if text is None: raise ValueError, 'Bad text value (expected a str)'
+        if text is None:
+            raise ValueError('Bad text value (expected a str)')
         self._text = text
 
     def to_html(self, docstring_linker, **options):
@@ -71,7 +72,7 @@ class ParsedPlaintextDocstring(ParsedDocstring):
         
 #     def concatenate(self, other):
 #         if not isinstance(other, ParsedPlaintextDocstring):
-#             raise ValueError, 'Could not concatenate docstrings'
+#             raise ValueError('Could not concatenate docstrings')
 #         text = self._text+other._text
 #         options = self._options.copy()
 #         options.update(other._options)

@@ -389,7 +389,7 @@ class HTMLWriter:
         # Make sure inheritance has a sane value.
         if self._inheritance not in ('listed', 'included',
                                      'grouped', 'hidden'):
-            raise ValueError, 'Bad value for inheritance'
+            raise ValueError('Bad value for inheritance')
 
         # Create the project homepage link, if it was not specified.
         if (self._prj_name or self._prj_url) and not self._prj_link:

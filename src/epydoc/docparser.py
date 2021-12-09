@@ -449,7 +449,7 @@ def _get_filename(identifier, path=None):
         fp, filename, (s,m,typ) = imp.find_module(identifier, path)
         if fp is not None: fp.close()
     except ImportError:
-        raise ImportError, 'No Python source file found.'
+        raise ImportError('No Python source file found.')
 
     if typ == imp.PY_SOURCE:
         return filename
@@ -457,21 +457,21 @@ def _get_filename(identifier, path=None):
         # See if we can find a corresponding non-compiled version.
         filename = re.sub('.py\w$', '.py', filename)
         if not os.path.exists(filename):
-            raise ImportError, 'No Python source file found.'
+            raise ImportError('No Python source file found.')
         return filename
     elif typ == imp.PKG_DIRECTORY:
         filename = os.path.join(filename, '__init__.py')
         if not os.path.exists(filename):
             filename = os.path.join(filename, '__init__.pyw')
             if not os.path.exists(filename):
-                raise ImportError, 'No package file found.'
+                raise ImportError('No package file found.')
         return filename
     elif typ == imp.C_BUILTIN:
-        raise ImportError, 'No Python source file for builtin modules.'
+        raise ImportError('No Python source file for builtin modules.')
     elif typ == imp.C_EXTENSION:
-        raise ImportError, 'No Python source file for c extensions.'
+        raise ImportError('No Python source file for c extensions.')
     else:
-        raise ImportError, 'No Python source file found.'
+        raise ImportError('No Python source file found.')
 
 #/////////////////////////////////////////////////////////////////
 #{ File tokenization loop
@@ -1498,7 +1498,7 @@ def apply_decorator(decorator_name, func_doc, parent_docs, lineno):
     elif DEFAULT_DECORATOR_BEHAVIOR == 'opaque':
         return GenericValueDoc(docs_extracted_by='parser')
     else:
-        raise ValueError, 'Bad value for DEFAULT_DECORATOR_BEHAVIOR'
+        raise ValueError('Bad value for DEFAULT_DECORATOR_BEHAVIOR')
 
 def init_arglist(func_doc, arglist):
     if not isinstance(arglist, list) or arglist[0] != (token.OP, '('):

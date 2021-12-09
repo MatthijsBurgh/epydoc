@@ -994,7 +994,7 @@ def _descr_to_identifiers(descr):
     idents = descr.to_plaintext(None).strip()
     idents = re.sub(r'\s+', ' ', idents)
     if not _IDENTIFIER_LIST_REGEXP.match(idents):
-        raise ValueError, 'Bad Identifier list: %r' % idents
+        raise ValueError('Bad Identifier list: %r' % idents)
     rval = re.split('[:;, ] *', idents)
     return rval
     
@@ -1003,7 +1003,7 @@ def _descr_to_docstring_field(arg, descr):
     descr = descr.to_plaintext(None).strip()
     args = re.split('[:;,] *', descr)
     if len(args) == 0 or len(args) > 3:
-        raise ValueError, 'Wrong number of arguments'
+        raise ValueError('Wrong number of arguments')
     singular = args[0]
     if len(args) >= 2: plural = args[1]
     else: plural = None

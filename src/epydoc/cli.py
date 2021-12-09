@@ -72,7 +72,7 @@ from epydoc import log
 from epydoc.util import wordwrap, run_subprocess, RunSubprocessError
 from epydoc.util import plaintext_to_html, TerminalController
 from epydoc.apidoc import UNKNOWN
-import ConfigParser
+import configparser
 from epydoc.docwriter.html_css import STYLESHEETS as CSS_STYLESHEETS
 from epydoc.docwriter.latex_sty import STYLESHEETS as STY_STYLESHEETS
 from epydoc.docwriter.dotgraph import DotGraph
@@ -609,15 +609,15 @@ def parse_arguments():
     return options
 
 def parse_configfiles(configfiles, options, names):
-    configparser = ConfigParser.ConfigParser()
+    config_parser = configparser.ConfigParser()
     # ConfigParser.read() silently ignores errors, so open the files
     # manually (since we want to notify the user of any errors).
     for configfile in configfiles:
         fp = open(configfile, 'r') # may raise IOError.
-        configparser.readfp(fp, configfile)
+        config_parser.readfp(fp, configfile)
         fp.close()
-    for optname in configparser.options('epydoc'):
-        val = configparser.get('epydoc', optname, vars=os.environ).strip()
+    for optname in config_parser.options('epydoc'):
+        val = config_parser.get('epydoc', optname, vars=os.environ).strip()
         optname = optname.lower().strip()
 
         if optname in ('modules', 'objects', 'values',

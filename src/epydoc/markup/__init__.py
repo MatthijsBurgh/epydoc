@@ -55,6 +55,7 @@ each error.
 """
 __docformat__ = 'epytext en'
 
+import importlib
 import re, types, sys
 from epydoc import log
 from epydoc.util import plaintext_to_html, plaintext_to_latex
@@ -162,7 +163,8 @@ def parse(docstring, markup='plaintext', errors=None, **options):
     # If it's a string, then it names a function to import.
     if isinstance(parse_docstring, str):
         try:
-            exec('from %s import parse_docstring' % parse_docstring)
+            m = importlib.import_module(parse_docstring)
+            parse_docstring = getattr(m, "parse_docstring")
         except ImportError as e:
             _parse_warn('Error importing %s for markup language %s: %s' %
                         (parse_docstring, markup, e))

@@ -29,7 +29,7 @@ import inspect, re, sys, os.path, imp
 # API documentation encoding:
 from epydoc.apidoc import *
 # Type comparisons:
-from types import *
+from types import BuiltinMethodType, FunctionType, MethodType, ModuleType
 # Error reporting:
 from epydoc import log
 # Helper functions:
@@ -536,7 +536,7 @@ def isclass(object):
     """
     return isinstance(object, tuple(_CLASS_TYPES))
 
-_CLASS_TYPES = set([TypeType, ClassType])
+_CLASS_TYPES = set([type])
 """A list of types that should be treated as classes."""
 
 def register_class_type(typ):

@@ -105,7 +105,7 @@ def decode_with_backslashreplace(s):
     """
     # s.encode('string-escape') is not appropriate here, since it
     # also adds backslashes to some ascii chars (eg \ and ').
-    assert isinstance(s, str)
+    assert isinstance(s, bytes)
     return (s
             .decode('latin1')
             .encode('ascii', 'backslashreplace')

@@ -1020,9 +1020,7 @@ class NamespaceDoc(ValueDoc):
                     
     
         # Add any remaining variables in alphabetical order.
-        var_docs = unsorted.items()
-        var_docs.sort()
-        for name, var_doc in var_docs:
+        for name, var_doc in sorted(unsorted.items()):
             self.sorted_variables.append(var_doc)
 
     def init_variable_groups(self):

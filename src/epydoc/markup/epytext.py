@@ -106,7 +106,7 @@ __docformat__ = 'epytext en'
 #   4. helpers
 #   5. testing
 
-import re, string, types, sys, os.path
+import re, types, sys, os.path
 from epydoc.markup import *
 from epydoc.util import wordwrap, plaintext_to_html, plaintext_to_latex
 from epydoc.markup.doctest import doctest_to_html, doctest_to_latex
@@ -251,7 +251,7 @@ def parse(str, errors = None):
 
     # Preprocess the string.
     str = re.sub('\015\012', '\012', str)
-    str = string.expandtabs(str)
+    str = str.expandtabs()
 
     # Tokenize the input string.
     tokens = _tokenize(str, errors)

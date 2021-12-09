@@ -179,9 +179,9 @@ class PyvalColorizer:
         state.score += 1
         
         if pyval is None or pyval is True or pyval is False:
-            self._output(unicode(pyval), self.CONST_TAG, state)
+            self._output(str(pyval), self.CONST_TAG, state)
         elif pyval_type in (int, float, long, types.ComplexType):
-            self._output(unicode(pyval), self.NUMBER_TAG, state)
+            self._output(str(pyval), self.NUMBER_TAG, state)
         elif pyval_type is str:
             self._colorize_str(pyval, state, '', 'string-escape')
         elif pyval_type is unicode:
@@ -207,8 +207,8 @@ class PyvalColorizer:
         else:
             try:
                 pyval_repr = repr(pyval)
-                if not isinstance(pyval_repr, (str, unicode)):
-                    pyval_repr = unicode(pyval_repr)
+                if not isinstance(pyval_repr, str):
+                    pyval_repr = str(pyval_repr)
                 pyval_repr_ok = True
             except KeyboardInterrupt:
                 raise

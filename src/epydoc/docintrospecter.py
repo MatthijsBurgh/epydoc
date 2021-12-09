@@ -196,12 +196,12 @@ def introspect_module(module, module_doc, module_name=None, preliminary=False):
 
     # Record the module's docformat
     if hasattr(module, '__docformat__'):
-        module_doc.docformat = unicode(module.__docformat__)
+        module_doc.docformat = str(module.__docformat__)
                                   
     # Record the module's filename
     if hasattr(module, '__file__'):
         try:
-            module_doc.filename = unicode(module.__file__)
+            module_doc.filename = str(module.__file__)
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -228,7 +228,7 @@ def introspect_module(module, module_doc, module_name=None, preliminary=False):
     if hasattr(module, '__path__'):
         module_doc.is_package = True
         try:
-            module_doc.path = [unicode(p) for p in module.__path__]
+            module_doc.path = [str(p) for p in module.__path__]
         except KeyboardInterrupt:
             raise
         except Exception:
@@ -583,7 +583,7 @@ def get_docstring(value, module_name=None):
         return docstring
     elif isinstance(docstring, str):
         try:
-            return unicode(docstring, 'ascii')
+            return str(docstring, 'ascii')
         except UnicodeDecodeError:
             if module_name is None:
                 module_name = get_containing_module(value)
@@ -592,7 +592,7 @@ def get_docstring(value, module_name=None):
                     module = get_value_from_name(module_name)
                     filename = py_src_filename(module.__file__)
                     encoding = epydoc.docparser.get_module_encoding(filename)
-                    return unicode(docstring, encoding)
+                    return str(docstring, encoding)
                 except KeyboardInterrupt:
                     raise
                 except Exception:
@@ -602,7 +602,7 @@ def get_docstring(value, module_name=None):
             log.warning("%s's docstring is not a unicode string, but it "
                         "contains non-ascii data -- treating it as "
                         "latin-1." % name)
-            return unicode(docstring, 'latin-1')
+            return str(docstring, 'latin-1')
         return None
     elif value is BuiltinMethodType:
         # Don't issue a warning for this special case.

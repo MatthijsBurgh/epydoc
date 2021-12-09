@@ -119,7 +119,7 @@ def compile_template(docstring, template_string,
                 else:
                     # Variable piece
                     pysrc_lines.append('    '*len(indents)+
-                                 '%s(unicode(%s))' % (output_function, piece))
+                                 '%s(str(%s))' % (output_function, piece))
 
         # Python command:
         else:

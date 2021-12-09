@@ -337,7 +337,7 @@ def add_metadata_from_var(api_doc, field):
             if isinstance(elt, str):
                 elt = decode_with_backslashreplace(elt)
             else:
-                elt = unicode(elt)
+                elt = str(elt)
             elt = epytext.ParsedEpytextDocstring(
                 epytext.parse_as_para(elt), inline=True)
 

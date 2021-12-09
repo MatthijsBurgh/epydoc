@@ -17,6 +17,7 @@ C{colorize_doctest()}.)
 """
 __docformat__ = 'epytext en'
 
+import builtins
 import keyword
 import re
 from epydoc.util import plaintext_to_html, plaintext_to_latex
@@ -91,7 +92,7 @@ class DoctestColorizer:
     NEWLINE = '\n'
 
     #: A list of all Python builtins.
-    _BUILTINS = [_BI for _BI in dir(__builtins__) if not _BI.startswith('__')]
+    _BUILTINS = (_BI for _BI in dir(builtins) if not _BI.startswith('__'))
 
     #: A regexp group that matches keywords.
     _KEYWORD_GRP = '|'.join([r'\b%s\b' % _KW for _KW in keyword.kwlist])

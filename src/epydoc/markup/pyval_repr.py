@@ -39,8 +39,13 @@ import sre_parse
 
 from epydoc.markup.epytext import Element, ParsedEpytextDocstring
 
+
+RE_TYPE = re.compile('').__class__
+
+
 def is_re_pattern(pyval):
-    return type(pyval).__name__ == 'SRE_Pattern'
+    return isinstance(pyval, RE_TYPE)
+
 
 class _ColorizerState:
     """

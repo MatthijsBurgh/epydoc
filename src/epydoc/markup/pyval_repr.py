@@ -359,7 +359,7 @@ class PyvalColorizer:
         groups = {num: name for name, num in tree.state.groupdict.items()}
         # Colorize it!
         self._output("re.compile(r'", None, state)
-        self._colorize_re_flags(tree.pattern.flags, state)
+        self._colorize_re_flags(tree.state.flags, state)
         self._colorize_re_tree(tree, state, True, groups)
         self._output("')", None, state)
 

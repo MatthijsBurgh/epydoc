@@ -94,14 +94,14 @@ def munge_script_name(filename):
 ######################################################################
 
 def decode_with_backslashreplace(s):
-    r"""
+    """
     Convert the given 8-bit string into unicode, treating any
     character c such that ord(c)<128 as an ascii character, and
     converting any c such that ord(c)>128 into a backslashed escape
     sequence.
 
-        >>> decode_with_backslashreplace('abc\xff\xe8')
-        u'abc\\xff\\xe8'
+        >>> decode_with_backslashreplace(b'abc\xff\xe8')
+        'abc\\xff\\xe8'
     """
     # s.encode('string-escape') is not appropriate here, since it
     # also adds backslashes to some ascii chars (eg \ and ').

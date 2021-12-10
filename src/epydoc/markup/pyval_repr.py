@@ -31,11 +31,11 @@ __docformat__ = 'epytext en'
 # rather than using isinstance, because subclasses might override
 # __repr__.
 
-import types, re
+import re
 import epydoc.apidoc
 from epydoc.util import decode_with_backslashreplace
-from epydoc.util import plaintext_to_html, plaintext_to_latex
-import sre_parse, sre_constants
+import sre_constants
+import sre_parse
 
 from epydoc.markup.epytext import Element, ParsedEpytextDocstring
 

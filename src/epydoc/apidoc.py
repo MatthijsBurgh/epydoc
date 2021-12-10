@@ -2143,14 +2143,14 @@ def pp_apidoc(api_doc, doublespace=0, depth=5, exclude=(), include=(),
         s += '\n +- %s' % field
 
         if (isinstance(fieldval, list) and
-            len(fieldval)>0 and
+            len(fieldval) > 0 and
             isinstance(fieldval[0], APIDoc)):
             s += _pp_list(api_doc, fieldval, doublespace, depth,
                           exclude, include, backpointers,
                           (field is fields[-1]))
         elif (isinstance(fieldval, dict) and
-              len(fieldval)>0 and 
-              isinstance(fieldval.values()[0], APIDoc)):
+              len(fieldval) > 0 and
+              isinstance(list(fieldval.values())[0], APIDoc)):
             s += _pp_dict(api_doc, fieldval, doublespace, 
                           depth, exclude, include, backpointers,
                           (field is fields[-1]))

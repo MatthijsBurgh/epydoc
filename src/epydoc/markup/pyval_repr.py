@@ -66,7 +66,7 @@ class _ColorizerState:
         self.lineno = 1
         self.linebreakok = True
         
-        #: How good this represention is?
+        #: How good this representation is?
         self.score = 0
 
     def mark(self):
@@ -77,14 +77,17 @@ class _ColorizerState:
         n, self.charpos, self.lineno, self.linebreakok, self.score = mark
         del self.result[n:]
 
+
 class _Maxlines(Exception):
     """A control-flow exception that is raised when PyvalColorizer
     exeeds the maximum number of allowed lines."""
-    
+
+
 class _Linebreak(Exception):
     """A control-flow exception that is raised when PyvalColorizer
     generates a string containing a newline, but the state object's
     linebreakok variable is False."""
+
 
 class ColorizedPyvalRepr(ParsedEpytextDocstring):
     """
@@ -97,10 +100,12 @@ class ColorizedPyvalRepr(ParsedEpytextDocstring):
         self.score = score
         self.is_complete = is_complete
 
+
 def colorize_pyval(pyval, parse_repr=None, min_score=None,
                    linelen=75, maxlines=5, linebreakok=True, sort=True):
     return PyvalColorizer(linelen, maxlines, linebreakok, sort).colorize(
         pyval, parse_repr, min_score)
+
 
 class PyvalColorizer:
     """
@@ -187,7 +192,7 @@ class PyvalColorizer:
             is_complete = False
         # If we didn't score high enough, then try again.
         if (pyval is not UNKNOWN and parse_repr not in (None, UNKNOWN)
-            and min_score is not None and state.score < min_score):
+                and min_score is not None and state.score < min_score):
             return self.colorize(UNKNOWN, parse_repr)
         # Put it all together.
         tree = Element('epytext', *state.result)
@@ -240,7 +245,8 @@ class PyvalColorizer:
                 state.result.append(self.UNKNOWN_REPR)
 
     def _sort(self, items):
-        if not self.sort: return items
+        if not self.sort:
+            return items
         try:
             return sorted(items)
         except KeyboardInterrupt:
@@ -250,7 +256,8 @@ class PyvalColorizer:
         
     def _trim_result(self, result, num_chars):
         while num_chars > 0:
-            if not result: return 
+            if not result:
+                return
             if isinstance(result[-1], Element):
                 assert len(result[-1].children) == 1
                 trim = min(num_chars, len(result[-1].children[0]))
@@ -304,7 +311,7 @@ class PyvalColorizer:
         self._output(prefix, self.GROUP_TAG, state)
         indent = state.charpos
         for i, (key, val) in enumerate(items):
-            if i>=1:
+            if i >= 1:
                 if state.linebreakok:
                     self._output(',', self.COMMA_TAG, state)
                     self._output('\n'+' '*indent, None, state)
@@ -353,8 +360,7 @@ class PyvalColorizer:
             pat = decode_with_backslashreplace(pat)
         # Parse the regexp pattern.
         tree = sre_parse.parse(pat, flags)
-        groups = dict([(num,name) for (name,num) in
-                       tree.pattern.groupdict.items()])
+        groups = {num: name for name, num in tree.state.groupdict.items()}
         # Colorize it!
         self._output("re.compile(r'", None, state)
         self._colorize_re_flags(tree.pattern.flags, state)
@@ -403,7 +409,7 @@ class PyvalColorizer:
                     self._colorize_re_tree(item, state, True, groups)
                 
             elif op == sre_constants.IN:
-                if (len(args) == 1 and args[0][0] == sre_constants.CATEGORY):
+                if len(args) == 1 and args[0][0] == sre_constants.CATEGORY:
                     self._colorize_re_tree(args, state, False, groups)
                 else:
                     self._output('[', self.RE_GROUP_TAG, state)
@@ -549,7 +555,7 @@ class PyvalColorizer:
             # If the segment doesn't fit on the current line, then
             # line-wrap it, and insert the remainder of the line into
             # the segments list that we're iterating over.  (We'll go
-            # the the beginning of the next line at the start of the
+            # to the beginning of the next line at the start of the
             # next iteration through the loop.)
             else:
                 split = self.linelen-state.charpos

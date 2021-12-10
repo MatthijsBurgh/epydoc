@@ -230,19 +230,15 @@ class PyvalColorizer:
                 pyval_repr = repr(pyval)
                 if not isinstance(pyval_repr, str):
                     pyval_repr = str(pyval_repr)
-                pyval_repr_ok = True
             except KeyboardInterrupt:
                 raise
             except Exception:
-                pyval_repr_ok = False
                 state.score -= 100
-
-            if pyval_repr_ok:
+                state.result.append(self.UNKNOWN_REPR)
+            else:
                 if self.GENERIC_OBJECT_RE.match(pyval_repr):
                     state.score -= 5
                 self._output(pyval_repr, None, state)
-            else:
-                state.result.append(self.UNKNOWN_REPR)
 
     def _sort(self, items):
         if not self.sort:

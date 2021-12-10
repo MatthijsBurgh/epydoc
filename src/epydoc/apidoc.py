@@ -2178,10 +2178,9 @@ def _pp_list(api_doc, items, doublespace, depth, exclude, include,
         s += joiner.join(valstr.split('\n'))
     return s
 
-def _pp_dict(api_doc, dict, doublespace, depth, exclude, include,
+def _pp_dict(api_doc, dict_, doublespace, depth, exclude, include,
               backpointers, is_last):
-    items = dict.items()
-    items.sort()
+    items = sorted(dict_.items())
     line1 = (is_last and ' ') or '|'
     s = ''
     for item in items:

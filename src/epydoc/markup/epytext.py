@@ -1347,7 +1347,8 @@ def to_plaintext(tree, indent=0, seclevel=0):
     @return: The epytext string corresponding to C{tree}.
     @rtype: C{string}
     """
-    if isinstance(tree, str): return tree
+    if isinstance(tree, str):
+        return tree
 
     if tree.tag == 'section': seclevel += 1
 
@@ -1385,9 +1386,9 @@ def to_plaintext(tree, indent=0, seclevel=0):
         tag = variables[0]
         args = variables[1:1+numargs]
         body = variables[1+numargs:]
-        str = (indent)*' '+'@'+variables[0]
-        if args: str += '(' + ', '.join(args) + ')'
-        return str + ':\n' + ''.join(body)
+        str_ = (indent)*' '+'@'+variables[0]
+        if args: str_ += '(' + ', '.join(args) + ')'
+        return str_ + ':\n' + ''.join(body)
     elif tree.tag == 'uri':
         if len(variables) != 2: raise ValueError('Bad URI ')
         elif variables[0] == variables[1]: return '<%s>' % variables[1]
@@ -1429,9 +1430,9 @@ def to_debug(tree, indent=4, seclevel=0):
     @rtype: C{string}
     """
     if isinstance(tree, str):
-        str = re.sub(r'\{', '\0', tree)
-        str = re.sub(r'\}', '\1', str)
-        return str
+        str_ = re.sub(r'\{', '\0', tree)
+        str_ = re.sub(r'\}', '\1', str_)
+        return str_
 
     if tree.tag == 'section': seclevel += 1
     variables = [to_debug(c, indent+2, seclevel) for c in tree.children]
@@ -1441,14 +1442,14 @@ def to_debug(tree, indent=4, seclevel=0):
     childstr = re.sub(':( *\n     \|\n)\2', '::\\1', childstr)
 
     if tree.tag == 'para':
-        str = wordwrap(childstr, indent-6, 69)+'\n'
-        str = re.sub(r'((^|\n)\s*\d+)\.', r'\1E{.}', str)
-        str = re.sub(r'((^|\n)\s*)-', r'\1E{-}', str)
-        str = re.sub(r'((^|\n)\s*)@', r'\1E{@}', str)
-        str = re.sub(r'::(\s*($|\n))', r'E{:}E{:}\1', str)
-        str = re.sub('\0', 'E{lb}', str)
-        str = re.sub('\1', 'E{rb}', str)
-        lines = str.rstrip().split('\n')
+        str_ = wordwrap(childstr, indent-6, 69)+'\n'
+        str_ = re.sub(r'((^|\n)\s*\d+)\.', r'\1E{.}', str_)
+        str_ = re.sub(r'((^|\n)\s*)-', r'\1E{-}', str_)
+        str_ = re.sub(r'((^|\n)\s*)@', r'\1E{@}', str_)
+        str_ = re.sub(r'::(\s*($|\n))', r'E{:}E{:}\1', str_)
+        str_ = re.sub('\0', 'E{lb}', str_)
+        str_ = re.sub('\1', 'E{rb}', str_)
+        lines = str_.rstrip().split('\n')
         lines[0] = '   P>|' + lines[0]
         lines[1:] = ['     |'+l for l in lines[1:]]
         return '\n'.join(lines)+'\n     |\n'
@@ -1458,21 +1459,21 @@ def to_debug(tree, indent=4, seclevel=0):
     elif tree.tag in ('olist', 'ulist'):
         return 'LIST>|'+(indent-4)*' '+childstr[indent+2:]
     elif tree.tag == 'heading':
-        str = re.sub('\0', 'E{lb}', childstr)
-        str = re.sub('\1', 'E{rb}', str)
+        str_ = re.sub('\0', 'E{lb}', childstr)
+        str_ = re.sub('\1', 'E{rb}', str_)
         uline = len(childstr)*_HEADING_CHARS[seclevel-1]
-        return ('SEC' + repr(seclevel) + '>|' + (indent - 8) * ' ' + str + '\n' +
+        return ('SEC' + repr(seclevel) + '>|' + (indent - 8) * ' ' + str_ + '\n' +
                 '     |' + (indent-8) *' ' + uline + '\n')
     elif tree.tag == 'doctestblock':
-        str = re.sub('\0', '{', childstr)
-        str = re.sub('\1', '}', str)
-        lines = ['     |'+(indent-4)*' '+line for line in str.split('\n')]
+        str_ = re.sub('\0', '{', childstr)
+        str_ = re.sub('\1', '}', str_)
+        lines = ['     |'+(indent-4)*' '+line for line in str_.split('\n')]
         lines[0] = 'DTST>'+lines[0][5:]
         return '\n'.join(lines) + '\n     |\n'
     elif tree.tag == 'literalblock':
-        str = re.sub('\0', '{', childstr)
-        str = re.sub('\1', '}', str)
-        lines = ['     |'+(indent-5)*' '+line for line in str.split('\n')]
+        str_ = re.sub('\0', '{', childstr)
+        str_ = re.sub('\1', '}', str_)
+        lines = ['     |'+(indent-5)*' '+line for line in str_.split('\n')]
         lines[0] = ' LIT>'+lines[0][5:]
         return '\2' + '\n'.join(lines) + '\n     |\n'
     elif tree.tag == 'field':
@@ -1481,9 +1482,10 @@ def to_debug(tree, indent=4, seclevel=0):
         tag = variables[0]
         args = variables[1:1+numargs]
         body = variables[1+numargs:]
-        str = ' FLD>|'+(indent-6)*' '+'@'+variables[0]
-        if args: str += '(' + ', '.join(args) + ')'
-        return str + ':\n' + ''.join(body)
+        str_ = ' FLD>|'+(indent-6)*' '+'@'+variables[0]
+        if args:
+            str_ += '(' + ', '.join(args) + ')'
+        return str_ + ':\n' + ''.join(body)
     elif tree.tag == 'target':
         return '<%s>' % childstr
     elif tree.tag in ('fieldlist', 'tag', 'arg', 'epytext',

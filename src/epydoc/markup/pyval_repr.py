@@ -137,7 +137,21 @@ class PyvalColorizer:
     
     GENERIC_OBJECT_RE = re.compile(r'^<.* at 0x[0-9a-f]+>$', re.IGNORECASE)
 
-    ESCAPE_UNICODE = False # should we escape non-ascii unicode chars?
+    # encoding functions
+    @staticmethod
+    def _str_escape(s):
+        def enc(c):
+            if c == "'":
+                return r"\'"
+            elif ord(c) <= 0xff:
+                return c.encode("unicode-escape").decode("utf-8")
+            else:
+                return c
+        return "".join(map(enc, s))
+
+    @staticmethod
+    def _bytes_escape(b):
+        return repr(b)[2:-1]
 
     #////////////////////////////////////////////////////////////
     # Entry Point
@@ -185,15 +199,12 @@ class PyvalColorizer:
         
         if pyval is None or pyval is True or pyval is False:
             self._output(str(pyval), self.CONST_TAG, state)
-        elif pyval_type in (int, float, long, types.ComplexType):
+        elif pyval_type in (int, float, complex):
             self._output(str(pyval), self.NUMBER_TAG, state)
+        elif pyval_type is bytes:
+            self._colorize_str(pyval, state, 'b', self._bytes_escape)
         elif pyval_type is str:
-            self._colorize_str(pyval, state, '', 'string-escape')
-        elif pyval_type is unicode:
-            if self.ESCAPE_UNICODE:
-                self._colorize_str(pyval, state, 'u', 'unicode-escape')
-            else:
-                self._colorize_str(pyval, state, 'u', None)
+            self._colorize_str(pyval, state, '', self._str_escape)
         elif pyval_type is list:
             self._multiline(self._colorize_iter, pyval, state, '[', ']')
         elif pyval_type is tuple:
@@ -304,21 +315,32 @@ class PyvalColorizer:
             self._colorize(val, state)
         self._output(suffix, self.GROUP_TAG, state)
 
-    def _colorize_str(self, pyval, state, prefix, encoding):
+    def _colorize_str(self, pyval, state, prefix, encoding_func):
         # Decide which quote to use.
-        if '\n' in pyval and state.linebreakok: quote = "'''"
-        else: quote = "'"
+        if isinstance(pyval, str):
+            newline = "\n"
+        elif isinstance(pyval, bytes):
+            newline = b"\n"
+        else:
+            raise TypeError(f'pyval should be bytes/str, not {type(pyval)}')
+        if newline in pyval and state.linebreakok:
+            quote = "'''"
+        else:
+            quote = "'"
         # Divide the string into lines.
         if state.linebreakok:
-            lines = pyval.split('\n')
+            lines = pyval.split(newline)
         else:
             lines = [pyval]
         # Open quote.
         self._output(prefix+quote, self.QUOTE_TAG, state)
         # Body
         for i, line in enumerate(lines):
-            if i>0: self._output('\n', None, state)
-            if encoding: line = line.encode(encoding)
+            if i > 0:
+                self._output(newline, None, state)
+            if callable(encoding_func):
+                line = encoding_func(line)
+
             self._output(line, self.STRING_TAG, state)
         # Close quote.
         self._output(quote, self.QUOTE_TAG, state)
@@ -327,7 +349,7 @@ class PyvalColorizer:
         # Extract the flag & pattern from the regexp.
         pat, flags = pyval.pattern, pyval.flags
         # If the pattern is a string, decode it to unicode.
-        if isinstance(pat, str):
+        if isinstance(pat, bytes):
             pat = decode_with_backslashreplace(pat)
         # Parse the regexp pattern.
         tree = sre_parse.parse(pat, flags)
@@ -355,7 +377,7 @@ class PyvalColorizer:
             args = elt[1]
     
             if op == sre_constants.LITERAL:
-                c = unichr(args)
+                c = chr(args)
                 # Add any appropriate escaping.
                 if c in '.^$\\*+?{}[]|()\'': c = '\\'+c
                 elif c == '\t': c = '\\t'
@@ -435,7 +457,7 @@ class PyvalColorizer:
                     self._output('(?P<', self.RE_GROUP_TAG, state)
                     self._output(groups[args[0]], self.RE_REF_TAG, state)
                     self._output('>', self.RE_GROUP_TAG, state)
-                elif isinstance(args[0], (int, long)):
+                elif isinstance(args[0], int):
                     # This is cheating:
                     self._output('(', self.RE_GROUP_TAG, state)
                 else:
@@ -496,7 +518,7 @@ class PyvalColorizer:
         `self.maxlines`, then raise a `_Maxlines` exception.
         """
         # Make sure the string is unicode.
-        if isinstance(s, str):
+        if isinstance(s, bytes):
             s = decode_with_backslashreplace(s)
         
         # Split the string into segments.  The first segment is the

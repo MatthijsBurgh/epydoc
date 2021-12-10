@@ -466,7 +466,7 @@ Tuple arguments are encoded as a single ArgDoc with a complex name:
 Decorators & Wrapper Assignments
 ================================
 
-    >>> runparser( # doctest: +PYTHON2.4
+    >>> runparser(
     ...     s="""
     ...     @classmethod
     ...     def f(cls, x): 'docstring for f'

@@ -252,7 +252,7 @@ instance method:
 Decorators & Wrapper Assignments
 ================================
 
-    >>> runintrospecter( # doctest: +PYTHON2.4
+    >>> runintrospecter(
     ...     s="""
     ...     @classmethod
     ...     def f(cls, x): 'docstring for f'

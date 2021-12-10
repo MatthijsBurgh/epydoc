@@ -466,7 +466,7 @@ class PyvalColorizer:
                     self._output('(?P<', self.RE_GROUP_TAG, state)
                     self._output(args[0], self.RE_REF_TAG, state)
                     self._output('>', self.RE_GROUP_TAG, state)
-                self._colorize_re_tree(args[1], state, True, groups)
+                self._colorize_re_tree(args[3], state, True, groups)
                 self._output(')', self.RE_GROUP_TAG, state)
     
             elif op == sre_constants.GROUPREF:

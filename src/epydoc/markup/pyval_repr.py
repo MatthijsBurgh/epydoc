@@ -142,6 +142,8 @@ class PyvalColorizer:
     
     GENERIC_OBJECT_RE = re.compile(r'^<.* at 0x[0-9a-f]+>$', re.IGNORECASE)
 
+    SORTED_RE_FLAGS = sorted(sre_parse.FLAGS.items())
+
     # encoding functions
     @staticmethod
     def _str_escape(s: str):
@@ -371,8 +373,7 @@ class PyvalColorizer:
 
     def _colorize_re_flags(self, flags, state):
         if flags:
-            flags = [c for (c,n) in sorted(sre_parse.FLAGS.items())
-                     if (n&flags)]
+            flags = (c for c, n in self.SORTED_RE_FLAGS if (n & flags))
             flags = '(?%s)' % ''.join(flags)
             self._output(flags, self.RE_FLAGS_TAG, state)
 
@@ -459,20 +460,27 @@ class PyvalColorizer:
                 self._output(val, self.RE_OP_TAG, state)
                 
             elif op == sre_constants.SUBPATTERN:
-                if args[0] is None:
-                    self._output('(?:', self.RE_GROUP_TAG, state)
-                elif args[0] in groups:
+                group, add_flags, del_flags, p = args
+                if group is None:
+                    flags = ""
+                    if add_flags:
+                        flags += "".join(c for (c, n) in self.SORTED_RE_FLAGS if (n & add_flags))
+                    if del_flags:
+                        flags += "-"
+                        flags += "".join(c for (c, n) in self.SORTED_RE_FLAGS if (n & del_flags))
+                    self._output(f'(?{flags}:', self.RE_GROUP_TAG, state)
+                elif group in groups:
                     self._output('(?P<', self.RE_GROUP_TAG, state)
-                    self._output(groups[args[0]], self.RE_REF_TAG, state)
+                    self._output(groups[group], self.RE_REF_TAG, state)
                     self._output('>', self.RE_GROUP_TAG, state)
-                elif isinstance(args[0], int):
+                elif isinstance(group, int):
                     # This is cheating:
                     self._output('(', self.RE_GROUP_TAG, state)
                 else:
                     self._output('(?P<', self.RE_GROUP_TAG, state)
-                    self._output(args[0], self.RE_REF_TAG, state)
+                    self._output(group, self.RE_REF_TAG, state)
                     self._output('>', self.RE_GROUP_TAG, state)
-                self._colorize_re_tree(args[3], state, True, groups)
+                self._colorize_re_tree(p, state, True, groups)
                 self._output(')', self.RE_GROUP_TAG, state)
     
             elif op == sre_constants.GROUPREF:

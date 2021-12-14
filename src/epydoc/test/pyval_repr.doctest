@@ -179,12 +179,15 @@ Regular Expressions
     <code class="re-flags">(?u)</code>a<code class="re-op">*?</code>b<code class="re-op">+?</code>c<code class="re-op">{4,}?</code>d<code class="re-op">{,5}?</code>e<code class="re-op">{3,9}?</code>f<code class="re-op">??</code>
     
     >>> # Subpatterns
-    >>> color_re(r"(foo (bar) | (baz))")
-    <code class="re-group">(</code>foo <code class="re-group">(</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(</code>baz<code class="re-group">)</code><code class="re-group">)</code>
-    >>> color_re(r"(?:foo (?:bar) | (?:baz))")
-    <code class="re-group">(?:</code>foo <code class="re-group">(?:</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(?:</code>baz<code class="re-group">)</code><code class="re-group">)</code>
-    >>> color_re("(foo (?P<a>bar) | (?P<boop>baz))")
-    <code class="re-group">(</code>foo <code class="re-group">(?P&lt;</code><code class="re-ref">a</code><code class="re-group">&gt;</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(?P&lt;</code><code class="re-ref">boop</code><code class="re-group">&gt;</code>baz<code class="re-group">)</code><code class="re-group">)</code>
+    >>> color_re(r"(?u)(foo (bar) | (baz))")
+    <code class="re-flags">(?u)</code><code class="re-group">(</code>foo <code class="re-group">(</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(</code>baz<code class="re-group">)</code><code class="re-group">)</code>
+    >>> # Non-capturing groups without flags are eliminated for optimization in sre_parse
+    >>> color_re(r"(?u)(?:foo (?:bar) | (?:baz))", False)
+    <code class="re-flags">(?u)</code>foo bar <code class="re-op">|</code> baz
+    >>> color_re(r"(?u)(?i:foo (?i-x:bar) | (?i:baz))", False)
+    <code class="re-flags">(?u)</code><code class="re-group">(?i:</code>foo <code class="re-group">(?i-x:</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(?i:</code>baz<code class="re-group">)</code><code class="re-group">)</code>
+    >>> color_re("(?u)(foo (?P<a>bar) | (?P<boop>baz))")
+    <code class="re-flags">(?u)</code><code class="re-group">(</code>foo <code class="re-group">(?P&lt;</code><code class="re-ref">a</code><code class="re-group">&gt;</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(?P&lt;</code><code class="re-ref">boop</code><code class="re-group">&gt;</code>baz<code class="re-group">)</code><code class="re-group">)</code>
 
     >>> # Group References
     >>> color_re(r"(?u)(...) and (\1)")

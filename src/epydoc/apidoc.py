@@ -45,10 +45,10 @@ import builtins
 from epydoc.util import decode_with_backslashreplace, py_src_filename
 import epydoc.markup.pyval_repr
 
+
 ######################################################################
 # Dotted Names
 ######################################################################
-
 class DottedName:
     """
     A sequence of identifiers, separated by periods, used to name a
@@ -180,7 +180,7 @@ class DottedName:
     def __hash__(self):
         return hash(self._identifiers)
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         """
         Compare this dotted name to C{other}.  Two dotted names are
         considered equal if their identifier subsequences are equal.
@@ -188,8 +188,8 @@ class DottedName:
         identifier from left to right.
         """
         if not isinstance(other, DottedName):
-            return -1
-        return cmp(self._identifiers, other._identifiers)
+            raise NotImplemented(f"Can't compare DottedName with {type(other)}")
+        return self._identifiers == other._identifiers
 
     def __len__(self):
         """
@@ -265,10 +265,10 @@ class DottedName:
         else:
             return self[first_difference:]
 
+
 ######################################################################
 # UNKNOWN Value
 ######################################################################
-
 class _Sentinel:
     """
     A unique value that won't compare equal to any other value.  This
@@ -276,21 +276,24 @@ class _Sentinel:
     """
     def __init__(self, name):
         self.name = name
+
     def __repr__(self):
         return '<%s>' % self.name
-    def __nonzero__(self):
+
+    def __bool__(self):
         raise ValueError('Sentinel value <%s> can not be used as a boolean' %
                          self.name)
+
 
 UNKNOWN = _Sentinel('UNKNOWN')
 """A special value used to indicate that a given piece of
 information about an object is unknown.  This is used as the
 default value for all instance variables."""
 
+
 ######################################################################
 # API Documentation Objects: Abstract Base Classes
 ######################################################################
-
 class APIDoc(object):
     """
     API documentation information for a single element of a Python
@@ -417,7 +420,7 @@ class APIDoc(object):
         __setattr__ = _debug_setattr
 
     def __repr__(self):
-       return '<%s>' % self.__class__.__name__
+        return '<%s>' % self.__class__.__name__
     
     def pp(self, doublespace=0, depth=5, exclude=(), include=()):
         """
@@ -455,12 +458,12 @@ class APIDoc(object):
         self.__has_been_hashed = True
         return id(self.__dict__)
 
-    def __cmp__(self, other):
-        if not isinstance(other, APIDoc): return -1
-        if self.__dict__ is other.__dict__: return 0
-        name_cmp = cmp(self.canonical_name, other.canonical_name)
-        if name_cmp == 0: return -1
-        else: return name_cmp
+    def __eq__(self, other):
+        if not isinstance(other, APIDoc):
+            raise NotImplemented(f"Can't compare APIDoc with {type(other)}")
+        if self.__dict__ is other.__dict__:
+            return True
+        return self.canonical_name == other.canonical_name
 
     def is_detailed(self):
         """

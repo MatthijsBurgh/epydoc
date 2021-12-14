@@ -40,7 +40,7 @@ This object only compares equal to itself:
     True
 
 If UNKNOWN is used in a context where it is cast to bool, then it will
-raise an exception.  This helps prevent acidentally interpreting an
+raise an exception.  This helps prevent accidentally interpreting an
 UNKNOWN value as true or false:
 
     >>> if UNKNOWN:
@@ -159,10 +159,10 @@ contains a string that's not a valid python identifier:
 
     >>> DottedName()
     Traceback (most recent call last):
-    InvalidDottedName: Empty DottedName
+    epydoc.apidoc.DottedName.InvalidDottedName: Empty DottedName
     >>> DottedName('1+2', strict=True)
     Traceback (most recent call last):
-    InvalidDottedName: Bad identifier '1+2'
+    epydoc.apidoc.DottedName.InvalidDottedName: Bad identifier '1+2'
     >>> DottedName({})
     Traceback (most recent call last):
     TypeError: Bad identifier {}: expected DottedName or str
@@ -228,7 +228,7 @@ TypeError (but only if epydoc.DEBUG is true):
 
     >>> APIDoc('foo')
     Traceback (most recent call last):
-    TypeError: __init__() takes exactly 1 argument (2 given)
+    TypeError: __init__() takes 1 positional argument but 2 were given
     >>> APIDoc(foo='foo')
     Traceback (most recent call last):
     TypeError: APIDoc got unexpected arg 'foo'

@@ -155,8 +155,14 @@ class PyvalColorizer:
         return "".join(map(enc, s))
 
     @staticmethod
-    def _bytes_escape(b):
-        return repr(b)[2:-1]
+    def _bytes_escape(b: bytes):
+        def enc(c):
+            if c == "'":
+                return r"\'"
+            else:
+                return c
+        b = repr(b)[2:-1]
+        return "".join(map(enc, b)).encode()
 
     #////////////////////////////////////////////////////////////
     # Entry Point

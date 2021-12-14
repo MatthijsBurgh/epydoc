@@ -11,6 +11,7 @@ Utility functions used by the regression tests (C{*.doctest}).
 """
 __docformat__ = 'epytext en'
 
+import importlib
 import tempfile, re, os, os.path, textwrap, sys
 from epydoc.docbuilder import build_doc, build_doc_index
 from epydoc.docparser import parse_docs
@@ -111,7 +112,9 @@ def runintrospecter(s, attribs='', introspect=None, exclude=''):
     if introspect is None:
         import epydoc_test as val
     else:
-        exec("from epydoc_test import %s as val" % introspect)
+        m = importlib.import_module("epydoc_test")
+        importlib.reload(m)
+        val = getattr(m, introspect)
     del sys.path[0]
     # Introspect it.
     val_doc = introspect_docs(val)

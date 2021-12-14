@@ -373,8 +373,7 @@ class PyvalColorizer:
 
     def _colorize_re_flags(self, flags, state):
         if flags:
-            flags = (c for c, n in self.SORTED_RE_FLAGS if (n & flags))
-            flags = '(?%s)' % ''.join(flags)
+            flags = '(?%s)' % ''.join(c for (c, n) in self.SORTED_RE_FLAGS if (n & flags))
             self._output(flags, self.RE_FLAGS_TAG, state)
 
     def _colorize_re_tree(self, tree, state, noparen, groups):

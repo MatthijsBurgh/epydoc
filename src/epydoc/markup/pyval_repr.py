@@ -144,7 +144,7 @@ class PyvalColorizer:
 
     # encoding functions
     @staticmethod
-    def _str_escape(s):
+    def _str_escape(s: str):
         def enc(c):
             if c == "'":
                 return r"\'"

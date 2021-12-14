@@ -150,7 +150,8 @@ Regular Expressions
     ...     colorizer = PyvalColorizer(linelen=55)
     ...     val = colorizer.colorize(re.compile(s))
     ...     if check_roundtrip:
-    ...         assert textcontent(val._tree)[13:-2] == s, val._tree
+    ...         tc = textcontent(val._tree)[13:-2]
+    ...         assert tc == s, f"{tc} != {s}"
     ...     print(val.to_html(None).rstrip()[13:-2])
 
     >>> # Literal characters

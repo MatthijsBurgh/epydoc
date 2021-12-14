@@ -22,17 +22,17 @@ from xml.dom.minidom import Text as _Text
 from epydoc.apidoc import *
 
 # The following methods may be undocumented:
-_NO_DOCS = ['__hash__', '__repr__', '__str__', '__cmp__']
+_NO_DOCS = ['__hash__', '__repr__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__']
 
 # The following methods never need descriptions, authors, or
 # versions:
-_NO_BASIC = ['__hash__', '__repr__', '__str__', '__cmp__']
+_NO_BASIC = ['__hash__', '__repr__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__']
 
 # The following methods never need return value descriptions.
-_NO_RETURN = ['__init__', '__hash__', '__repr__', '__str__', '__cmp__']
+_NO_RETURN = ['__init__', '__hash__', '__repr__', '__str__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__']
 
 # The following methods don't need parameters documented:
-_NO_PARAM = ['__cmp__']
+_NO_PARAM = ['__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__']
 
 class DocChecker:
     """

@@ -7,8 +7,8 @@ Regression Testing for epydoc.markup.pyval_repr
     ...     colorizer = PyvalColorizer(linelen=40, linebreakok=linebreakok)
     ...     pds = colorizer.colorize(v, None)
     ...     s = pds.to_html(None).rstrip()
-    ...     if isinstance(s, unicode):
-    ...         s = s.encode('ascii', 'xmlcharrefreplace')
+    ...     if isinstance(s, str):
+    ...         s = s.encode('ascii', 'xmlcharrefreplace').decode('ascii')
     ...     print(s)
 
 Simple Types
@@ -62,6 +62,8 @@ Currently, the "'" quote is always used, because that's what the
     <code class="variable-quote">'</code><code class="variable-string">&quot;Hello&quot;</code><code class="variable-quote">'</code>
     >>> color("'Hello'")
     <code class="variable-quote">'</code><code class="variable-string">\'Hello\'</code><code class="variable-quote">'</code>
+    >>> color(b"'Hello'")
+    <code class="variable-quote">b'</code><code class="variable-string">\'Hello\'</code><code class="variable-quote">'</code>
 
 Strings containing newlines are automatically rendered as multiline
 strings.
@@ -79,9 +81,16 @@ Unless we ask for them not to be:
 Unicode strings are handled properly.
 
     >>> color(u"Hello world")
-    <code class="variable-quote">u'</code><code class="variable-string">Hello world</code><code class="variable-quote">'</code>
+    <code class="variable-quote">'</code><code class="variable-string">Hello world</code><code class="variable-quote">'</code>
     >>> color(u"\uaaaa And \ubbbb")
-    <code class="variable-quote">u'</code><code class="variable-string">&#43690; And &#48059;</code><code class="variable-quote">'</code>
+    <code class="variable-quote">'</code><code class="variable-string">&#43690; And &#48059;</code><code class="variable-quote">'</code>
+
+Binary strings (bytes) are handled properly:
+
+    >>> color(b"Hello world")
+    <code class="variable-quote">b'</code><code class="variable-string">Hello world</code><code class="variable-quote">'</code>
+    >>> color(b"\x00 And \xff")
+    <code class="variable-quote">b'</code><code class="variable-string">\x00 And \xff</code><code class="variable-quote">'</code>
 
 Lists, Tuples, etc.
 ===================
@@ -90,9 +99,9 @@ braces and commas are tagged with "op".  If the value can fit on the
 current line, it is displayed on one line.  Otherwise, each value is
 listed on a separate line, indented by the size of the open-bracket.
     
-    >>> color(range(10))
+    >>> color(list(range(10)))
     <code class="variable-group">[</code>0<code class="variable-op">, </code>1<code class="variable-op">, </code>2<code class="variable-op">, </code>3<code class="variable-op">, </code>4<code class="variable-op">, </code>5<code class="variable-op">, </code>6<code class="variable-op">, </code>7<code class="variable-op">, </code>8<code class="variable-op">, </code>9<code class="variable-group">]</code>
-    >>> color(range(100))
+    >>> color(list(range(100)))
     <code class="variable-group">[</code>0<code class="variable-op">,</code>
      1<code class="variable-op">,</code>
      2<code class="variable-op">,</code>
@@ -145,28 +154,28 @@ Regular Expressions
     ...     print(val.to_html(None).rstrip()[13:-2])
 
     >>> # Literal characters
-    >>> color_re(u'abc \t\r\n\f\v \xff \uffff', False)
-    abc \t\r\n\f\v \xff \uffff
-    >>> color_re(r'\.\^\$\\\*\+\?\{\}\[\]\|\(\)\'')
-    \.\^\$\\\*\+\?\{\}\[\]\|\(\)\'
+    >>> color_re(u'(?u)abc \t\r\n\f\v \xff \uffff', False)
+    <code class="re-flags">(?u)</code>abc \t\r\n\f\v \xff \uffff
+    >>> color_re(r'(?u)\.\^\$\\\*\+\?\{\}\[\]\|\(\)\'')
+    <code class="re-flags">(?u)</code>\.\^\$\\\*\+\?\{\}\[\]\|\(\)\'
 
     >>> # Any character & character classes
-    >>> color_re(r".\d\D\s\S\w\W\A^$\b\B\Z")
-    .\d\D\s\S\w\W\A^$\b\B\Z
+    >>> color_re(r"(?u).\d\D\s\S\w\W\A^$\b\B\Z")
+    <code class="re-flags">(?u)</code>.\d\D\s\S\w\W\A^$\b\B\Z
 
     >>> # Branching
-    >>> color_re(r"foo|bar")
-    foo<code class="re-op">|</code>bar
+    >>> color_re(r"(?u)foo|bar")
+    <code class="re-flags">(?u)</code>foo<code class="re-op">|</code>bar
 
     >>> # Character classes
-    >>> color_re(r"[abcd]")
-    <code class="re-group">[</code>abcd<code class="re-group">]</code>
+    >>> color_re(r"(?u)[abcd]")
+    <code class="re-flags">(?u)</code><code class="re-group">[</code>abcd<code class="re-group">]</code>
 
     >>> # Repeats
-    >>> color_re(r"a*b+c{4,}d{,5}e{3,9}f?")
-    a<code class="re-op">*</code>b<code class="re-op">+</code>c<code class="re-op">{4,}</code>d<code class="re-op">{,5}</code>e<code class="re-op">{3,9}</code>f<code class="re-op">?</code>
-    >>> color_re(r"a*?b+?c{4,}?d{,5}?e{3,9}?f??")
-    a<code class="re-op">*?</code>b<code class="re-op">+?</code>c<code class="re-op">{4,}?</code>d<code class="re-op">{,5}?</code>e<code class="re-op">{3,9}?</code>f<code class="re-op">??</code>
+    >>> color_re(r"(?u)a*b+c{4,}d{,5}e{3,9}f?")
+    <code class="re-flags">(?u)</code>a<code class="re-op">*</code>b<code class="re-op">+</code>c<code class="re-op">{4,}</code>d<code class="re-op">{,5}</code>e<code class="re-op">{3,9}</code>f<code class="re-op">?</code>
+    >>> color_re(r"(?u)a*?b+?c{4,}?d{,5}?e{3,9}?f??")
+    <code class="re-flags">(?u)</code>a<code class="re-op">*?</code>b<code class="re-op">+?</code>c<code class="re-op">{4,}?</code>d<code class="re-op">{,5}?</code>e<code class="re-op">{3,9}?</code>f<code class="re-op">??</code>
     
     >>> # Subpatterns
     >>> color_re(r"(foo (bar) | (baz))")
@@ -177,36 +186,36 @@ Regular Expressions
     <code class="re-group">(</code>foo <code class="re-group">(?P&lt;</code><code class="re-ref">a</code><code class="re-group">&gt;</code>bar<code class="re-group">)</code> <code class="re-op">|</code> <code class="re-group">(?P&lt;</code><code class="re-ref">boop</code><code class="re-group">&gt;</code>baz<code class="re-group">)</code><code class="re-group">)</code>
 
     >>> # Group References
-    >>> color_re(r"(...) and (\1)")
-    <code class="re-group">(</code>...<code class="re-group">)</code> and <code class="re-group">(</code><code class="re-ref">\1</code><code class="re-group">)</code>
+    >>> color_re(r"(?u)(...) and (\1)")
+    <code class="re-flags">(?u)</code><code class="re-group">(</code>...<code class="re-group">)</code> and <code class="re-group">(</code><code class="re-ref">\1</code><code class="re-group">)</code>
 
     >>> # Ranges
-    >>> color_re(r"[a-bp-z]")
-    <code class="re-group">[</code>a<code class="re-op">-</code>bp<code class="re-op">-</code>z<code class="re-group">]</code>
-    >>> color_re(r"[^a-bp-z]")
-    <code class="re-group">[</code><code class="re-op">^</code>a<code class="re-op">-</code>bp<code class="re-op">-</code>z<code class="re-group">]</code>
-    >>> color_re(r"[^abc]")
-    <code class="re-group">[</code><code class="re-op">^</code>abc<code class="re-group">]</code>
+    >>> color_re(r"(?u)[a-bp-z]")
+    <code class="re-flags">(?u)</code><code class="re-group">[</code>a<code class="re-op">-</code>bp<code class="re-op">-</code>z<code class="re-group">]</code>
+    >>> color_re(r"(?u)[^a-bp-z]")
+    <code class="re-flags">(?u)</code><code class="re-group">[</code><code class="re-op">^</code>a<code class="re-op">-</code>bp<code class="re-op">-</code>z<code class="re-group">]</code>
+    >>> color_re(r"(?u)[^abc]")
+    <code class="re-flags">(?u)</code><code class="re-group">[</code><code class="re-op">^</code>abc<code class="re-group">]</code>
 
     >>> # Lookahead/behinds
-    >>> color_re(r"foo(?=bar)")
-    foo<code class="re-group">(?=</code>bar<code class="re-group">)</code>
-    >>> color_re(r"foo(?!bar)")
-    foo<code class="re-group">(?!</code>bar<code class="re-group">)</code>
-    >>> color_re(r"(?<=bar)foo")
-    <code class="re-group">(?&lt;=</code>bar<code class="re-group">)</code>foo
-    >>> color_re(r"(?<!bar)foo")
-    <code class="re-group">(?&lt;!</code>bar<code class="re-group">)</code>foo
+    >>> color_re(r"(?u)foo(?=bar)")
+    <code class="re-flags">(?u)</code>foo<code class="re-group">(?=</code>bar<code class="re-group">)</code>
+    >>> color_re(r"(?u)foo(?!bar)")
+    <code class="re-flags">(?u)</code>foo<code class="re-group">(?!</code>bar<code class="re-group">)</code>
+    >>> color_re(r"(?u)(?<=bar)foo")
+    <code class="re-flags">(?u)</code><code class="re-group">(?&lt;=</code>bar<code class="re-group">)</code>foo
+    >>> color_re(r"(?u)(?<!bar)foo")
+    <code class="re-flags">(?u)</code><code class="re-group">(?&lt;!</code>bar<code class="re-group">)</code>foo
 
     >>> # Flags
-    >>> color_re(r"(?im)^Food")
-    <code class="re-flags">(?im)</code>^Food
-    >>> color_re(r"(?Limsx)^Food")
-    <code class="re-flags">(?Limsx)</code>^Food
-    >>> color_re(r"(?Limstux)^Food")
-    <code class="re-flags">(?Limstux)</code>^Food
-    >>> color_re(r"(?x)This   is   verbose", False)
-    <code class="re-flags">(?x)</code>Thisisverbose
+    >>> color_re(r"(?imu)^Food")
+    <code class="re-flags">(?imu)</code>^Food
+    >>> color_re(r"(?imsux)^Food")
+    <code class="re-flags">(?imsux)</code>^Food
+    >>> color_re(r"(?imstux)^Food")
+    <code class="re-flags">(?imstux)</code>^Food
+    >>> color_re(r"(?ux)This   is   verbose", False)
+    <code class="re-flags">(?ux)</code>Thisisverbose
 
 Line Wrapping
 =============
@@ -269,15 +278,15 @@ scores; if the score is too low, then `PyvalColorizer.colorize` will return ``No
     score: 3 (ok)
 
     >>> color2(A()) # doctest: +ELLIPSIS
-    repr: <builtins.A instance at ...>
+    repr: <A object at ...>
     score: -4 (bad)
 
     >>> color2([A()]) # doctest: +ELLIPSIS
-    repr: [<builtins.A instance at ...>]
+    repr: [<A object at ...>]
     score: -3 (bad)
 
     >>> color2([A(),1,2,3,4,5,6]) # doctest: +ELLIPSIS
-    repr: [<builtins.A instance at ...>,
+    repr: [<A object at ...>,
      1,
      2,
      3,
@@ -296,9 +305,11 @@ To generate summary-reprs, use maxlines=1 and linebreakok=False:
     >>> def summarize(v):
     ...     print(summarizer.colorize(v).to_plaintext(None))
 
-    >>> summarize(range(100))
+    >>> summarize(list(range(100)))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16...
     >>> summarize('hello\nworld')
     'hello\nworld'
+    >>> summarize(b'hello\nworld')
+    b'hello\nworld'
     >>> summarize('hello\nworld'*100)
     'hello\nworldhello\nworldhello\nworldhello\nworldhello\nw...

@@ -344,14 +344,14 @@ then use parse info -- so ``y`` should be imported, but ``z`` should not.
     >>> import epydoc.docintrospecter
     >>> epydoc.docintrospecter.clear_cache()
     >>> runbuilder(s='''
-    ...     import cStringIO
+    ...     import io
     ...     from re import MULTILINE as y
-    ...     x = cStringIO
+    ...     x = io
     ...     z = y
     ...     ''', attribs=("variables is_imported "))
     ModuleDoc for epydoc_test [0]
      +- variables
-        +- cStringIO => VariableDoc for epydoc_test.cStringIO [1]
+        +- io => VariableDoc for epydoc_test.io [1]
         |  +- is_imported = True
         +- x => VariableDoc for epydoc_test.x [2]
         |  +- is_imported = True

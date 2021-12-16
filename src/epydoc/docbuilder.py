@@ -67,6 +67,7 @@ __docformat__ = 'epytext en'
 ## Imports
 ######################################################################
 
+from itertools import chain
 from sys import maxsize
 import os, os.path, builtins, imp, re, inspect
 from epydoc.apidoc import *
@@ -934,8 +935,7 @@ def merge_docs(introspect_doc, parse_doc, cyclecheck=None, path=None):
         _merge_posargs_and_defaults(introspect_doc, parse_doc, path)
     
     # Merge the two api_doc's attributes.
-    for attrib in set(introspect_doc.__dict__.keys() +
-                      parse_doc.__dict__.keys()):
+    for attrib in set(chain(introspect_doc.__dict__.keys(), parse_doc.__dict__.keys())):
         # Be sure not to merge any private attributes (especially
         # __mergeset or __has_been_hashed!)
         if attrib.startswith('_'): continue

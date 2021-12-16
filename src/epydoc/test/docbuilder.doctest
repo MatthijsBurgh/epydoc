@@ -35,7 +35,7 @@ docstring format is plaintext.
      +- descr = None
      +- variables
         +- x => VariableDoc for epydoc_test.Foo.x [1]
-           +- descr = u'description...\n\n'
+           +- descr = 'description...\n\n'
 
     >>> runbuilder(s='''
     ...     __docformat__ = 'plaintext'
@@ -44,7 +44,7 @@ docstring format is plaintext.
     ...     ''',
     ...     build='Foo', attribs='descr variables')
     ClassDoc for epydoc_test.Foo [0]
-     +- descr = u'@var x: description...\n'
+     +- descr = '@var x: description...\n'
      +- variables = {}
 
 Stuff from future doesn't appear as variable.
@@ -86,13 +86,13 @@ The class signature can be specified in the class docstring instead of __init__
         |  +- name = '__init__'
         |  +- value
         |     +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-        |        +- arg_descrs = [([u'a'], ...
-        |        +- arg_types = {u'a': ...
+        |        +- arg_descrs = [(['a'], ...
+        |        +- arg_types = {'a': ...
         |        +- kwarg = None
         |        +- posargs = ['self', 'a']
         |        +- vararg = None
         +- a => VariableDoc for epydoc_test.Foo.a [3]
-           +- name = u'a'
+           +- name = 'a'
            +- value = <UNKNOWN>
 
 Also keywords arguments can be put in the constructor
@@ -116,8 +116,8 @@ Also keywords arguments can be put in the constructor
            +- name = '__init__'
            +- value
               +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-                 +- arg_descrs = [([u'a'], ...
-                 +- arg_types = {u'a': ...
+                 +- arg_descrs = [(['a'], ...
+                 +- arg_types = {'a': ...
                  +- kwarg = 'kwargs'
                  +- posargs = ['self']
                  +- vararg = None
@@ -143,8 +143,8 @@ A missing docstring on the __init__ is not an issue.
            +- name = '__init__'
            +- value
               +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-                 +- arg_descrs = [([u'a'], ...
-                 +- arg_types = {u'a': ...
+                 +- arg_descrs = [(['a'], ...
+                 +- arg_types = {'a': ...
                  +- kwarg = None
                  +- posargs = ['self', 'a']
                  +- vararg = None
@@ -170,19 +170,19 @@ constructor too.
     ...     attribs="variables name value exception_descrs "
     ...         "posargs vararg kwarg type arg_types arg_descrs docstring")
     ClassDoc for epydoc_test.Foo [0]
-     +- docstring = u'A class to ship rockets in outer sp...
+     +- docstring = 'A class to ship rockets in outer spa...
      +- variables
         +- __init__ => VariableDoc for epydoc_test.Foo.__init__ [1]
            +- docstring = <UNKNOWN>
            +- name = '__init__'
            +- value
               +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-                 +- arg_descrs = [([u'x'], u'first param'), ([u'y'], u...
+                 +- arg_descrs = [(['x'], 'first param'), (['y'], 'sec...
                  +- arg_types = {}
-                 +- docstring = u'__init__ doc'
-                 +- exception_descrs = [(DottedName(u'ValueError'), <epydoc....
+                 +- docstring = '__init__ doc'
+                 +- exception_descrs = [(DottedName('ValueError'), <epydoc.m...
                  +- kwarg = None
-                 +- posargs = [u'x', u'y']
+                 +- posargs = ['x', 'y']
                  +- vararg = None
 
 
@@ -205,18 +205,18 @@ Epydoc can also grok the constructor signature from the class docstring
     ...     attribs="variables name value "
     ...         "posargs vararg kwarg type arg_types arg_descrs docstring")
     ClassDoc for epydoc_test.Foo [0]
-     +- docstring = u'A class to ship rockets ...
+     +- docstring = 'A class to ship rockets ...
      +- variables
         +- __init__ => VariableDoc for epydoc_test.Foo.__init__ [1]
            +- docstring = <UNKNOWN>
            +- name = '__init__'
            +- value
               +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-                 +- arg_descrs = [([u'x'], ...
+                 +- arg_descrs = [(['x'], ...
                  +- arg_types = {}
-                 +- docstring = u'__init__ doc'
+                 +- docstring = '__init__ doc'
                  +- kwarg = None
-                 +- posargs = [u'x', u'y']
+                 +- posargs = ['x', 'y']
                  +- vararg = None
 
 A type can apply to both a param and a variable
@@ -242,14 +242,14 @@ A type can apply to both a param and a variable
         |  +- type_descr = None
         |  +- value
         |     +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-        |        +- arg_descrs = [([u'a'], u'init param.')]
-        |        +- arg_types = {u'a': u'date'}
+        |        +- arg_descrs = [(['a'], 'init param.')]
+        |        +- arg_types = {'a': 'date'}
         |        +- kwarg = None
         |        +- posargs = ['self', 'a']
         |        +- vararg = None
         +- a => VariableDoc for epydoc_test.Foo.a [3]
-           +- name = u'a'
-           +- type_descr = u'date\n\n'
+           +- name = 'a'
+           +- type_descr = 'date\n\n'
            +- value = <UNKNOWN>
 
 But there can also be two different types
@@ -276,14 +276,14 @@ But there can also be two different types
         |  +- type_descr = None
         |  +- value
         |     +- RoutineDoc for epydoc_test.Foo.__init__ [2]
-        |        +- arg_descrs = [([u'a'], u'init param.')]
-        |        +- arg_types = {u'a': u'string'}
+        |        +- arg_descrs = [(['a'], 'init param.')]
+        |        +- arg_types = {'a': 'string'}
         |        +- kwarg = None
         |        +- posargs = ['self', 'a']
         |        +- vararg = None
         +- a => VariableDoc for epydoc_test.Foo.a [3]
-           +- name = u'a'
-           +- type_descr = u'date\n\n'
+           +- name = 'a'
+           +- type_descr = 'date\n\n'
            +- value = <UNKNOWN>
 
 Value Representation
@@ -323,15 +323,15 @@ current behavior; but should be replaced when we change the behavior.
     ...     ''')
     Var  Score  Repr
     --------------------------------------------------
-     a      0   u'Foo()'
-     b      1   u'<specialized repr>'
-     c      0   u'Baz()'
-     d      5   u'[1, 2, 3, 99]'
-     e      1   u'8'
-     f      1   u"re.compile(r'hi+')"
-     h    -99   u'??'
-     i      0   u'[Foo(), 1, 2]'
-     j      0   u'[<epydoc_test.Foo instance at ...>, 1, 2, 3]'
+     a      0   'Foo()'
+     b      1   '<specialized repr>'
+     c      0   'Baz()'
+     d      5   '[1, 2, 3, 99]'
+     e      1   '8'
+     f      1   "re.compile(r'(?u)hi+')"
+     h    -99   '??'
+     i      0   '[Foo(), 1, 2]'
+     j      0   '[<epydoc_test.Foo object at ...>, 1, 2, 3]'
 
 Merging is_imported
 ===================

@@ -862,7 +862,7 @@ def get_value_from_filename(filename, context=None):
     # If the context wasn't provided, then check if the file is in a
     # package directory.  If so, then update basedir & name to contain
     # the topmost package's directory and the fully qualified name for
-    # this file.  (This update assume the default value of __path__
+    # this file.  (This update assumes the default value of __path__
     # for the parent packages; if the parent packages override their
     # __path__s, then this can cause us not to find the value.)
     if context is None:

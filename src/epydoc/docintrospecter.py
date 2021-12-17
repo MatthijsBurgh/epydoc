@@ -356,7 +356,9 @@ def introspect_class(cls, class_doc, module_name=None):
             pass
 
     # Record the class's metaclass
-    class_doc.metaclass = introspect_docs(type(cls))
+    metaclass = type(cls)
+    if metaclass != type:
+        class_doc.metaclass = introspect_docs(metaclass)
 
     # Start a list of subclasses.
     class_doc.subclasses = []

@@ -185,8 +185,19 @@ def _get_valuedoc(value):
 #: A list of module variables that should not be included in a
 #: module's API documentation.
 UNDOCUMENTED_MODULE_VARS = (
-    '__builtins__', '__doc__', '__all__', '__file__', '__path__',
-    '__name__', '__extra_epydoc_fields__', '__docformat__')
+    '__all__',
+    '__builtins__',
+    '__cached__',
+    '__doc__',
+    '__docformat__',
+    '__extra_epydoc_fields__',
+    '__file__',
+    '__loader__',
+    '__name__',
+    '__package__',
+    '__path__',
+    '__spec__'
+)
 
 def introspect_module(module, module_doc, module_name=None, preliminary=False):
     """

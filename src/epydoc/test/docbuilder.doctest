@@ -300,8 +300,8 @@ current behavior; but should be replaced when we change the behavior.
     ...     for (name, var_doc) in sorted(value_doc.variables.items()):
     ...         if len(name) > 1: continue
     ...         var_repr =  var_doc.value.pyval_repr()
-    ...         print(" %s   %4s   %r" % (name, var_repr.score,)
-    ...                                  var_repr.to_plaintext(None))
+    ...         print(" %s   %4s   %r" % (name, var_repr.score,
+    ...                                   var_repr.to_plaintext(None)))
 
     >>> print_py_reprs('''
     ...     import re

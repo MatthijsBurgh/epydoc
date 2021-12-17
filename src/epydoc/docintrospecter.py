@@ -29,7 +29,7 @@ import inspect, re, sys, os.path, imp
 # API documentation encoding:
 from epydoc.apidoc import *
 # Type comparisons:
-from types import BuiltinMethodType, FunctionType, MethodType, ModuleType
+from types import BuiltinFunctionType, BuiltinMethodType, FunctionType, MethodType, ModuleType
 # Error reporting:
 from epydoc import log
 # Helper functions:
@@ -673,6 +673,13 @@ def get_canonical_name(value, strict=False):
           not value.__name__.startswith('<')):
         module_name = _find_function_module(value)
         if module_name is None: return UNKNOWN
+        dotted_name = DottedName(module_name, value.__name__, strict=strict)
+    elif (isinstance(value, BuiltinFunctionType) and
+          not value.__name__.startswith('<')):
+        module_name = _find_function_module(value)  # type: str
+        if module_name is None: return UNKNOWN
+        if module_name.startswith('_') and not module_name.startswith('__'):
+            module_name = module_name[1:]
         dotted_name = DottedName(module_name, value.__name__, strict=strict)
     else:
         return UNKNOWN

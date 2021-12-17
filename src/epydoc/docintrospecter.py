@@ -388,6 +388,11 @@ def introspect_class(cls, class_doc, module_name=None):
                         "contain an iterable; ignoring base list."
                         % getattr(cls, '__name__', '??'))
         if bases is not None:
+            try:
+                # Ignore default object base
+                bases.remove(object)
+            except ValueError:
+                pass
             class_doc.bases = []
             for base in bases:
                 basedoc = introspect_docs(base)

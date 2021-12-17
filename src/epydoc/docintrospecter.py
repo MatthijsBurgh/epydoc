@@ -25,7 +25,8 @@ __docformat__ = 'epytext en'
 ## Imports
 ######################################################################
 
-import inspect, re, sys, os.path, imp
+import importlib
+import inspect, re, sys, os.path
 # API documentation encoding:
 from epydoc.apidoc import *
 # Type comparisons:
@@ -964,10 +965,13 @@ def _import(name, filename=None):
     try:
         try:
             if filename is None:
-                return __import__(name)
+                return importlib.import_module(name)
             else:
                 # For importing scripts:
-                return imp.load_source(name, filename)
+                spec = importlib.util.spec_from_file_location(name, filename)
+                m = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(m)
+                return m
         except KeyboardInterrupt:
             raise
         except Exception:

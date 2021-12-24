@@ -134,8 +134,8 @@ class DotGraph(object):
         have the same uid."""
 
         # Encode the title, if necessary.
-        if isinstance(self.title, unicode):
-            self.title = self.title.encode('ascii', 'xmlcharrefreplace')
+        if isinstance(self.title, str):
+            self.title = self.title.encode('ascii', 'xmlcharrefreplace').decode()
 
         # Make sure the UID isn't too long.
         self.uid = self.uid[:30]
@@ -415,7 +415,7 @@ class DotGraph(object):
         lines.append('}')
 
         # Default dot input encoding is UTF-8
-        return u'\n'.join(lines).encode('utf-8')
+        return '\n'.join(lines).encode('utf-8')
 
 class DotGraphNode(object):
     _next_id = 0
@@ -1525,7 +1525,7 @@ def get_dot_version():
     if _dot_version is None:
         try:
             out, err = run_subprocess([DOT_COMMAND, '-V'])
-            version_info = err or out
+            version_info = err.decode('utf-8') or out.decode('utf-8')
             m = _DOT_VERSION_RE.match(version_info)
             if m:
                 _dot_version = [int(x) for x in m.group(1).split('.')]

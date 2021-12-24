@@ -152,9 +152,10 @@ def testencoding(s, introspect=True, parse=True, debug=False):
     # Write s to a temporary file.
     tmp_dir = tempfile.mkdtemp()
     path = os.path.join(tmp_dir, 'enc_test.py')
-    out = open(path, 'w')
-    out.write(textwrap.dedent(s))
-    out.close()
+    if not isinstance(s, bytes):
+        s = textwrap.dedent(s).encode('latin1')
+    with open(path, 'wb') as f:
+        f.write(s)
     # Build docs for it
     docindex = build_doc_index([path], introspect, parse)
     if docindex is None: return

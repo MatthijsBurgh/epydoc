@@ -304,7 +304,7 @@ class PythonSourceColorizer:
 
     #: A regular expression used to pick out the unicode encoding for
     #: the source file.
-    UNICODE_CODING_RE = re.compile(r'.*?\n?.*?coding[:=]\s*([-\w.]+)')
+    UNICODE_CODING_RE = re.compile(b'.*?\n?.*?coding[:=]\s*([-\w.]+)')
 
     #: A configuration constant, used to determine whether or not to add
     #: collapsable <div> elements for definition blocks.
@@ -412,6 +412,8 @@ class PythonSourceColorizer:
         #: The number of spaces to replace each tab in source code with
         self.tab_width = tab_width
 
+        #: Module text
+        self.text = None
         
     def find_line_offsets(self):
         """
@@ -455,7 +457,16 @@ class PythonSourceColorizer:
         self.doclink_targets_cache = {}
 
         # Load the module's text.
-        self.text = open(self.module_filename).read()
+        with open(self.module_filename, 'rb') as f:
+            self.text = f.read()
+        # Check for a unicode encoding declaration.
+        m = self.UNICODE_CODING_RE.match(self.text)
+        if m:
+            coding = m.group(1).decode()
+        else:
+            coding = 'iso-8859-1'
+        self.text = self.text.decode(coding)
+
         self.text = self.text.expandtabs(self.tab_width).rstrip()+'\n'
 
         # Construct the line_offsets table.
@@ -478,25 +489,19 @@ class PythonSourceColorizer:
         except tokenize.TokenError as ex:
             html = self.text
 
-        # Check for a unicode encoding declaration.
-        m = self.UNICODE_CODING_RE.match(self.text)
-        if m: coding = m.group(1)
-        else: coding = 'iso-8859-1'
-
         # Decode the html string into unicode, and then encode it back
         # into ascii, replacing any non-ascii characters with xml
         # character references.
         # try:
-        #     html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
+        #     html = html.encode(coding).decode('ascii', 'xmlcharrefreplace')
         # except LookupError:
         #     coding = 'iso-8859-1'
-        #     html = html.decode(coding).encode('ascii', 'xmlcharrefreplace')
+        #     html = html.encode(coding).decode('ascii', 'xmlcharrefreplace')
         # except UnicodeDecodeError as e:
         #     log.warning("Unicode error while generating syntax-highlighted "
         #                 "source code: %s (%s)" % (e, self.module_filename))
-        #     html = html.decode(coding, 'ignore').encode(
+        #     html = html.encode(coding, 'ignore').decode(
         #         'ascii', 'xmlcharrefreplace')
-            
 
         # Call expandto.
         html += PYSRC_EXPANDTO_JAVASCRIPT

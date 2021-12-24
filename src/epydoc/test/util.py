@@ -12,6 +12,7 @@ Utility functions used by the regression tests (C{*.doctest}).
 __docformat__ = 'epytext en'
 
 import importlib
+import shutil
 import tempfile, re, os, os.path, textwrap, sys
 from epydoc.docbuilder import build_doc, build_doc_index
 from epydoc.docparser import parse_docs
@@ -162,9 +163,7 @@ def testencoding(s, introspect=True, parse=True, debug=False):
     # Write html output.
     writer = HTMLWriter(docindex, mark_docstrings=True)
     writer.write(tmp_dir)
-    for file in os.listdir(tmp_dir):
-        os.unlink(os.path.join(tmp_dir,file))
-    os.rmdir(tmp_dir)
+    shutil.rmtree(tmp_dir)
 
     # Restore the HTMLWriter class to its original state.
     HTMLWriter.docstring_to_html = original_docstring_to_html
@@ -181,12 +180,7 @@ def write_pystring_to_tmp_dir(s):
     return tmp_dir
 
 def cleanup_tmp_dir(tmp_dir):
-    os.unlink(os.path.join(tmp_dir, 'epydoc_test.py'))
-    try:
-        os.unlink(os.path.join(tmp_dir, 'epydoc_test.pyc'))
-    except OSError:
-        pass
-    os.rmdir(tmp_dir)
+    shutil.rmtree(tmp_dir)
     sys.modules.pop('epydoc_test', None)
 
 def to_plain(docstring):

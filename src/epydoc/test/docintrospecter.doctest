@@ -89,7 +89,7 @@ Unlike the parser, arbitrary computed values can be extracted:
     >>> runintrospecter(s="""
     ...     def f(x):
     ...         if x>100: return x
-    ...         else: return f((x+2)*8/7)
+    ...         else: return f((x+2)*8//7)
     ...     x = f(12)
     ...     """, attribs="variables value pyval")
     ModuleDoc for epydoc_test [0]
@@ -180,7 +180,7 @@ Introspected functions are represented by `RoutineDoc` objects:
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', 'f')
      +- docs_extracted_by = 'introspecter'
-     +- docstring = u'docstring for f'
+     +- docstring = 'docstring for f'
      +- kwarg = None
      +- lineno = 2
      +- posarg_defaults = [None]
@@ -204,7 +204,7 @@ of the variable argument and keyword argument, respectively:
     RoutineDoc for epydoc_test.f [0]
      +- canonical_name = DottedName('epydoc_test', 'f')
      +- docs_extracted_by = 'introspecter'
-     +- docstring = u'docstring for f'
+     +- docstring = 'docstring for f'
      +- kwarg = 'kw'
      +- lineno = 2
      +- posarg_defaults = [None, <GenericValueDoc 22>, <Generic...
@@ -226,12 +226,12 @@ instance method:
     ...     """, introspect="g", exclude='defining_module')
     RoutineDoc [0]
      +- docs_extracted_by = 'introspecter'
-     +- docstring = u'docstring'
+     +- docstring = 'docstring'
      +- kwarg = None
      +- lineno = 3
      +- posarg_defaults = [None]
      +- posargs = ['x']
-     +- pyval = <bound method A.f of <epydoc_test.A i...
+     +- pyval = <bound method A.f of <epydoc_test.A o...
      +- vararg = None
 
 Decorators & Wrapper Assignments
@@ -244,7 +244,7 @@ Decorators & Wrapper Assignments
     ...     """, introspect="f")
     ClassMethodDoc [0]
      +- docs_extracted_by = 'introspecter'
-     +- docstring = u'docstring for f'
+     +- docstring = 'docstring for f'
      +- kwarg = None
      +- lineno = 2
      +- posarg_defaults = [None, None]
@@ -256,15 +256,17 @@ Classes
 =======
 
     >>> runintrospecter(s="""
-    ...     class A:
-    ...         "no bases"
-    ...         class Nested: "nested class"
-    ...     class B(A): "single base"
-    ...     class C(A,B): "multiple bases"
-    ...     class D( ((A)) ): "extra parens around base"
-    ...     class E(A.Nested): "dotted name"
-    ...     class F(((A).Nested)): "parens with dotted name"
-    ...     class Z(B.__bases__[0]): "calculated base" # not handled!
+    ...    class A:
+    ...        "no bases"
+    ...    class B:
+    ...        "no bases with nested class"
+    ...        class Nested: "nested class"
+    ...    class C(A): "single base"
+    ...    class D(A, B): "multiple bases"
+    ...    class E(((A))): "extra parenthesis around base"
+    ...    class F(B.Nested): "dotted name"
+    ...    class G(((B).Nested)): "parens with dotted name"
+    ...    class Z(C.__bases__[0]): "calculated base"  # not handled!
     ...     """,
     ...     attribs='variables value bases docstring')
     ModuleDoc for epydoc_test [0]
@@ -275,31 +277,29 @@ Classes
         |  +- value
         |     +- ClassDoc for epydoc_test.A [2]
         |        +- bases = []
-        |        +- docstring = u'no bases'
-        |        +- variables
-        |           +- Nested => VariableDoc for epydoc_test.A.Nested [3]
-        |              +- docstring = <UNKNOWN>
-        |              +- value
-        |                 +- ClassDoc [4]
-        |                    +- bases = []
-        |                    +- docstring = u'nested class'
-        |                    +- variables = {}
-        +- B => VariableDoc for epydoc_test.B [5]
+        |        +- docstring = 'no bases'
+        |        +- variables = {}
+        +- B => VariableDoc for epydoc_test.B [3]
         |  +- docstring = <UNKNOWN>
         |  +- value
-        |     +- ClassDoc for epydoc_test.B [6]
-        |        +- bases
-        |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
-        |        +- docstring = u'single base'
-        |        +- variables = {}
+        |     +- ClassDoc for epydoc_test.B [4]
+        |        +- bases = []
+        |        +- docstring = 'no bases with nested class'
+        |        +- variables
+        |           +- Nested => VariableDoc for epydoc_test.B.Nested [5]
+        |              +- docstring = <UNKNOWN>
+        |              +- value
+        |                 +- ClassDoc [6]
+        |                    +- bases = []
+        |                    +- docstring = 'nested class'
+        |                    +- variables = {}
         +- C => VariableDoc for epydoc_test.C [7]
         |  +- docstring = <UNKNOWN>
         |  +- value
         |     +- ClassDoc for epydoc_test.C [8]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
-        |        |  +- ClassDoc for epydoc_test.B [6] (defined above)
-        |        +- docstring = u'multiple bases'
+        |        +- docstring = 'single base'
         |        +- variables = {}
         +- D => VariableDoc for epydoc_test.D [9]
         |  +- docstring = <UNKNOWN>
@@ -307,31 +307,40 @@ Classes
         |     +- ClassDoc for epydoc_test.D [10]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
-        |        +- docstring = u'extra parens around base'
+        |        |  +- ClassDoc for epydoc_test.B [4] (defined above)
+        |        +- docstring = 'multiple bases'
         |        +- variables = {}
         +- E => VariableDoc for epydoc_test.E [11]
         |  +- docstring = <UNKNOWN>
         |  +- value
         |     +- ClassDoc for epydoc_test.E [12]
         |        +- bases
-        |        |  +- ClassDoc [4] (defined above)
-        |        +- docstring = u'dotted name'
+        |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
+        |        +- docstring = 'extra parenthesis around base'
         |        +- variables = {}
         +- F => VariableDoc for epydoc_test.F [13]
         |  +- docstring = <UNKNOWN>
         |  +- value
         |     +- ClassDoc for epydoc_test.F [14]
         |        +- bases
-        |        |  +- ClassDoc [4] (defined above)
-        |        +- docstring = u'parens with dotted name'
+        |        |  +- ClassDoc [6] (defined above)
+        |        +- docstring = 'dotted name'
         |        +- variables = {}
-        +- Z => VariableDoc for epydoc_test.Z [15]
+        +- G => VariableDoc for epydoc_test.G [15]
+        |  +- docstring = <UNKNOWN>
+        |  +- value
+        |     +- ClassDoc for epydoc_test.G [16]
+        |        +- bases
+        |        |  +- ClassDoc [6] (defined above)
+        |        +- docstring = 'parens with dotted name'
+        |        +- variables = {}
+        +- Z => VariableDoc for epydoc_test.Z [17]
            +- docstring = <UNKNOWN>
            +- value
-              +- ClassDoc for epydoc_test.Z [16]
+              +- ClassDoc for epydoc_test.Z [18]
                  +- bases
                  |  +- ClassDoc for epydoc_test.A [2] (defined above)
-                 +- docstring = u'calculated base'
+                 +- docstring = 'calculated base'
                  +- variables = {}
 
 Some class variable have a special meaning. The ``__slots__`` variable isn't
@@ -352,9 +361,13 @@ very useful and should be discarded.
               +- ClassDoc for epydoc_test.Foo [2]
                  +- variables
                     +- __init__ => VariableDoc for epydoc_test.Foo.__init__ [3]
-                       +- name = '__init__'
+                    |  +- name = '__init__'
+                    |  +- value
+                    |     +- RoutineDoc [4]
+                    +- bar => VariableDoc for epydoc_test.Foo.bar [5]
+                       +- name = 'bar'
                        +- value
-                          +- RoutineDoc [4]
+                          +- PropertyDoc [6]
 
 Delete Statements
 =================
@@ -457,7 +470,7 @@ Single-Line Blocks
            +- docstring = <UNKNOWN>
            +- value
               +- ClassDoc for epydoc_test.A [2]
-                 +- docstring = u'docstring for A'
+                 +- docstring = 'docstring for A'
                  +- variables = {}
 
 Imports
@@ -499,7 +512,7 @@ Unicode
     ...         u"unicode in docstring: \u1000"
     ...     """, introspect="f", attribs="docstring")
     RoutineDoc for epydoc_test.f [0]
-     +- docstring = u'unicode in docstring: \u1000'
+     +- docstring = 'unicode in docstring: \u1000'
 
 Instance Variables
 ==================
@@ -553,16 +566,16 @@ Recursive objects
      +- bases = []
      +- canonical_name = DottedName('epydoc_test', 'A')
      +- docs_extracted_by = 'introspecter'
-     +- docstring = u'A base referring to a child'
-     +- pyval = <class epydoc_test.A at ...>
+     +- docstring = 'A base referring to a child'
+     +- pyval = <class 'epydoc_test.A'>
      +- subclasses
      |  +- ClassDoc for epydoc_test.B [1]
      |     +- bases
      |     |  +- ClassDoc for epydoc_test.A [0] (defined above)
      |     +- canonical_name = DottedName('epydoc_test', 'B')
      |     +- docs_extracted_by = 'introspecter'
-     |     +- docstring = u'Its child.'
-     |     +- pyval = <class epydoc_test.B at ...>
+     |     +- docstring = 'Its child.'
+     |     +- pyval = <class 'epydoc_test.B'>
      |     +- subclasses = []
      |     +- variables = {}
      +- variables
@@ -594,4 +607,4 @@ value of getcwd.
      +- variables
         +- getcwd => VariableDoc for epydoc_test.getcwd [1]
            +- value
-              +- RoutineDoc [2]
+              +- RoutineDoc for posix.getcwd [2]

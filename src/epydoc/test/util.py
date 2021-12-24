@@ -202,7 +202,7 @@ def print_docstring_as_html(self, parsed_docstring, *varargs, **kwargs):
     monkey-patch the HTMLWriter class's docstring_to_html() method.
     """
     s = parsed_docstring.to_html(None).strip()
-    s = s.encode('ascii', 'xmlcharrefreplace')
+    s = s.encode('ascii', 'xmlcharrefreplace').decode('latin1')
     s = remove_surrogates(s)
     print(s)
     return ''

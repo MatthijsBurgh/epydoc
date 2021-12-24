@@ -532,13 +532,13 @@ def process_file(module_doc):
 
     # The token-eating loop:
     try:
-        module_file = codecs.open(module_doc.filename, 'rU', encoding)
+        module_file = codecs.open(module_doc.filename, 'r', encoding)
     except LookupError:
         log.warning("Unknown encoding %r for %s; using the default"
-                    "encoding instead (iso-8859-1)" %
+                    "encoding instead (utf-8)" %
                     (encoding, module_doc.filename))
-        encoding = 'iso-8859-1'
-        module_file = codecs.open(module_doc.filename, 'rU', encoding)
+        encoding = 'utf-8'
+        module_file = codecs.open(module_doc.filename, 'r', encoding)
     tok_iter = tokenize.generate_tokens(module_file.readline)
     for toktype, toktext, (srow,scol), (erow,ecol), line_str in tok_iter:
         # BOM encoding marker: ignore.

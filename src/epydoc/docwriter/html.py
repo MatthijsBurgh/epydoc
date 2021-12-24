@@ -3359,7 +3359,7 @@ class HTMLWriter:
     def _attr_to_html(self, attr, api_doc, indent):
         if api_doc in (None, UNKNOWN):
             return ''
-        pds = getattr(api_doc, attr, None) # pds = ParsedDocstring.
+        pds = getattr(api_doc, attr, None)  # type: ParsedDocstring
         if pds not in (None, UNKNOWN):
             return self.docstring_to_html(pds, api_doc, indent)
         elif isinstance(api_doc, VariableDoc):

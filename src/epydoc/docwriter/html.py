@@ -683,18 +683,16 @@ class HTMLWriter:
         self.write_homepage(directory)
 
         # Don't report references to builtins as missing
-        for k in self._failed_xrefs.keys(): # have a copy of keys
+        for k in list(self._failed_xrefs.keys()):  # have a copy of keys
             if hasattr(builtins, k):
                 del self._failed_xrefs[k]
 
         # Report any failed crossreferences
         if self._failed_xrefs:
             estr = 'Failed identifier crossreference targets:\n'
-            failed_identifiers = self._failed_xrefs.keys()
-            failed_identifiers.sort()
+            failed_identifiers = sorted(self._failed_xrefs.keys())
             for identifier in failed_identifiers:
-                names = self._failed_xrefs[identifier].keys()
-                names.sort()
+                names = sorted(self._failed_xrefs[identifier].keys())
                 estr += '- %s' % identifier
                 estr += '\n'
                 for name in names:

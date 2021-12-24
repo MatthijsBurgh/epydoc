@@ -2008,10 +2008,10 @@ def lookup_name(identifier, parent_docs):
             return parent_docs[0].variables[identifier]
 
     # Builtins
-    builtins = epydoc.docintrospecter.introspect_docs(builtins)
-    if isinstance(builtins, NamespaceDoc):
-        if identifier in builtins.variables:
-            return builtins.variables[identifier]
+    builtins_ = epydoc.docintrospecter.introspect_docs(builtins)
+    if isinstance(builtins_, NamespaceDoc):
+        if identifier in builtins_.variables:
+            return builtins_.variables[identifier]
 
     # We didn't find it; return None.
     return None

@@ -174,9 +174,8 @@ def testencoding(s, introspect=True, parse=True, debug=False):
 
 def write_pystring_to_tmp_dir(s):
     tmp_dir = tempfile.mkdtemp()
-    out = open(os.path.join(tmp_dir, 'epydoc_test.py'), 'w')
-    out.write(textwrap.dedent(s))
-    out.close()
+    with open(os.path.join(tmp_dir, 'epydoc_test.py'), 'w') as f:
+        f.write(textwrap.dedent(s))
     return tmp_dir
 
 def cleanup_tmp_dir(tmp_dir):

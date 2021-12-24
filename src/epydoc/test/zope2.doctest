@@ -11,47 +11,38 @@ We treat extension classes as if they were classes:
     >>> runintrospecter(s='''
     ...     from ExtensionClass import ExtensionClass
     ...     ''', attribs='variables value pyval',
-    ...     introspect='ExtensionClass')
-    ClassDoc [0]
-     +- pyval = <extension class ExtensionClass at 40...
+    ...     introspect='ExtensionClass')  # doctest: +ELLIPSIS
+    ClassDoc for ExtensionClass.ExtensionClass [0]
+     +- pyval = <class 'ExtensionClass.ExtensionClass'>
      +- variables
-        +- __basicnew__ => VariableDoc for __basicnew__ [1]
+        +- __basicnew__ => VariableDoc for ExtensionClass.ExtensionClass.__basicnew__ [1]
         |  +- value
         |     +- RoutineDoc [2]
-        |        +- pyval = <CMethod object at ...>
-        +- __call__ => VariableDoc for __call__ [3]
+        |        +- pyval = <method '__basicnew__' of ...
+        +- __delattr__ => VariableDoc for ExtensionClass.ExtensionClass.__delattr__ [3]
         |  +- value
         |     +- RoutineDoc [4]
-        |        +- pyval = <CMethod object at ...>
-        +- __delattr__ => VariableDoc for __delattr__ [5]
+        |        +- pyval = <slot wrapper '__delattr__' of ...
+        +- __init__ => VariableDoc for ExtensionClass.ExtensionClass.__init__ [5]
         |  +- value
         |     +- RoutineDoc [6]
-        |        +- pyval = <CMethod object at ...>
-        +- __getattr__ => VariableDoc for __getattr__ [7]
+        |        +- pyval = <slot wrapper '__init__' of ...
+        +- __new__ => VariableDoc for ExtensionClass.ExtensionClass.__new__ [7]
         |  +- value
         |     +- RoutineDoc [8]
-        |        +- pyval = <CMethod object at ...>
-        +- __init__ => VariableDoc for __init__ [9]
+        |        +- pyval = <built-in method __new__ of type ...
+        +- __setattr__ => VariableDoc for ExtensionClass.ExtensionClass.__setattr__ [9]
         |  +- value
         |     +- RoutineDoc [10]
-        |        +- pyval = <CMethod object at ...>
-        +- __reduce__ => VariableDoc for __reduce__ [11]
+        |        +- pyval = <slot wrapper '__setattr__' of ...
+        +- inheritedAttribute => VariableDoc for ExtensionClass.ExtensionClass.inheritedAttribute [11]
         |  +- value
         |     +- RoutineDoc [12]
-        |        +- pyval = <CMethod object at ...>
-        +- __repr__ => VariableDoc for __repr__ [13]
-        |  +- value
-        |     +- RoutineDoc [14]
-        |        +- pyval = <CMethod object at ...>
-        +- __setattr__ => VariableDoc for __setattr__ [15]
-        |  +- value
-        |     +- RoutineDoc [16]
-        |        +- pyval = <CMethod object at ...>
-        +- inheritedAttribute => VariableDoc for inheritedAttribute [17]
+        |        +- pyval = <method 'inheritedAttribute' of ...
+        +- mro => VariableDoc for ExtensionClass.ExtensionClass.mro [13]
            +- value
-              +- RoutineDoc [18]
-                 +- pyval = <CMethod object at ...>
+              +- RoutineDoc [14]
+                 +- pyval = <method 'mro' of 'ExtensionClass.Exte...
 
 (If we didn't add special support, ``ExtensionClass`` would be a
 `GenericValueDoc`.)
-

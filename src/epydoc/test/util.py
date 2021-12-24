@@ -183,7 +183,7 @@ def cleanup_tmp_dir(tmp_dir):
     sys.modules.pop('epydoc_test', None)
 
 def to_plain(docstring):
-    """Conver a parsed docstring into plain text"""
+    """Convert a parsed docstring into plain text"""
     if isinstance(docstring, ParsedDocstring):
         docstring = docstring.to_plaintext(None)
     return docstring.rstrip()

@@ -152,7 +152,7 @@ as latin-1.  An example of this is a non-unicode docstring for
 properties:
 
     >>> testencoding('''# -*- coding: utf-8 -*-
-    ... p=property(doc="""\xc2\x80""")
+    ... p=property(doc=b"""\\xc2\\x80""")
     ... ''') # doctest: +ELLIPSIS
     <property object at ...>'s docstring is not a unicode string, but it contains non-ascii data -- treating it as latin-1.
     &#194;&#128;

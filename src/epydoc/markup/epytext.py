@@ -243,7 +243,7 @@ def parse(str_, errors = None):
         encountered while parsing.
     """
     # Initialize errors list.
-    if errors == None:
+    if errors is None:
         errors = []
         raise_on_error = 1
     else:

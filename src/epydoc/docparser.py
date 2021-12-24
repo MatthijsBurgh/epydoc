@@ -577,7 +577,7 @@ def process_file(module_doc):
         # then discard them: blank lines are not allowed between a
         # comment block and the thing it describes.
         elif toktype == tokenize.NL:
-            if comments and not line_toks:
+            if not line_str.strip() and comments and not line_toks:
                 log.warning('Ignoring docstring comment block followed by '
                             'a blank line in %r on line %r' %
                             (module_doc.filename, srow-1))

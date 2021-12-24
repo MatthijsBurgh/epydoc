@@ -393,8 +393,8 @@ constant takes precedence:
     ...     #: comment1
     ...     x = 12 #: comment2
     ...     '''string'''""",
-    ...     attribs="variables name docstring")
-    <UNKNOWN> has both a comment-docstring and a normal (string) docstring; ignoring the comment-docstring.
+    ...     attribs="variables name docstring")  # doctest: +ELLIPSIS
+    Parsing .../epydoc_test.py (line 4): x has both a comment-docstring and a normal (string) docstring; ignoring the comment-docstring.
     ModuleDoc for epydoc_test [0]
      +- docstring = <UNKNOWN>
      +- variables
@@ -497,8 +497,8 @@ Classes
     ...     class F(((A).Nested)): "parens with dotted name"
     ...     class Z(B.__bases__[0]): "calculated base" # not handled!
     ...     """,
-    ...     attribs='variables value bases docstring')
-    Unable to extract the base list for epydoc_test.Z: Bad dotted name
+    ...     attribs='variables value bases docstring')  # doctest: +ELLIPSIS
+    Parsing .../epydoc_test.py (line 10): Unable to extract the base list for class 'epydoc_test.Z'.
     ModuleDoc for epydoc_test [0]
      +- docstring = <UNKNOWN>
      +- variables

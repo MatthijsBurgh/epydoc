@@ -212,21 +212,6 @@ of the variable argument and keyword argument, respectively:
      +- pyval = <function f at ...>
      +- vararg = 'v'
 
-Tuple arguments are encoded as a single ArgDoc with a complex name:
-
-    >>> runintrospecter(s="""
-    ...     def f( (x, (y,z)) ): pass""",
-    ...     attribs='variables value posargs posarg_defaults vararg kwarg')
-    ModuleDoc for epydoc_test [0]
-     +- variables
-        +- f => VariableDoc for epydoc_test.f [1]
-           +- value
-              +- RoutineDoc for epydoc_test.f [2]
-                 +- kwarg = None
-                 +- posarg_defaults = [None]
-                 +- posargs = [['x', ['y', 'z']]]
-                 +- vararg = None
-
 Methods
 =======
 

@@ -180,7 +180,7 @@ class DottedName:
     def __hash__(self):
         return hash(self._identifiers)
 
-    def __eq__(self, other):
+    def __cmp__(self, other):
         """
         Compare this dotted name to C{other}.  Two dotted names are
         considered equal if their identifier subsequences are equal.
@@ -188,8 +188,45 @@ class DottedName:
         identifier from left to right.
         """
         if not isinstance(other, DottedName):
-            raise NotImplemented(f"Can't compare DottedName with {type(other)}")
-        return self._identifiers == other._identifiers
+            return NotImplemented
+        return (self._identifiers > other._identifiers) - \
+               (self._identifiers < other._identifiers)
+
+    def __lt__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r < 0
+
+    def __le__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r <= 0
+
+    def __eq__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r == 0
+
+    def __ne__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r != 0
+
+    def __ge__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r >= 0
+
+    def __gt__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r > 0
 
     def __len__(self):
         """
@@ -283,6 +320,24 @@ class _Sentinel:
     def __bool__(self):
         raise ValueError('Sentinel value <%s> can not be used as a boolean' %
                          self.name)
+
+    def __lt__(self, other):
+        return id(self) < id(other)
+
+    def __le__(self, other):
+        return id(self) <= id(other)
+
+    def __eq__(self, other):
+        return id(self) == id(other)
+
+    def __ne__(self, other):
+        return id(self) != id(other)
+
+    def __ge__(self, other):
+        return id(self) >= id(other)
+
+    def __gt__(self, other):
+        return id(self) > id(other)
 
 
 UNKNOWN = _Sentinel('UNKNOWN')
@@ -458,12 +513,56 @@ class APIDoc(object):
         self.__has_been_hashed = True
         return id(self.__dict__)
 
-    def __eq__(self, other):
+    def __cmp__(self, other):
         if not isinstance(other, APIDoc):
-            raise NotImplemented(f"Can't compare APIDoc with {type(other)}")
+            return NotImplemented
         if self.__dict__ is other.__dict__:
-            return True
-        return self.canonical_name == other.canonical_name
+            return 0
+        lhs, rhs = self.canonical_name, other.canonical_name
+        try:
+            name_cmp = (lhs > rhs) - (lhs < rhs)
+        except TypeError:
+            name_cmp = (hash(lhs) > hash(rhs)) - (hash(lhs) < hash(rhs))
+        if name_cmp == 0:
+            return -1
+        else:
+            return name_cmp
+
+    def __lt__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r < 0
+
+    def __le__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r <= 0
+
+    def __eq__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r == 0
+
+    def __ne__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r != 0
+
+    def __ge__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r >= 0
+
+    def __gt__(self, other):
+        r = self.__cmp__(other)
+        if not isinstance(r, int):
+            return r
+        return r > 0
 
     def is_detailed(self):
         """

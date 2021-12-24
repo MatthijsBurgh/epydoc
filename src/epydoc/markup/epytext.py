@@ -225,13 +225,13 @@ _LINK_COLORIZING_TAGS = ['link', 'uri']
 ## Structuring (Top Level)
 ##################################################
 
-def parse(str, errors = None):
+def parse(str_, errors = None):
     """
     Return a DOM tree encoding the contents of an epytext string.  Any
     errors generated during parsing will be stored in C{errors}.
 
-    @param str: The epytext string to parse.
-    @type str: C{string}
+    @param str_: The epytext string to parse.
+    @type str_: C{str}
     @param errors: A list where any errors generated during parsing
         will be stored.  If no list is specified, then fatal errors
         will generate exceptions, and non-fatal errors will be
@@ -250,11 +250,11 @@ def parse(str, errors = None):
         raise_on_error = 0
 
     # Preprocess the string.
-    str = re.sub('\015\012', '\012', str)
-    str = str.expandtabs()
+    str_ = re.sub('\015\012', '\012', str_)
+    str_ = str_.expandtabs()
 
     # Tokenize the input string.
-    tokens = _tokenize(str, errors)
+    tokens = _tokenize(str_, errors)
 
     # Have we encountered a field yet?
     encountered_field = 0
@@ -1022,7 +1022,7 @@ def _colorize(doc, token, errors, tagName='para'):
     @return: a DOM C{Element} encoding the given paragraph.
     @returntype: C{Element}
     """
-    str = token.contents
+    str_ = token.contents
     linenum = 0
     
     # Maintain a stack of DOM elements, containing the ancestors of
@@ -1041,9 +1041,10 @@ def _colorize(doc, token, errors, tagName='para'):
     # loop, we process the text from the first unprocessed character
     # to the next open or close brace.
     start = 0
-    while 1:
-        match = _BRACE_RE.search(str, start)
-        if match == None: break
+    while True:
+        match = _BRACE_RE.search(str_, start)
+        if match is None:
+            break
         end = match.start()
         
         # Open braces start new colorizing elements.  When preceeded
@@ -1053,19 +1054,19 @@ def _colorize(doc, token, errors, tagName='para'):
         # and convert them to literal braces once we find the matching 
         # close-brace.
         if match.group() == '{':
-            if (end>0) and 'A' <= str[end-1] <= 'Z':
+            if (end>0) and 'A' <= str_[end-1] <= 'Z':
                 if (end-1) > start:
-                    stack[-1].children.append(str[start:end-1])
-                if str[end-1] not in _COLORIZING_TAGS:
+                    stack[-1].children.append(str_[start:end-1])
+                if str_[end-1] not in _COLORIZING_TAGS:
                     estr = "Unknown inline markup tag."
                     errors.append(ColorizingError(estr, token, end-1))
                     stack.append(Element('unknown'))
                 else:
-                    tag = _COLORIZING_TAGS[str[end-1]]
+                    tag = _COLORIZING_TAGS[str_[end-1]]
                     stack.append(Element(tag))
             else:
                 if end > start:
-                    stack[-1].children.append(str[start:end])
+                    stack[-1].children.append(str_[start:end])
                 stack.append(Element('litbrace'))
             openbrace_stack.append(end)
             stack[-2].children.append(stack[-1])
@@ -1081,7 +1082,7 @@ def _colorize(doc, token, errors, tagName='para'):
 
             # Add any remaining text.
             if end > start:
-                stack[-1].children.append(str[start:end])
+                stack[-1].children.append(str_[start:end])
 
             # Special handling for symbols:
             if stack[-1].tag == 'symbol':
@@ -1135,8 +1136,8 @@ def _colorize(doc, token, errors, tagName='para'):
         start = end+1
 
     # Add any final text.
-    if start < len(str):
-        stack[-1].children.append(str[start:])
+    if start < len(str_):
+        stack[-1].children.append(str_[start:])
         
     if len(stack) != 1: 
         estr = "Unbalanced '{'."
@@ -1261,9 +1262,9 @@ def to_epytext(tree, indent=0, seclevel=0):
     @rtype: C{string}
     """
     if isinstance(tree, str):
-        str = re.sub(r'\{', '\0', tree)
-        str = re.sub(r'\}', '\1', str)
-        return str
+        str_ = re.sub(r'\{', '\0', tree)
+        str_ = re.sub(r'\}', '\1', str_)
+        return str_
 
     if tree.tag == 'epytext': indent -= 2
     if tree.tag == 'section': seclevel += 1
@@ -1274,31 +1275,31 @@ def to_epytext(tree, indent=0, seclevel=0):
     childstr = re.sub(':(\s*)\2', '::\\1', childstr)
 
     if tree.tag == 'para':
-        str = wordwrap(childstr, indent)+'\n'
-        str = re.sub(r'((^|\n)\s*\d+)\.', r'\1E{.}', str)
-        str = re.sub(r'((^|\n)\s*)-', r'\1E{-}', str)
-        str = re.sub(r'((^|\n)\s*)@', r'\1E{@}', str)
-        str = re.sub(r'::(\s*($|\n))', r'E{:}E{:}\1', str)
-        str = re.sub('\0', 'E{lb}', str)
-        str = re.sub('\1', 'E{rb}', str)
-        return str
+        str_ = wordwrap(childstr, indent)+'\n'
+        str_ = re.sub(r'((^|\n)\s*\d+)\.', r'\1E{.}', str_)
+        str_ = re.sub(r'((^|\n)\s*)-', r'\1E{-}', str_)
+        str_ = re.sub(r'((^|\n)\s*)@', r'\1E{@}', str_)
+        str_ = re.sub(r'::(\s*($|\n))', r'E{:}E{:}\1', str_)
+        str_ = re.sub('\0', 'E{lb}', str_)
+        str_ = re.sub('\1', 'E{rb}', str_)
+        return str_
     elif tree.tag == 'li':
         bullet = tree.attribs.get('bullet') or '-'
         return indent*' '+ bullet + ' ' + childstr.lstrip()
     elif tree.tag == 'heading':
-        str = re.sub('\0', 'E{lb}',childstr)
-        str = re.sub('\1', 'E{rb}', str)
+        str_ = re.sub('\0', 'E{lb}',childstr)
+        str_ = re.sub('\1', 'E{rb}', str_)
         uline = len(childstr)*_HEADING_CHARS[seclevel-1]
-        return (indent-2)*' ' + str + '\n' + (indent-2)*' '+uline+'\n'
+        return (indent-2)*' ' + str_ + '\n' + (indent-2)*' '+uline+'\n'
     elif tree.tag == 'doctestblock':
-        str = re.sub('\0', '{', childstr)
-        str = re.sub('\1', '}', str)
-        lines = ['  '+indent*' '+line for line in str.split('\n')]
+        str_ = re.sub('\0', '{', childstr)
+        str_ = re.sub('\1', '}', str_)
+        lines = ['  '+indent*' '+line for line in str_.split('\n')]
         return '\n'.join(lines) + '\n\n'
     elif tree.tag == 'literalblock':
-        str = re.sub('\0', '{', childstr)
-        str = re.sub('\1', '}', str)
-        lines = [(indent+1)*' '+line for line in str.split('\n')]
+        str_ = re.sub('\0', '{', childstr)
+        str_ = re.sub('\1', '}', str_)
+        lines = [(indent+1)*' '+line for line in str_.split('\n')]
         return '\2' + '\n'.join(lines) + '\n\n'
     elif tree.tag == 'field':
         numargs = 0
@@ -1306,9 +1307,10 @@ def to_epytext(tree, indent=0, seclevel=0):
         tag = variables[0]
         args = variables[1:1+numargs]
         body = variables[1+numargs:]
-        str = (indent)*' '+'@'+variables[0]
-        if args: str += '(' + ', '.join(args) + ')'
-        return str + ':\n' + ''.join(body)
+        str_ = (indent)*' '+'@'+variables[0]
+        if args:
+            str_ += '(' + ', '.join(args) + ')'
+        return str_ + ':\n' + ''.join(body)
     elif tree.tag == 'target':
         return '<%s>' % childstr
     elif tree.tag in ('fieldlist', 'tag', 'arg', 'epytext',
@@ -1808,9 +1810,9 @@ class ParsedEpytextDocstring(ParsedDocstring):
         return self._plaintext
 
     def _index_term_key(self, tree):
-        str = to_plaintext(tree)
-        str = re.sub(r'\s\s+', '-', str)
-        return "index-"+re.sub("[^a-zA-Z0-9]", "_", str)
+        str_ = to_plaintext(tree)
+        str_ = re.sub(r'\s\s+', '-', str_)
+        return "index-"+re.sub("[^a-zA-Z0-9]", "_", str_)
 
     def _to_html(self, tree, linker, directory, docindex, context,
                  indent=0, seclevel=0):
@@ -2040,10 +2042,10 @@ class ParsedEpytextDocstring(ParsedDocstring):
         # then try extracting the summary from it.
         if (len(variables) == 0 and len(tree.children) == 1 and
             tree.children[0].tag == 'literalblock'):
-            str = re.split(r'\n\s*(\n|$).*',
+            str_ = re.split(r'\n\s*(\n|$).*',
                            tree.children[0].children[0], 1)[0]
             variables = [Element('para')]
-            variables[0].children.append(str)
+            variables[0].children.append(str_)
     
         # If we didn't find a paragraph, return an empty epytext.
         if len(variables) == 0: return ParsedEpytextDocstring(doc), False

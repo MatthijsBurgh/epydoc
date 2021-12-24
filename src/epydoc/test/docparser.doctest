@@ -48,7 +48,7 @@ assignments, is_imported and is_instvar will always be False.)
      +- imports = []
      +- is_package = False
      +- package = None
-     +- sort_spec = [u'x', u'y', u'z']
+     +- sort_spec = ['x', 'y', 'z']
      +- submodules = []
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
@@ -59,14 +59,14 @@ assignments, is_imported and is_instvar will always be False.)
         |  +- is_imported = False
         |  +- is_instvar = False
         |  +- is_public = True
-        |  +- name = u'x'
+        |  +- name = 'x'
         |  +- value
         |     +- GenericValueDoc [2]
         |        +- defining_module
         |        |  +- ModuleDoc for epydoc_test [0] (defined above)
         |        +- docs_extracted_by = 'parser'
-        |        +- parse_repr = u'12'
-        |        +- toktree = [(2, u'12')]
+        |        +- parse_repr = '12'
+        |        +- toktree = [(2, '12')]
         +- y => VariableDoc for epydoc_test.y [3]
         |  +- container
         |  |  +- ModuleDoc for epydoc_test [0] (defined above)
@@ -75,13 +75,13 @@ assignments, is_imported and is_instvar will always be False.)
         |  +- is_imported = False
         |  +- is_instvar = False
         |  +- is_public = True
-        |  +- name = u'y'
+        |  +- name = 'y'
         |  +- value
         |     +- GenericValueDoc [4]
         |        +- defining_module
         |        |  +- ModuleDoc for epydoc_test [0] (defined above)
         |        +- docs_extracted_by = 'parser'
-        |        +- parse_repr = u'[1, 2, 3]+ [4, 5]'
+        |        +- parse_repr = '[1, 2, 3]+ [4, 5]'
         |        +- toktree = ...
         +- z => VariableDoc for epydoc_test.z [5]
            +- container
@@ -91,13 +91,13 @@ assignments, is_imported and is_instvar will always be False.)
            +- is_imported = False
            +- is_instvar = False
            +- is_public = True
-           +- name = u'z'
+           +- name = 'z'
            +- value
               +- GenericValueDoc [6]
                  +- defining_module
                  |  +- ModuleDoc for epydoc_test [0] (defined above)
                  +- docs_extracted_by = 'parser'
-                 +- parse_repr = u'f(x, y)'
+                 +- parse_repr = 'f(x, y)'
                  +- toktree = ...
 
 In this example, DocParser decides that the assignment to y is
@@ -113,13 +113,13 @@ creating an alias.  The same `ValueDoc` is shared by both variables.
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
         |  +- is_alias = False
-        |  +- name = u'x'
+        |  +- name = 'x'
         |  +- value
         |     +- GenericValueDoc [2]
-        |        +- parse_repr = u'[1, 2]'
+        |        +- parse_repr = '[1, 2]'
         +- y => VariableDoc for epydoc_test.y [3]
            +- is_alias = True
-           +- name = u'y'
+           +- name = 'y'
            +- value
               +- GenericValueDoc [2] (defined above)
 
@@ -135,31 +135,31 @@ tuple or list; however, it will not extract values.
      +- variables
         +- a => VariableDoc for epydoc_test.a [1]
         |  +- is_alias = False
-        |  +- name = u'a'
+        |  +- name = 'a'
         |  +- value = <UNKNOWN>
         +- b => VariableDoc for epydoc_test.b [2]
         |  +- is_alias = False
-        |  +- name = u'b'
+        |  +- name = 'b'
         |  +- value = <UNKNOWN>
         +- c => VariableDoc for epydoc_test.c [3]
         |  +- is_alias = False
-        |  +- name = u'c'
+        |  +- name = 'c'
         |  +- value = <UNKNOWN>
         +- d => VariableDoc for epydoc_test.d [4]
         |  +- is_alias = False
-        |  +- name = u'd'
+        |  +- name = 'd'
         |  +- value = <UNKNOWN>
         +- e => VariableDoc for epydoc_test.e [5]
         |  +- is_alias = False
-        |  +- name = u'e'
+        |  +- name = 'e'
         |  +- value = <UNKNOWN>
         +- f => VariableDoc for epydoc_test.f [6]
         |  +- is_alias = False
-        |  +- name = u'f'
+        |  +- name = 'f'
         |  +- value = <UNKNOWN>
         +- g => VariableDoc for epydoc_test.g [7]
            +- is_alias = False
-           +- name = u'g'
+           +- name = 'g'
            +- value = <UNKNOWN>
 
 DocParser can also parse 'multi-assignment' statements, containing
@@ -177,18 +177,18 @@ variable.)
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
         |  +- is_alias = True
-        |  +- name = u'x'
+        |  +- name = 'x'
         |  +- value
         |     +- GenericValueDoc [2]
-        |        +- parse_repr = u'0'
+        |        +- parse_repr = '0'
         +- y => VariableDoc for epydoc_test.y [3]
         |  +- is_alias = True
-        |  +- name = u'y'
+        |  +- name = 'y'
         |  +- value
         |     +- GenericValueDoc [2] (defined above)
         +- z => VariableDoc for epydoc_test.z [4]
            +- is_alias = False
-           +- name = u'z'
+           +- name = 'z'
            +- value
               +- GenericValueDoc [2] (defined above)
 
@@ -204,10 +204,10 @@ overwrites the earlier one:
      +- parse_repr = <UNKNOWN>
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
-           +- name = u'x'
+           +- name = 'x'
            +- value
               +- GenericValueDoc [2]
-                 +- parse_repr = u'33'
+                 +- parse_repr = '33'
 
 Some class variable have a special meaning. The ``__slots__`` variable isn't
 very useful and should be discarded.
@@ -222,12 +222,12 @@ very useful and should be discarded.
     ModuleDoc for epydoc_test [0]
      +- variables
         +- Foo => VariableDoc for epydoc_test.Foo [1]
-           +- name = u'Foo'
+           +- name = 'Foo'
            +- value
               +- ClassDoc for epydoc_test.Foo [2]
                  +- variables
                     +- __init__ => VariableDoc for epydoc_test.Foo.__init__ [3]
-                       +- name = u'__init__'
+                       +- name = '__init__'
                        +- value
                           +- RoutineDoc for epydoc_test.Foo.__init__ [4]
 
@@ -262,13 +262,13 @@ By default, DocParse does not look inside the following block types:
     ModuleDoc for epydoc_test [0]
      +- variables
         +- elif_gated => VariableDoc for epydoc_test.elif_gated [1]
-        |  +- name = u'elif_gated'
+        |  +- name = 'elif_gated'
         +- elif_gated2 => VariableDoc for epydoc_test.elif_gated2 [2]
-        |  +- name = u'elif_gated2'
+        |  +- name = 'elif_gated2'
         +- else_gated => VariableDoc for epydoc_test.else_gated [3]
-        |  +- name = u'else_gated'
+        |  +- name = 'else_gated'
         +- if_gated => VariableDoc for epydoc_test.if_gated [4]
-           +- name = u'if_gated'
+           +- name = 'if_gated'
 
     >>> # DocParser looks inside try/except and try/finally blocks:
     >>> runparser(s="""
@@ -285,13 +285,13 @@ By default, DocParse does not look inside the following block types:
     ModuleDoc for epydoc_test [0]
      +- variables
         +- except_gated => VariableDoc for epydoc_test.except_gated [1]
-        |  +- name = u'except_gated'
+        |  +- name = 'except_gated'
         +- except_gated2 => VariableDoc for epydoc_test.except_gated2 [2]
-        |  +- name = u'except_gated2'
+        |  +- name = 'except_gated2'
         +- finally_gated => VariableDoc for epydoc_test.finally_gated [3]
-        |  +- name = u'finally_gated'
+        |  +- name = 'finally_gated'
         +- try_gated => VariableDoc for epydoc_test.try_gated [4]
-           +- name = u'try_gated'
+           +- name = 'try_gated'
 
     >>> # By default, DocParser does not look inside for blocks
     >>> runparser(s="""
@@ -324,9 +324,9 @@ blocks:
     ModuleDoc for epydoc_test [0]
      +- variables
         +- for_gated => VariableDoc for epydoc_test.for_gated [1]
-        |  +- name = u'for_gated'
+        |  +- name = 'for_gated'
         +- itervar => VariableDoc for epydoc_test.itervar [2]
-           +- name = u'itervar'
+           +- name = 'itervar'
     
     >>> runparser(s="""
     ...     while condition:
@@ -335,7 +335,7 @@ blocks:
     ModuleDoc for epydoc_test [0]
      +- variables
         +- while_gated => VariableDoc for epydoc_test.while_gated [1]
-           +- name = u'while_gated'
+           +- name = 'while_gated'
 
     >>> # reset the globals:
     >>> reload(epydoc.docparser) and None
@@ -360,8 +360,8 @@ it.
      +- docstring = <UNKNOWN>
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
-           +- docstring = u'docstring for x.\n(can be multiline)'
-           +- name = u'x'
+           +- docstring = 'docstring for x.\n(can be multiline)'
+           +- name = 'x'
 
     >>> runparser(s="""
     ...     x = 12 #: comment docstring for x""",
@@ -370,8 +370,8 @@ it.
      +- docstring = <UNKNOWN>
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
-           +- docstring = u'comment docstring for x'
-           +- name = u'x'
+           +- docstring = 'comment docstring for x'
+           +- name = 'x'
 
     >>> runparser(s="""
     ...     #: comment docstring for x.
@@ -382,8 +382,8 @@ it.
      +- docstring = <UNKNOWN>
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
-           +- docstring = u'comment docstring for x.\n(can be m...
-           +- name = u'x'
+           +- docstring = 'comment docstring for x.\n(can be m...
+           +- name = 'x'
 
 If comments and a string constant are both used, then the string
 constant takes precedence:
@@ -398,8 +398,8 @@ constant takes precedence:
      +- docstring = <UNKNOWN>
      +- variables
         +- x => VariableDoc for epydoc_test.x [1]
-           +- docstring = u'string'
-           +- name = u'x'
+           +- docstring = 'string'
+           +- name = 'x'
 
 Functions
 =========
@@ -413,15 +413,15 @@ VariableDoc object in the module's children list).
     ...         print('inside f')
     ...     """, show="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
-     +- canonical_name = DottedName('epydoc_test', u'f')
+     +- canonical_name = DottedName('epydoc_test', 'f')
      +- decorators = []
      +- docs_extracted_by = 'parser'
-     +- docstring = u'docstring for f'
+     +- docstring = 'docstring for f'
      +- docstring_lineno = 3
      +- kwarg = None
      +- lineno = 2
      +- posarg_defaults = [None]
-     +- posargs = [u'x']
+     +- posargs = ['x']
      +- vararg = None
 
 The function's arguments are described by the properties ``posargs``,
@@ -438,29 +438,29 @@ of the variable argument and keyword argument, respectively:
     ...         print('inside f')
     ...     """, show="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
-     +- canonical_name = DottedName('epydoc_test', u'f')
+     +- canonical_name = DottedName('epydoc_test', 'f')
      +- decorators = []
      +- docs_extracted_by = 'parser'
-     +- docstring = u'docstring for f'
+     +- docstring = 'docstring for f'
      +- docstring_lineno = 3
-     +- kwarg = u'kw'
+     +- kwarg = 'kw'
      +- lineno = 2
      +- posarg_defaults = [None, <GenericValueDoc None>, <Gener...
-     +- posargs = [u'x', u'y', u'z']
-     +- vararg = u'v'
+     +- posargs = ['x', 'y', 'z']
+     +- vararg = 'v'
 
 Tuple arguments are encoded as a single ArgDoc with a complex name:
     >>> runparser(s="""
     ...     def f( (x, (y,z)) ): pass
     ...     """, show="f", exclude='defining_module')
     RoutineDoc for epydoc_test.f [0]
-     +- canonical_name = DottedName('epydoc_test', u'f')
+     +- canonical_name = DottedName('epydoc_test', 'f')
      +- decorators = []
      +- docs_extracted_by = 'parser'
      +- kwarg = None
      +- lineno = 2
      +- posarg_defaults = [None]
-     +- posargs = [[u'x', [u'y', u'z']]]
+     +- posargs = [['x', ['y', 'z']]]
      +- vararg = None
 
 Decorators & Wrapper Assignments
@@ -479,8 +479,8 @@ Decorators & Wrapper Assignments
            +- docstring = <UNKNOWN>
            +- value
               +- ClassMethodDoc for epydoc_test.f [2]
-                 +- docstring = u'docstring for f'
-                 +- posargs = [u'cls', u'x']
+                 +- docstring = 'docstring for f'
+                 +- posargs = ['cls', 'x']
 
 Classes
 =======
@@ -506,14 +506,14 @@ Classes
         |  +- value
         |     +- ClassDoc for epydoc_test.A [2]
         |        +- bases = []
-        |        +- docstring = u'no bases'
+        |        +- docstring = 'no bases'
         |        +- variables
         |           +- Nested => VariableDoc for epydoc_test.A.Nested [3]
         |              +- docstring = <UNKNOWN>
         |              +- value
         |                 +- ClassDoc for epydoc_test.A.Nested [4]
         |                    +- bases = []
-        |                    +- docstring = u'nested class'
+        |                    +- docstring = 'nested class'
         |                    +- variables = {}
         +- B => VariableDoc for epydoc_test.B [5]
         |  +- docstring = <UNKNOWN>
@@ -521,7 +521,7 @@ Classes
         |     +- ClassDoc for epydoc_test.B [6]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
-        |        +- docstring = u'single base'
+        |        +- docstring = 'single base'
         |        +- variables = {}
         +- C => VariableDoc for epydoc_test.C [7]
         |  +- docstring = <UNKNOWN>
@@ -530,7 +530,7 @@ Classes
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
         |        |  +- ClassDoc for epydoc_test.B [6] (defined above)
-        |        +- docstring = u'multiple bases'
+        |        +- docstring = 'multiple bases'
         |        +- variables = {}
         +- D => VariableDoc for epydoc_test.D [9]
         |  +- docstring = <UNKNOWN>
@@ -538,7 +538,7 @@ Classes
         |     +- ClassDoc for epydoc_test.D [10]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A [2] (defined above)
-        |        +- docstring = u'extra parens around base'
+        |        +- docstring = 'extra parens around base'
         |        +- variables = {}
         +- E => VariableDoc for epydoc_test.E [11]
         |  +- docstring = <UNKNOWN>
@@ -546,7 +546,7 @@ Classes
         |     +- ClassDoc for epydoc_test.E [12]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A.Nested [4] (defined above)
-        |        +- docstring = u'dotted name'
+        |        +- docstring = 'dotted name'
         |        +- variables = {}
         +- F => VariableDoc for epydoc_test.F [13]
         |  +- docstring = <UNKNOWN>
@@ -554,14 +554,14 @@ Classes
         |     +- ClassDoc for epydoc_test.F [14]
         |        +- bases
         |        |  +- ClassDoc for epydoc_test.A.Nested [4] (defined above)
-        |        +- docstring = u'parens with dotted name'
+        |        +- docstring = 'parens with dotted name'
         |        +- variables = {}
         +- Z => VariableDoc for epydoc_test.Z [15]
            +- docstring = <UNKNOWN>
            +- value
               +- ClassDoc for epydoc_test.Z [16]
                  +- bases = <UNKNOWN>
-                 +- docstring = u'calculated base'
+                 +- docstring = 'calculated base'
                  +- variables = {}
 
 
@@ -585,7 +585,7 @@ Deleting variables:
            +- is_alias = True
            +- value
               +- GenericValueDoc [2]
-                 +- parse_repr = u'12'
+                 +- parse_repr = '12'
 
 The right-hand side of a ``del`` statement may contain a nested
 combination of lists, tuples, and parenthases.  All variables found
@@ -673,7 +673,7 @@ Single-Line Blocks
            +- docstring = <UNKNOWN>
            +- value
               +- ClassDoc for epydoc_test.A [2]
-                 +- docstring = u'docstring for A'
+                 +- docstring = 'docstring for A'
                  +- variables = {}
 
 Imports
@@ -700,14 +700,14 @@ Imports
     ModuleDoc for epydoc_test [0]
      +- variables
         +- much => VariableDoc for epydoc_test.much [1]
-        |  +- imported_from = DottedName(u're', u'match')
-        |  +- name = u'much'
+        |  +- imported_from = DottedName('re', 'match')
+        |  +- name = 'much'
         +- scuba => VariableDoc for epydoc_test.scuba [2]
-        |  +- imported_from = DottedName(u're', u'sub')
-        |  +- name = u'scuba'
+        |  +- imported_from = DottedName('re', 'sub')
+        |  +- name = 'scuba'
         +- split => VariableDoc for epydoc_test.split [3]
-           +- imported_from = DottedName(u're', u'split')
-           +- name = u'split'
+           +- imported_from = DottedName('re', 'split')
+           +- name = 'split'
 
 Unicode
 =======
@@ -724,7 +724,7 @@ Unicode
            +- docstring = <UNKNOWN>
            +- value
               +- RoutineDoc for epydoc_test.f [2]
-                 +- docstring = u'unicode in docstring: \u1000'
+                 +- docstring = 'unicode in docstring: \u1000'
 
 Instance Variables
 ==================
@@ -758,11 +758,11 @@ Instance Variables
                     |     +- RoutineDoc for epydoc_test.A.__init__ [4]
                     |        +- docstring = <UNKNOWN>
                     +- y => VariableDoc for epydoc_test.A.y [5]
-                    |  +- docstring = u'docstring for y'
+                    |  +- docstring = 'docstring for y'
                     |  +- is_instvar = True
                     |  +- value = <UNKNOWN>
                     +- z => VariableDoc for epydoc_test.A.z [6]
-                       +- docstring = u'docstring for z'
+                       +- docstring = 'docstring for z'
                        +- is_instvar = True
                        +- value = <UNKNOWN>
 

@@ -611,7 +611,7 @@ def process_file(module_doc):
             if lineno is None: lineno = srow
             if toktype == token.STRING:
                 str_prefixes = re.match('[^\'"]*', toktext).group()
-                if 'u' not in str_prefixes:
+                if 'b' in str_prefixes:
                     s = toktext.encode(encoding)
                     toktext = decode_with_backslashreplace(s)
             line_toks.append( (toktype, toktext) )
@@ -1360,7 +1360,7 @@ def process_docstring(line, parent_docs, prev_line_doc, lineno,
     # According to a strict reading of PEP 263, this might not be the
     # right thing to do; but it will almost always be what the
     # module's author intended.
-    if isinstance(docstring, str):
+    if isinstance(docstring, bytes):
         try:
             docstring = docstring.decode(encoding)
         except UnicodeDecodeError:
@@ -2144,20 +2144,18 @@ def get_module_encoding(filename):
     """
     @see: U{PEP 263<http://www.python.org/peps/pep-0263.html>}
     """
-    module_file = open(filename, 'rU')
-    try:
+    with open(filename, 'rb') as module_file:
         lines = [module_file.readline() for i in range(2)]
-        if lines[0].startswith('\xef\xbb\xbf'):
+        if lines[0].startswith(b'\xef\xbb\xbf'):
             return 'utf-8'
         else:
             for line in lines:
-                m = re.search("coding[:=]\s*([-\w.]+)", line)
-                if m: return m.group(1)
+                m = re.search(b"coding[:=]\s*([-\w.]+)", line)
+                if m:
+                    return m.group(1).decode()
                 
-        # Fall back on Python's default encoding.
-        return 'iso-8859-1' # aka 'latin-1'
-    finally:
-        module_file.close()
+        # Fall back on Python3's default encoding.
+        return 'utf-8'
         
 def _get_module_name(filename, package_doc):
     """

@@ -314,6 +314,7 @@ of global variables in `epydoc.docparser`.  For example, the following
 code creates a DocParser that does look inside for blocks and while
 blocks:
 
+    >>> from importlib import reload
     >>> import epydoc.docparser
     >>> epydoc.docparser.PARSE_FOR_BLOCKS = True
     >>> epydoc.docparser.PARSE_WHILE_BLOCKS = True

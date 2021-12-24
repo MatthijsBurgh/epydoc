@@ -15,7 +15,7 @@ this module is the L{HTMLWriter} class.
 __docformat__ = 'epytext en'
 
 import re, os, sys, codecs, sre_constants, pprint, base64
-import urllib
+import urllib.parse
 import builtins
 from epydoc.apidoc import *
 import epydoc.docstringparser

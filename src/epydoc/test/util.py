@@ -114,7 +114,6 @@ def runintrospecter(s, attribs='', introspect=None, exclude=''):
         import epydoc_test as val
     else:
         m = importlib.import_module("epydoc_test")
-        importlib.reload(m)
         val = getattr(m, introspect)
     del sys.path[0]
     # Introspect it.

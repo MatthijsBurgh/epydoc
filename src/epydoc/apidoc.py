@@ -1423,7 +1423,7 @@ class ClassDoc(NamespaceDoc):
     def _c3_mro(self, warn_about_bad_bases):
         """
         Compute the class precedence list (mro) according to C3.
-        @seealso: U{http://www.python.org/2.3/mro.html}
+        @seealso: U{https://www.python.org/download/releases/2.3/mro/}
         """
         bases = [base for base in self.bases if isinstance(base, ClassDoc)]
         if len(bases) != len(self.bases) and warn_about_bad_bases:
@@ -1432,8 +1432,7 @@ class ClassDoc(NamespaceDoc):
                     base.proxy_for is not None):
                     self._report_bad_base(base)
         w = [warn_about_bad_bases]*len(bases)
-        return self._c3_merge([[self]] + map(ClassDoc._c3_mro, bases, w) +
-                              [list(bases)])
+        return self._c3_merge([[self]] + [ClassDoc._c3_mro(b, w_) for b, w_ in zip(bases, w)] + [list(bases)])
 
     def _report_bad_base(self, base):
         if not isinstance(base, ClassDoc):

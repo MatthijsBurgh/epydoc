@@ -31,17 +31,10 @@ same format as the CLI).
 __docformat__ = 'epytext en'
 
 import sys, os.path, re, glob
-from Tkinter import *
-from tkFileDialog import askopenfilename, asksaveasfilename
-from thread import start_new_thread, exit_thread
+from tkinter import *
+from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfilename
+from _thread import start_new_thread, exit_thread
 from pickle import dump, load
-
-# askdirectory is only defined in python 2.2+; fall back on
-# asksaveasfilename if it's not available.
-try:
-    from tkFileDialog import askdirectory
-except Exception:
-    askdirectory = None
 
 # Include support for Zope, if it's available.
 try:
@@ -790,18 +783,10 @@ class EpydocGUI:
         self._help_entry.insert(0, filename)
 
     def _browse_out(self, *e):
-        ftypes = [('All files', '*')]
         title = 'Choose the output directory'
-        if askdirectory is not None:
-            filename = askdirectory(mustexist=0, title=title)
-            if not filename: return
-        else:
-            # Hack for Python 2.1 or earlier:
-            filename = asksaveasfilename(filetypes=ftypes, title=title,
-                                         initialfile='--this directory--')
-            if not filename: return
-            (f1, f2) = os.path.split(filename)
-            if f2 == '--this directory--': filename = f1
+        filename = askdirectory(mustexist=0, title=title)
+        if not filename:
+            return
         self._out_entry.delete(0, 'end')
         self._out_entry.insert(0, filename)
 

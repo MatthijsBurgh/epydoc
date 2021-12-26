@@ -1055,7 +1055,7 @@ def write_latex(docindex, options):
             try:
                 run_subprocess('pdflatex --version')
                 options.pdfdriver = 'pdflatex'
-            except RunSubprocessError as e:
+            except (RunSubprocessError, FileNotFoundError):
                 options.pdfdriver = 'latex'
     log.info('%r pdfdriver selected' % options.pdfdriver)
     

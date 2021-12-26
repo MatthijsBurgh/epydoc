@@ -166,7 +166,7 @@ def plaintext_to_html(s):
     s = s.replace('<', '&lt;').replace('>', '&gt;')
     return s
         
-def plaintext_to_latex(str, nbsp=0, breakany=0):
+def plaintext_to_latex(str_, nbsp=0, breakany=0):
     """
     @return: A LaTeX string that encodes the given plaintext string.
     In particular, special characters (such as C{'$'} and C{'_'})
@@ -179,32 +179,35 @@ def plaintext_to_latex(str, nbsp=0, breakany=0):
     (C{'~'}).
     """
     # These get converted to hyphenation points later
-    if breakany: str = re.sub('(.)', '\\1\1', str)
+    if breakany:
+        str_ = re.sub('(.)', '\\1\1', str_)
 
     # These get converted to \textbackslash later.
-    str = str.replace('\\', '\0')
+    str_ = str_.replace('\\', '\0')
 
     # Expand tabs
-    str = str.expandtabs()
+    str_ = str_.expandtabs()
 
     # These elements need to be backslashed.
-    str = re.sub(r'([#$&%_\${}])', r'\\\1', str)
+    str_ = re.sub(r'([#$&%_\${}])', r'\\\1', str_)
 
     # These elements have special names.
-    str = str.replace('|', '{\\textbar}')
-    str = str.replace('<', '{\\textless}')
-    str = str.replace('>', '{\\textgreater}')
-    str = str.replace('^', '{\\textasciicircum}')
-    str = str.replace('~', '{\\textasciitilde}')
-    str = str.replace('\0', r'{\textbackslash}')
+    str_ = str_.replace('|', '{\\textbar}')
+    str_ = str_.replace('<', '{\\textless}')
+    str_ = str_.replace('>', '{\\textgreater}')
+    str_ = str_.replace('^', '{\\textasciicircum}')
+    str_ = str_.replace('~', '{\\textasciitilde}')
+    str_ = str_.replace('\0', r'{\textbackslash}')
 
     # replace spaces with non-breaking spaces
-    if nbsp: str = str.replace(' ', '~')
+    if nbsp:
+        str_ = str_.replace(' ', '~')
 
     # Convert \1's to hyphenation points.
-    if breakany: str = str.replace('\1', r'\-')
+    if breakany:
+        str_ = str_.replace('\1', r'\-')
     
-    return str
+    return str_
 
 class RunSubprocessError(OSError):
     def __init__(self, cmd, out, err):

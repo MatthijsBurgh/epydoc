@@ -143,9 +143,8 @@ class LatexWriter:
         """
         # Write all the standard style files
         for (name, sty) in STYLESHEETS.items():
-            out = open(os.path.join(directory, 'epydoc-%s.sty' % name), 'wb')
-            out.write(sty)
-            out.close()
+            with open(os.path.join(directory, 'epydoc-%s.sty' % name), 'w') as f:
+                f.write(sty)
 
         # Default: use the 'epydoc-default' style.
         if stylesheet is None:

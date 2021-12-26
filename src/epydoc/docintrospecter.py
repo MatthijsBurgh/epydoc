@@ -468,12 +468,12 @@ def introspect_routine(routine, routine_doc, module_name=None):
 
     # Record the function's signature.
     if isinstance(func, FunctionType):
-        (args, vararg, kwarg, defaults) = inspect.getargspec(func)
+        args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, ann = inspect.getfullargspec(func)
 
         # Add the arguments.
         routine_doc.posargs = args
-        routine_doc.vararg = vararg
-        routine_doc.kwarg = kwarg
+        routine_doc.vararg = varargs
+        routine_doc.kwarg = varkw
 
         # Set default values for positional arguments.
         routine_doc.posarg_defaults = [None]*len(args)

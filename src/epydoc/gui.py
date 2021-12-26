@@ -1075,8 +1075,8 @@ def _version():
     Display the version information, and exit.
     @rtype: C{None}
     """
-    import epydoc
-    print("Epydoc version %s" % epydoc.__version__)
+    from epydoc import __version__
+    print(f"Epydoc, version {__version__}")
     sys.exit(0)
 
 # At some point I could add:

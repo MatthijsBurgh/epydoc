@@ -267,7 +267,7 @@ class _EpydocReader(ApiLinkReader):
         except Exception:
             linenum = None
 
-        msg = ''.join([c.astext().encode(self._encoding, self._error_handler)
+        msg = b''.join([c.astext().encode(self._encoding, self._error_handler)
                        for c in error])
 
         self._errors.append(ParseError(msg, linenum, is_fatal))

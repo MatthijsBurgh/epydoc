@@ -1205,8 +1205,6 @@ def write_text(docindex, options):
     for apidoc in docindex.root:
         s += plaintext_writer.write(apidoc, **options.__dict__)+'\n'
     log.end_progress()
-    if isinstance(s, unicode):
-        s = s.encode('ascii', 'backslashreplace')
     sys.stdout.write(s)
 
 def check_docs(docindex, options):

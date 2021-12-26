@@ -273,7 +273,7 @@ stdlib-pdf: .stdlib-pdf.up2date
 .stdlib-pdf.up2date: $(PY_SRCFILES)
 	mkdir -p $(LATEX)
 	rm -f $(LATEX_STDLIB)
-	$(EPYDOC) --pdf -o $(LATEX_STDLIB) --debug \
+	@$(EPYDOC) --pdf -o $(LATEX_STDLIB) --debug \
 		--no-private --name $(SLNAME) --docformat plaintext \
 		--debug --builtins $(SLFILES)
 ##//////////////////////////////////////////////////////////////////////

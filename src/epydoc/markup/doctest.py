@@ -18,6 +18,7 @@ C{colorize_doctest()}.)
 __docformat__ = 'epytext en'
 
 import builtins
+from doctest import DocTestParser
 import keyword
 import re
 from epydoc.util import plaintext_to_html, plaintext_to_latex
@@ -145,18 +146,19 @@ class DoctestColorizer:
     #: This regular expression is used to find doctest examples in a
     #: string.  This is copied from the standard Python doctest.py
     #: module (after the refactoring in Python 2.4+).
-    DOCTEST_EXAMPLE_RE = re.compile(r'''
-        # Source consists of a PS1 line followed by zero or more PS2 lines.
-        (?P<source>
-            (?:^(?P<indent> [ ]*) >>>    .*)    # PS1 line
-            (?:\n           [ ]*  \.\.\. .*)*   # PS2 lines
-          \n?)
-        # Want consists of any non-blank lines that do not start with PS1.
-        (?P<want> (?:(?![ ]*$)    # Not a blank line
-                     (?![ ]*>>>)  # Not a line starting with PS1
-                     .*$\n?       # But any other line
-                  )*)
-        ''', re.MULTILINE | re.VERBOSE)
+    DOCTEST_EXAMPLE_RE = DocTestParser._EXAMPLE_RE
+    # DOCTEST_EXAMPLE_RE = re.compile(r'''
+    #     # Source consists of a PS1 line followed by zero or more PS2 lines.
+    #     (?P<source>
+    #         (?:^(?P<indent> [ ]*) >>>    .*)    # PS1 line
+    #         (?:\n           [ ]*  \.\.\. .*)*)  # PS2 lines
+    #     \n?
+    #     # Want consists of any non-blank lines that do not start with PS1.
+    #     (?P<want> (?:(?![ ]*$)    # Not a blank line
+    #                  (?![ ]*>>>)  # Not a line starting with PS1
+    #                  .+$\n?       # But any other line
+    #               )*)
+    #     ''', re.MULTILINE | re.VERBOSE)
 
     def colorize_inline(self, s):
         """

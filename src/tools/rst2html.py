@@ -14,7 +14,10 @@ import docutils.nodes
 # Epydoc imports.  Make sure path contains the 'right' epydoc.
 import sys, os
 sys.path.insert(0, '../')
+
+# noinspection PyUnresolvedReferences
 import epydoc.markup.restructuredtext   # register the 'python' directive
+
 from epydoc.markup.doctest import doctest_to_html, doctest_to_latex, \
                                   HTMLDoctestColorizer
 

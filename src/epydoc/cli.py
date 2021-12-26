@@ -577,7 +577,7 @@ def parse_arguments():
     options.pdfdriver = options.pdfdriver.lower()
     if options.pdfdriver not in PDFDRIVERS:
         optparser.error("Invalid pdf driver %r.  Expected one of: %s" %
-                        (options.pdfdriver, ', '.join(PDF_DRIVERS)))
+                        (options.pdfdriver, ', '.join(PDFDRIVERS)))
     if (options.pdfdriver == 'pdflatex' and
         ('dvi' in options.actions or 'ps' in options.actions)):
         optparser.error("Use of the pdflatex driver is incompatible "

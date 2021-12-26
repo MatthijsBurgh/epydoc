@@ -122,7 +122,7 @@ $(HTML_MANUAL)/manual-%.html: doc/manual-%.txt doc/epydoc-style-list.txt
 
 checkdoc: checkdocs
 checkdocs:
-	epydoc --check --tests=vars,types $(PY_SRC)
+	epydoc --check $(PY_SRC) # --tests=vars,types # ToDo: Accept --tests again.
 
 .webpage.up2date: .api-html.up2date .examples.up2date .api-pdf.up2date \
 		$(DOCTEST_HTML_FILES) doc/epydoc-man.html \

@@ -1083,15 +1083,15 @@ def _version():
 #   --show-messages, --hide-messages
 #   --show-options, --hide-options
 def _usage():
-    print
+    print()
     print('Usage: epydocgui [OPTIONS] [FILE.prj | MODULES...]')
-    print
+    print()
     print('    FILE.prj                  An epydoc GUI project file.')
     print('    MODULES...                A list of Python modules to document.')
     print('    -V, --version             Print the version of epydoc.')
     print('    -h, -?, --help, --usage   Display this usage message')
     print('    --debug                   Do not suppress error messages')
-    print
+    print()
     sys.exit(0)
 
 def _error(s):

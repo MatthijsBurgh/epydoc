@@ -295,8 +295,7 @@ docutils-html: .docutils-html.up2date
 	rm -rf $(HTML)/docutils
 	mkdir -p $(HTML)/docutils
 	$(EPYDOC) -o $(HTML)/docutils -n 'Docutils' --html --debug \
-	        --docformat plaintext --ignore-param-mismatch \
-	        --include-log /usr/lib/python2.3/site-packages/docutils
+        --docformat plaintext --include-log docutils
 	touch .docutils-html.up2date
 
 docutils-pdf: .docutils-pdf.up2date
@@ -304,8 +303,7 @@ docutils-pdf: .docutils-pdf.up2date
 	rm -rf $(LATEX)/docutils
 	mkdir -p $(LATEX)/docutils
 	$(EPYDOC) -o $(LATEX)/docutils -n 'Docutils' --pdf --debug \
-	        --docformat plaintext --ignore-param-mismatch \
-	        /usr/lib/python2.3/site-packages/docutils
+        --docformat plaintext docutils
 	touch .docutils-pdf.up2date
 
 

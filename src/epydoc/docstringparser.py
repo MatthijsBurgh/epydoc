@@ -528,8 +528,7 @@ def report_errors(api_doc, docindex, parse_errors, field_warnings):
             error.set_linenum_offset(startline)
             message = error.descr()
             messages.setdefault(message, []).append(error.linenum())
-        message_items = messages.items()
-        message_items.sort(lambda a,b:cmp(min(a[1]), min(b[1])))
+        message_items = sorted(messages.items(), key=lambda item: min(item[1]))
         for message, linenums in message_items:
             linenums = [n for n in linenums if n is not None]
             if len(linenums) == 0:

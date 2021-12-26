@@ -163,7 +163,7 @@ information about the submodules and subpackages.
 :group Docstring Processing: docstringparser, markup
 :group Output Generation: docwriter
 :group Completeness Checking: checker
-:group Miscellaneous: log, util, test, compat
+:group Miscellaneous: log, util, test
 
 :author: `Edward Loper <edloper@gradient.cis.upenn.edu>`__
 :requires: Python 2.3+

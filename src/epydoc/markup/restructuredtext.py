@@ -553,14 +553,14 @@ def latex_head_prefix():
 _TARGET_RE = re.compile(r'^(.*?)\s*<(?:URI:|URL:)?([^<>]+)>$')
 
 class _EpydocDocumentClass:
-    SECTIONS = ['EpydocUserSection',
+    sections = ['EpydocUserSection',
                 'EpydocUserSubsection',
                 'EpydocUserSubsubsection']
     def section(self, level):
-        if level <= len(self.SECTIONS):
-            return self.SECTIONS[level-1]
+        if level <= len(self.sections):
+            return self.sections[level-1]
         else:
-            return self.SECTIONS[-1]
+            return self.sections[-1]
 
 class _EpydocLaTeXTranslator(LaTeXTranslator):
     settings = None

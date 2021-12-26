@@ -18,7 +18,7 @@ DOCTESTS = $(wildcard src/epydoc/test/*.doctest)
 MANUAL_SRC = $(wildcard doc/manual-*.txt)
 
 # What version of python to use?
-PYTHON = python3
+PYTHON = python3.8
 export PYTHONPATH=src/
 
 # The location of the webpage.
@@ -26,7 +26,7 @@ HOST = shell.sf.net
 DIR = /home/groups/e/ep/epydoc/htdocs
 
 # The current version of epydoc.
-VERSION = $(shell $(PYTHON) -c 'import epydoc; print epydoc.__version__')
+VERSION = $(shell $(PYTHON) -c 'import epydoc; print(epydoc.__version__)')
 
 # Base output directories
 WEBDIR        = webpage
@@ -253,8 +253,8 @@ SLFILES = $(shell find /usr/lib/$(PYTHON)/ -name '*.py' -o -name '*.so' \
 	      |grep -v "/$(PYTHON)/lib-old/" \
 	      |grep -v "/$(PYTHON)/idlelib/" \
 	      |grep -v "/$(PYTHON)/site-packages/" \
-              |grep -v "/$(PYTHON)/__phello__\.foo\.py" )
-PY_PRINT_BUILTINS = "import sys; print ' '.join(sys.builtin_module_names)"
+          |grep -v "/$(PYTHON)/__phello__\.foo\.py" )
+PY_PRINT_BUILTINS = "import sys; print(' '.join(sys.builtin_module_names))"
 SLBUILTINS = $(shell $(PYTHON) -c $(PY_PRINT_BUILTINS))
 
 export TZ='XXX00XXX;000/00,000/00' # So tzparse won't die.

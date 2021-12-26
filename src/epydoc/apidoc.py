@@ -1077,7 +1077,7 @@ class NamespaceDoc(ValueDoc):
         imports = filters.get('imports', True)
         private = filters.get('private', True)
         if variables and imports and private:
-            return self.variables.values() # list the common case first.
+            return list(self.variables.values())  # list the common case first.
         elif not variables:
             return []
         elif not imports and not private:

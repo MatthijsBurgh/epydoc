@@ -649,7 +649,7 @@ class _EpydocHTMLTranslator(HTMLTranslator):
         m = _TARGET_RE.match(node.astext())
         if m: text, target = m.groups()
         else: target = text = node.astext()
-        text = plaintext_to_latex(text)
+        text = plaintext_to_html(text)
         xref = self._linker.translate_identifier_xref(target, text)
         self.body.append(xref)
         raise SkipNode()

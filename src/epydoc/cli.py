@@ -154,11 +154,6 @@ def option_defaults():
         include_timestamp=True, target={}, default_target=None,
         pdfdriver='auto', show_submodule_list=True, inherit_from_object=False)
 
-# append_const is not defined in py2.3 or py2.4, so use a callback
-# instead, with the following function:
-def add_action(option, opt, value, optparser):
-    action = opt.replace('-', '')
-    optparser.values.actions.append(action)
 
 def add_target(option, opt, value, optparser):
     if optparser.values.actions:
@@ -205,44 +200,44 @@ def parse_arguments():
     optparser.add_option_group(action_group)
 
     action_group.add_option("--html",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="html",
         help="Write HTML output.")
 
     action_group.add_option("--text",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="text",
         help="Write plaintext output. (not implemented yet)")
 
     action_group.add_option("--latex",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="latex",
         help="Write LaTeX output.")
 
     action_group.add_option("--dvi",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="dvi",
         help="Write DVI output.")
 
     action_group.add_option("--ps",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="dvi",
         help="Write Postscript output.")
 
     action_group.add_option("--pdf",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="pdf",
         help="Write PDF output.")
 
     action_group.add_option("--check",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="check",
         help="Check completeness of docs.")
 
     action_group.add_option("--pickle",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="pickle",
         help="Write the documentation to a pickle file.")
 
     # Provide our own --help and --version options.
     action_group.add_option("--version",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="version",
         help="Show epydoc's version number and exit.")
 
     action_group.add_option("-h", "--help",
-        action='callback', callback=add_action, 
+        action="append_const", dest="actions", const="help",
         help="Show this message and exit.  For help on specific "
         "topics, use \"--help TOPIC\".  Use \"--help topics\" for a "
         "list of available help topics")

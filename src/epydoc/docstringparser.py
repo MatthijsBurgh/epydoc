@@ -334,7 +334,7 @@ def add_metadata_from_var(api_doc, field):
                 
         # Add any values that we found.
         for elt in value:
-            if isinstance(elt, str):
+            if isinstance(elt, bytes):
                 elt = decode_with_backslashreplace(elt)
             else:
                 elt = str(elt)

@@ -15,13 +15,13 @@ reStructuredText__
     It is more powerful than epytext (e.g., it includes markup for tables and
     footnotes); but it is also more complex, and sometimes harder to read.
 
-    .. __: http://docutils.sourceforge.net/rst.html
+    .. __: https://docutils.sourceforge.io/rst.html
 
 Javadoc__
     is a documentation markup language that was developed for Java. It consists
     of HTML, augmented by a set of special tagged fields.
 
-    .. __: http://java.sun.com/j2se/javadoc/
+    .. __: https://www.oracle.com/java/technologies/javase/javadoc-tool.html
 
 Plaintext docstrings
     are rendered verbatim (preserving whitespace).
@@ -415,7 +415,7 @@ you can use the ``term`` `interpreted text role`_. For example:
             #[...]
 
      -  An *index term* is a term that should be included in the index.
-   
+
             ============ ==============
                       Index
             ===========================

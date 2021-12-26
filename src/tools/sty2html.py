@@ -97,19 +97,17 @@ def main():
         if name == 'default': pass
         filename = 'epydoc-sty-%s.html' % name
         title = 'LaTeX Style File: epydoc-%s.sty' % name
-        out = open(os.path.join(output_dir, filename), 'wb')
-        out.write(colorize(sheet, title))
-        out.close()
+        with open(os.path.join(output_dir, filename), 'w') as f:
+            f.write(colorize(sheet, title))
         sty_list.write('- `%s <%s>`__\n' % (title, filename))
 
     sty_list.close()
 
     # hackish to hardcode this; oh well.
     demo = open('doc/epydoc-latex-demo.tex').read()
-    out = open(os.path.join(output_dir, 'epydoc-latex-demo.html'), 'wb')
-    out.write(colorize(demo, 'Epydoc LaTeX Style Reference'))
-    out.close()
-    
+    with open(os.path.join(output_dir, 'epydoc-latex-demo.html'), 'w') as f:
+        f.write(colorize(demo, 'Epydoc LaTeX Style Reference'))
+
 
 if __name__ == '__main__':
     main()

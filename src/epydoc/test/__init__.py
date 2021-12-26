@@ -41,7 +41,8 @@ def main():
                                               parser=parser))
             
     # Run all test cases.
-    unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(tests))
+    result = unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(tests))
+    return int(bool(result.failures))
 
 
 def check_requirements(filename):
@@ -67,4 +68,4 @@ def check_requirements(filename):
             
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

@@ -214,7 +214,7 @@ class HTMLWriter:
         @keyword prj_name: The name of the project.  Defaults to
               none.
         @type prj_url: C{string}
-        @keyword prj_url: The target for the project hopeage link on
+        @keyword prj_url: The target for the project homepage link on
               the navigation bar.  If C{prj_url} is not specified,
               then no hyperlink is created.
         @type prj_link: C{string}

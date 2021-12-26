@@ -361,20 +361,27 @@ class TerminalController:
         # Colors
         set_fg = self._tigetstr('setf')
         if set_fg:
-            for i,color in zip(range(len(self._COLORS)), self._COLORS):
-                setattr(self, color, curses.tparm(set_fg, i) or '')
+            for i, color in enumerate(self._COLORS):
+                setattr(self, color, self._tparm(set_fg, i) or '')
         set_fg_ansi = self._tigetstr('setaf')
         if set_fg_ansi:
-            for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
-                setattr(self, color, curses.tparm(set_fg_ansi, i) or '')
+            for i, color in enumerate(self._ANSICOLORS):
+                setattr(self, color, self._tparm(set_fg_ansi, i) or '')
 
     def _tigetstr(self, cap_name):
         # String capabilities can include "delays" of the form "$<2>".
         # For any modern terminal, we should be able to just ignore
         # these, so strip them out.
         import curses
-        cap = curses.tigetstr(cap_name) or ''
-        return re.sub(r'\$<\d+>[/*]?', '', cap)
+        cap = curses.tigetstr(cap_name) or b''
+        res = re.sub(b'\$<\d+>[/*]?', b'', cap)
+        return res.decode('ascii')
+
+    def _tparm(self, s, *args):
+        import curses
+        b = s.encode('ascii')
+        res = curses.tparm(b, *args)
+        return res.decode('ascii')
     
     def render(self, template):
         """

@@ -1514,7 +1514,7 @@ class ConsoleLogger(log.Logger):
                                   self._progress_header) )
 
     def print_times(self):
-        print
+        print()
         print('Timing summary:')
         total = sum([time for (time, task) in self._task_times])
         max_t = max([time for (time, task) in self._task_times])
@@ -1524,8 +1524,8 @@ class ConsoleLogger(log.Logger):
             if self.term.COLS > 58:
                 print('|'+'=' * int((self.term.COLS-56) * time / max_t))
             else:
-                print
-        print
+                print()
+        print()
 
 class UnifiedProgressConsoleLogger(ConsoleLogger):
     def __init__(self, verbosity, stages, progress_mode=None):

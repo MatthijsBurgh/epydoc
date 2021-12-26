@@ -166,7 +166,7 @@ information about the submodules and subpackages.
 :group Miscellaneous: log, util, test
 
 :author: `Edward Loper <edloper@gradient.cis.upenn.edu>`__
-:requires: Python 2.3+
+:requires: Python 3.8+
 :version: 3.0.1
 :see: `The epydoc webpage <http://epydoc.sourceforge.net>`__
 :see: `The epytext markup language

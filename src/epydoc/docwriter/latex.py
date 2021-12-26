@@ -738,7 +738,7 @@ class LatexWriter:
 
     def replace_par(self, out):
         def new_out(s):
-            s = re.sub('(?m)\n([ \t]*\n)+', '\\par\n', s)
+            s = re.sub(r'(?m)\n([ \t]*\n)+', r'\\par\n', s)
             s = re.sub(r'\\par\b', r'\\EpydocPar', s)
             s = re.sub(r'(?m)^([ \t]*)([^ \t].*)\\EpydocPar\n',
                        r'\1\2\n\1\\EpydocPar\n', s)

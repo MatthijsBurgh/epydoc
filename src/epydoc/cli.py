@@ -1264,7 +1264,7 @@ def _profile():
 
     # Standard 'profile' profiler.
     elif PROFILER == 'profile':
-        # cProfile module was added in Python 2.5 -- use it if its'
+        # cProfile module was added in Python 2.5 -- use it if it's
         # available, since it's faster.
         try:
             from cProfile import Profile

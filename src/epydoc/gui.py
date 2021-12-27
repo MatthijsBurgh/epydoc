@@ -867,7 +867,10 @@ class EpydocGUI:
             self._root.bell()
         
     def mainloop(self, *args, **kwargs):
-        self._root.mainloop(*args, **kwargs)
+        try:
+            self._root.mainloop(*args, **kwargs)
+        except KeyboardInterrupt:
+            pass
 
     def _getopts(self):
         options = {}

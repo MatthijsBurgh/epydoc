@@ -1,0 +1,40 @@
+Regression Testing for doctest
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    >>> from epydoc.markup import epytext
+    >>> from epydoc.markup import doctest
+
+    >>> def testparse(s):
+    ...     print(doctest.doctest_to_html(s.strip()).strip())
+
+Only a declaration:
+
+    >>> testparse("""
+    ... >>> name = DottedName('epydoc', 'api_doc', 'DottedName')
+    ... """)
+    <pre class="py-doctest">
+    <span class="py-prompt">&gt;&gt;&gt; </span>name = DottedName(<span class="py-string">'epydoc'</span>, <span class="py-string">'api_doc'</span>, <span class="py-string">'DottedName'</span>)
+    </pre>
+
+Execution with a result:
+
+    >>> testparse("""
+    ... >>> print("epydoc.apidoc.DottedName")
+    ... epydoc.apidoc.DottedName
+    ... """)
+    <pre class="py-doctest">
+    <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-builtin">print</span>(<span class="py-string">&quot;epydoc.apidoc.DottedName&quot;</span>)
+    <span class="py-output">epydoc.apidoc.DottedName</span></pre>
+
+Execution with a multiline result:
+
+    >>> testparse("""
+    ... >>> print("epydoc.apidoc.DottedName\nepydoc.apidoc.DottedName")
+    ... epydoc.apidoc.DottedName
+    ... epydoc.apidoc.DottedName
+    ... """)
+    <pre class="py-doctest">
+    <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-builtin">print</span>(&quot;epydoc.apidoc.DottedName
+    <span class="py-output">epydoc.apidoc.DottedName&quot;)</span>
+    <span class="py-output">epydoc.apidoc.DottedName</span>
+    <span class="py-output">epydoc.apidoc.DottedName</span></pre>

@@ -659,12 +659,50 @@ class EpydocGUI:
         self._help_browse.grid(row=row, column=3, sticky='ew', padx=2)
         
         from epydoc.docwriter.html_css import STYLESHEETS
-        items = STYLESHEETS.items()
+
         def _css_sort(css1, css2):
-            if css1[0] == 'default': return -1
-            elif css2[0] == 'default': return 1
-            else: return cmp(css1[0], css2[0])
-        items.sort(_css_sort)
+            css1, css2 = css1[0], css2[0]
+            if css1 == 'default':
+                return -1
+            elif css2 == 'default':
+                return 1
+            else:
+                if css1 < css2:
+                    return -1
+                elif css1 > css2:
+                    return 1
+                elif css1 == css2:
+                    return 0
+                else:
+                    raise ValueError(f"{css1} is not smaller, greater than or equal to {css2}")
+
+        def cmp_to_key(mycmp):
+            """Convert a cmp= function into a key= function"""
+
+            class K:
+                def __init__(self, obj, *args):
+                    self.obj = obj
+
+                def __lt__(self, other):
+                    return mycmp(self.obj, other.obj) < 0
+
+                def __gt__(self, other):
+                    return mycmp(self.obj, other.obj) > 0
+
+                def __eq__(self, other):
+                    return mycmp(self.obj, other.obj) == 0
+
+                def __le__(self, other):
+                    return mycmp(self.obj, other.obj) <= 0
+
+                def __ge__(self, other):
+                    return mycmp(self.obj, other.obj) >= 0
+
+                def __ne__(self, other):
+                    return mycmp(self.obj, other.obj) != 0
+            return K
+
+        items = sorted(STYLESHEETS.items(), key=cmp_to_key(_css_sort))
 
         #==================== oframe6 ====================
         # -c CSS, --css CSS

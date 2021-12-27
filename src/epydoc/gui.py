@@ -948,7 +948,7 @@ class EpydocGUI:
             elif level >= log.DOCSTRING_WARNING:
                 data= data.rstrip()+'\n\n'
                 self._messages.insert('end', data, 'warning')
-            elif log >= log.INFO:
+            elif level >= log.INFO:
                 data= data.rstrip()+'\n\n'
                 self._messages.insert('end', data, 'message')
 #                 if data == '\n':

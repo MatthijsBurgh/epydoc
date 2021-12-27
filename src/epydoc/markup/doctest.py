@@ -196,11 +196,11 @@ class DoctestColorizer:
             # Example output:
             if want:
                 if self.EXCEPT_RE.match(want):
-                    output += self.NEWLINE.join([self.markup(line, 'except')
-                                                 for line in want.split('\n')])
+                    output.append(self.NEWLINE.join(self.markup(line, 'except')
+                                                    for line in want.split('\n')))
                 else:
-                    output += self.NEWLINE.join([self.markup(line, 'output')
-                                                 for line in want.split('\n')])
+                    output.append(self.NEWLINE.join(self.markup(line, 'output')
+                                                    for line in want.split('\n')))
             # Update charno
             charno = m.end()
         # Add any remaining post-example text.

@@ -3,5 +3,10 @@
 # Call the graphical interface for Epydoc.
 #
 
+from os.path import abspath
+import sys
+script_path = abspath(sys.path[0])
+sys.path = [p for p in sys.path if abspath(p) != script_path]
+
 from epydoc.gui import gui
 gui()

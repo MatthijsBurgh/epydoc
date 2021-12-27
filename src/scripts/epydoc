@@ -5,10 +5,10 @@
 
 # Make sure that we don't get confused between an epydoc.py script and
 # the real epydoc package.
-import sys, os.path
-if os.path.exists(os.path.join(sys.path[0], 'epydoc.py')):
-    del sys.path[0]
+from os.path import abspath
+import sys
+script_path = abspath(sys.path[0])
+sys.path = [p for p in sys.path if abspath(p) != script_path]
 
 from epydoc.cli import cli
 cli()
-

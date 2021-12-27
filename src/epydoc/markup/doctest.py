@@ -151,7 +151,8 @@ class DoctestColorizer:
     #     # Source consists of a PS1 line followed by zero or more PS2 lines.
     #     (?P<source>
     #         (?:^(?P<indent> [ ]*) >>>    .*)    # PS1 line
-    #         (?:\n           [ ]*  \.\.\. .*)*)  # PS2 lines
+    #         (?:\n           [ ]*  \.\.\. .*)*   # PS2 lines
+    #     \n?)
     #     \n?
     #     # Want consists of any non-blank lines that do not start with PS1.
     #     (?P<want> (?:(?![ ]*$)    # Not a blank line
@@ -191,6 +192,7 @@ class DoctestColorizer:
             output.append(self.NEWLINE.join(s[charno:m.start()].split('\n')))
             # Example source code:
             output.append(self.DOCTEST_RE.sub(self.subfunc, pysrc))
+            output.append(self.NEWLINE)
             # Example output:
             if want:
                 if self.EXCEPT_RE.match(want):

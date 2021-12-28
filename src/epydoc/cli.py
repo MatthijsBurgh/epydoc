@@ -1170,9 +1170,9 @@ def write_latex(docindex, options):
 
         except RunSubprocessError as e:
             if running in ('latex', 'pdflatex'):
-                e.out = re.sub(r'(?sm)\A.*?!( LaTeX Error:)?', r'', e.out)
-                e.out = re.sub(r'(?sm)\s*Type X to quit.*', '', e.out)
-                e.out = re.sub(r'(?sm)^! Emergency stop.*', '', e.out)
+                e.out = re.sub(rb'(?sm)\A.*?!( LaTeX Error:)?', b'', e.out)
+                e.out = re.sub(rb'(?sm)\s*Type X to quit.*', b'', e.out)
+                e.out = re.sub(rb'(?sm)^! Emergency stop.*', b'', e.out)
             log.error("%s failed: %s" % (running, (e.out+e.err).lstrip()))
         except OSError as e:
             log.error("%s failed: %s" % (running, e))

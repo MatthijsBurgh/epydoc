@@ -176,10 +176,9 @@ class DotGraph(object):
         # Render the graph in postscript.
         ps = self._run_dot('-Tps', size=size)
         # Write the postscript output.
-        psfile = open(eps_file, 'wb')
-        psfile.write('%!PS-Adobe-2.0 EPSF-1.2\n')
-        psfile.write(ps)
-        psfile.close()
+        with open(eps_file, 'wb') as f:
+            f.write(b'%!PS-Adobe-2.0 EPSF-1.2\n')
+            f.write(ps)
         # Use ps2pdf to generate the pdf output.
         try:
             run_subprocess(('ps2pdf', '-dEPSCrop', eps_file, pdf_file))

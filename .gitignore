@@ -1,11 +1,9 @@
 .*.up2date
-api
-epydoc.notes
-etc
-examples
+
+# Generated documentation directories
 html
 latex
-lists.txt
-profile.stdlib
-stdlib
 webpage
+
+# Temp files
+profile.out

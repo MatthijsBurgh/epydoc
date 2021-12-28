@@ -62,5 +62,6 @@ setup(
     keywords=KEYWORDS.split(),
     long_description=LONG_DESCRIPTION,
     packages=["epydoc", "epydoc.markup", "epydoc.test", "epydoc.docwriter"],
+    install_requires=["docutils>=0.14", "configparser>=5.2.0", "ExtensionClass>=4.5.1", "setuptools>=45.2.0"],
     **other_metadata
 )

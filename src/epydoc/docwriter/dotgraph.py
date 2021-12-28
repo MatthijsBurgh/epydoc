@@ -33,16 +33,16 @@ from epydoc.util import *
 USE_DOT2TEX = False
 
 #: colors for graphs of APIDocs
-COLOR = dict(
-    MODULE_BG = '#d8e8ff',
-    CLASS_BG = '#d8ffe8',
-    SELECTED_BG = '#ffd0d0',
-    BASECLASS_BG = '#e0b0a0',
-    SUBCLASS_BG = '#e0b0a0',
-    UNDOCUMENTED_BG = '#c0c0c0',
-    ROUTINE_BG = '#e8d0b0', # not used
-    INH_LINK = '#800000',
-    )
+COLOR = {
+    "MODULE_BG": "#d8e8ff",
+    "CLASS_BG": "#d8ffe8",
+    "SELECTED_BG": "#ffd0d0",
+    "BASECLASS_BG": "#e0b0a0",
+    "SUBCLASS_BG": "#e0b0a0",
+    "UNDOCUMENTED_BG": "#c0c0c0",
+    "ROUTINE_BG": "#e8d0b0",  # not used
+    "INH_LINK": "#800000",
+}
 
 ######################################################################
 #{ Dot Graphs

@@ -24,6 +24,7 @@ export PYTHONPATH=src/
 # The location of the webpage.
 HOST = shell.sf.net
 DIR = /home/groups/e/ep/epydoc/htdocs
+URL = http://epydoc.sourceforge.net
 
 # The current version of epydoc.
 VERSION = $(shell $(PYTHON) -c 'import epydoc; print(epydoc.__version__)')
@@ -176,22 +177,22 @@ examples: .examples.up2date
 	rm -rf $(HTML_EXAMPLES)
 	mkdir -p $(HTML_EXAMPLES)
 	$(EPYDOC) -o $(HTML_EXAMPLES) --name epydoc --debug \
-	       --url http://epydoc.sourceforge.net \
+	       --url ${URL} \
 	       --css white --top epytext_example --docformat=plaintext \
 	       --navlink 'epydoc examples' doc/epytext_example.py sre
 	$(EPYDOC) -o $(HTML_EXAMPLES)/grouped --debug \
 	       --inheritance=grouped \
-	       --name epydoc --url http://epydoc.sourceforge.net \
+	       --name epydoc --url ${URL} \
 	       --css white --debug \
 	       --navlink 'epydoc examples' doc/inh_example.py
 	$(EPYDOC) -o $(HTML_EXAMPLES)/listed --debug \
 	       --inheritance=listed \
-	       --name epydoc --url http://epydoc.sourceforge.net \
+	       --name epydoc --url ${URL} \
 	       --css white --debug \
 	       --navlink 'epydoc examples' doc/inh_example.py
 	$(EPYDOC) -o $(HTML_EXAMPLES)/included --debug \
 	       --inheritance=included \
-	       --name epydoc --url http://epydoc.sourceforge.net \
+	       --name epydoc --url ${URL} \
 	       --css white --debug \
 	       --navlink 'epydoc examples' doc/inh_example.py
 	touch .examples.up2date
@@ -231,7 +232,7 @@ doc/epydocgui-man.html: man/epydocgui.1
 profile.out: $(PY_SRCFILES)
 	rm -f profile.out
 	$(EPYDOC) -o profile.tmp --name epydoc --css white --debug \
-	       --url http://epydoc.sourceforge.net --profile-epydoc \
+	       --url ${URL} --profile-epydoc \
 	       --inheritance=listed --navlink "epydoc $(VERSION)"\
 	       --include-log \
 	       --docformat plaintext -v --graph all $(PY_SRC)

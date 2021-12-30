@@ -27,6 +27,27 @@ __all__ = ['doctest_to_html', 'doctest_to_latex',
            'DoctestColorizer', 'XMLDoctestColorizer', 
            'HTMLDoctestColorizer', 'LaTeXDoctestColorizer']
 
+
+def doctest_to_xml(s):
+    """
+    Perform syntax highlighting on the given doctest string, and
+    return the resulting HTML code.  This code consists of a C{<colorized>}
+    block.  Syntax highlighting is performed
+    using the tags:
+
+      - C{prompt} -- the Python PS1 prompt (>>>)
+      - C{more} -- the Python PS2 prompt (...)
+      - C{keyword} -- a Python keyword (for, if, etc.)
+      - C{builtin} -- a Python builtin name (abs, dir, etc.)
+      - C{string} -- a string literal
+      - C{comment} -- a comment
+      - C{except} -- an exception traceback (up to the next >>>)
+      - C{output} -- the output from a doctest block.
+      - C{defname} -- the name of a function or class defined by
+        a C{def} or C{class} statement.
+    """
+    return XMLDoctestColorizer().colorize_doctest(s)
+
 def doctest_to_html(s):
     """
     Perform syntax highlighting on the given doctest string, and

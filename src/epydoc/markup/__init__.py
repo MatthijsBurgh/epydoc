@@ -147,14 +147,14 @@ def parse(docstring, markup='plaintext', errors=None, **options):
     if not re.match(r'\w+', markup):
         _parse_warn('Bad markup language name %r.  Treating '
                     'docstrings as plaintext.' % markup)
-        import epydoc.markup.plaintext as plaintext
+        from . import plaintext
         return plaintext.parse_docstring(docstring, errors, **options)
 
     # Is the markup language supported?
     if markup not in _markup_language_registry:
         _parse_warn('Unsupported markup language %r.  Treating '
                     'docstrings as plaintext.' % markup)
-        import epydoc.markup.plaintext as plaintext
+        from . import plaintext
         return plaintext.parse_docstring(docstring, errors, **options)
 
     # Get the parse function.
@@ -168,7 +168,7 @@ def parse(docstring, markup='plaintext', errors=None, **options):
         except ImportError as e:
             _parse_warn('Error importing %s for markup language %s: %s' %
                         (parse_docstring, markup, e))
-            import epydoc.markup.plaintext as plaintext
+            from . import plaintext
             return plaintext.parse_docstring(docstring, errors, **options)
         _markup_language_registry[markup] = parse_docstring
 
@@ -185,14 +185,14 @@ def parse(docstring, markup='plaintext', errors=None, **options):
             raise
         log.error('Internal error while parsing a docstring: %s; '
                   'treating docstring as plaintext' % e)
-        import epydoc.markup.plaintext as plaintext
+        from . import plaintext
         return plaintext.parse_docstring(docstring, errors, **options)
 
     # Check for fatal errors.
     fatal_errors = [e for e in errors if e.is_fatal()]
     if fatal_errors and raise_on_error: raise fatal_errors[0]
     if fatal_errors:
-        import epydoc.markup.plaintext as plaintext
+        from . import plaintext
         return plaintext.parse_docstring(docstring, errors, **options)
 
     return parsed_docstring

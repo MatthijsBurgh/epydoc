@@ -267,7 +267,7 @@ class EpydocGUI:
         # *not* reload the modules that are present when the EpydocGUI
         # is created, but that should only contain some builtins, some
         # epydoc modules, Tkinter, pickle, and thread..
-        self._old_modules = sys.modules.keys()
+        self._old_modules = list(sys.modules.keys())
 
         # Create the main window.
         self._root = Tk()

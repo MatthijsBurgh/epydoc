@@ -165,7 +165,7 @@ def parse(docstring, markup='plaintext', errors=None, **options):
         try:
             m = importlib.import_module(parse_docstring)
             parse_docstring = getattr(m, "parse_docstring")
-        except ImportError as e:
+        except (AttributeError, ImportError) as e:
             _parse_warn('Error importing %s for markup language %s: %s' %
                         (parse_docstring, markup, e))
             from . import plaintext

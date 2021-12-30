@@ -1,6 +1,7 @@
 Regression Testing for doctest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    >>> from epydoc.apidoc import DottedName
     >>> from epydoc.markup import epytext
     >>> from epydoc.markup import doctest
 
@@ -38,3 +39,64 @@ Execution with a multiline result:
     <output>epydoc.apidoc.DottedName")</output>
     <output>epydoc.apidoc.DottedName</output>
     <output>epydoc.apidoc.DottedName</output></colorized>
+
+Execution with a multiline prompt:
+
+    >>> testparse("""
+    ... >>> name = DottedName("epydoc.apidoc.DottedName")
+    ... ... print(name)
+    ... epydoc.apidoc.DottedName
+    ... """)
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt>name = DottedName(<string>"epydoc.apidoc.DottedName"</string>)
+    <more>... </more><builtin>print</builtin>(name)
+    <output>epydoc.apidoc.DottedName</output></colorized>
+
+Function definition:
+
+    >>> testparse("""
+    ... >>> def foo():
+    ... ...     pass
+    ... """)
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><keyword>def</keyword> <defname>foo</defname>():
+    <more>... </more>    <keyword>pass</keyword>
+    </colorized>
+
+Function definition with arguments:
+
+    >>> testparse("""
+    ... >>> def sum(rhs, lhs):
+    ... ...     return rhs + lhs
+    ... """)
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><keyword>def</keyword> <defname>sum</defname>(rhs, lhs):
+    <more>... </more>    <keyword>return</keyword> rhs + lhs
+    </colorized>
+
+Function definition with arguments and execution:
+
+    >>> testparse("""
+    ... >>> def add(rhs, lhs):
+    ... ...     return rhs + lhs
+    ... >>> add(1, 2)
+    ... 3
+    ... """)
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><keyword>def</keyword> <defname>add</defname>(rhs, lhs):
+    <more>... </more>    <keyword>return</keyword> rhs + lhs
+    <prompt>&gt;&gt;&gt; </prompt>add(1, 2)
+    <output>3</output></colorized>
+
+Class definition with function definition:
+
+    >>> testparse("""
+    ... >>> class foo:
+    ... ...     def bar():
+    ... ...         pass
+    ... """)
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><keyword>class</keyword> <defname>foo</defname>:
+    <more>... </more>    <keyword>def</keyword> <defname>bar</defname>():
+    <more>... </more>        <keyword>pass</keyword>
+    </colorized>

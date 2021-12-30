@@ -5,16 +5,16 @@ Regression Testing for doctest
     >>> from epydoc.markup import doctest
 
     >>> def testparse(s):
-    ...     print(doctest.doctest_to_html(s.strip()).strip())
+    ...     print(doctest.doctest_to_xml(s.strip()).strip())
 
 Only a declaration:
 
     >>> testparse("""
     ... >>> name = DottedName('epydoc', 'api_doc', 'DottedName')
     ... """)
-    <pre class="py-doctest">
-    <span class="py-prompt">&gt;&gt;&gt; </span>name = DottedName(<span class="py-string">'epydoc'</span>, <span class="py-string">'api_doc'</span>, <span class="py-string">'DottedName'</span>)
-    </pre>
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt>name = DottedName(<string>'epydoc'</string>, <string>'api_doc'</string>, <string>'DottedName'</string>)
+    </colorized>
 
 Execution with a result:
 
@@ -22,9 +22,9 @@ Execution with a result:
     ... >>> print("epydoc.apidoc.DottedName")
     ... epydoc.apidoc.DottedName
     ... """)
-    <pre class="py-doctest">
-    <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-builtin">print</span>(<span class="py-string">&quot;epydoc.apidoc.DottedName&quot;</span>)
-    <span class="py-output">epydoc.apidoc.DottedName</span></pre>
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><builtin>print</builtin>(<string>"epydoc.apidoc.DottedName"</string>)
+    <output>epydoc.apidoc.DottedName</output></colorized>
 
 Execution with a multiline result:
 
@@ -33,8 +33,8 @@ Execution with a multiline result:
     ... epydoc.apidoc.DottedName
     ... epydoc.apidoc.DottedName
     ... """)
-    <pre class="py-doctest">
-    <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-builtin">print</span>(&quot;epydoc.apidoc.DottedName
-    <span class="py-output">epydoc.apidoc.DottedName&quot;)</span>
-    <span class="py-output">epydoc.apidoc.DottedName</span>
-    <span class="py-output">epydoc.apidoc.DottedName</span></pre>
+    <colorized>
+    <prompt>&gt;&gt;&gt; </prompt><builtin>print</builtin>("epydoc.apidoc.DottedName
+    <output>epydoc.apidoc.DottedName")</output>
+    <output>epydoc.apidoc.DottedName</output>
+    <output>epydoc.apidoc.DottedName</output></colorized>

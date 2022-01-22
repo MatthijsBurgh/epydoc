@@ -10,7 +10,7 @@
 Command-line interface for epydoc.  Abbreviated Usage::
 
  epydoc [options] NAMES...
- 
+
      NAMES...                  The Python modules to document.
      --html                    Generate HTML output (default).
      --latex                   Generate LaTeX output.
@@ -89,7 +89,7 @@ GRAPH_TYPES = ('classtree', 'callgraph', 'umlclasstree')
 ACTIONS = ('html', 'text', 'latex', 'dvi', 'ps', 'pdf', 'check')
 DEFAULT_DOCFORMAT = 'epytext'
 PROFILER = 'profile' #: Which profiler to use: 'hotshot' or 'profile'
-TARGET_ACTIONS = ('html', 'latex', 'dvi', 'ps', 'pdf')
+TARGET_ACTIONS = ('html', 'latex', 'dvi', 'ps',     'pdf')
 DEFAULT_ACTIONS = ('html',)
 PDFDRIVERS = ('pdflatex', 'latex', 'auto')
 
@@ -101,8 +101,8 @@ DOCFORMATS = ('epytext', 'plaintext', 'restructuredtext', 'javadoc')
 HELP_TOPICS = {
     'docformat': textwrap.dedent('''\
         __docformat__ is a module variable that specifies the markup
-        language for the docstrings in a module.  Its value is a 
-        string, consisting the name of a markup language, optionally 
+        language for the docstrings in a module.  Its value is a
+        string, consisting the name of a markup language, optionally
         followed by a language code (such as "en" for English).  Epydoc
         currently recognizes the following markup language names:
         ''' + ', '.join(DOCFORMATS)),
@@ -112,7 +112,7 @@ HELP_TOPICS = {
               based on what class they were inherited from.
             - listed: inherited objects are listed in a short list
               at the end of their section.
-            - included: inherited objects are mixed in with 
+            - included: inherited objects are mixed in with
               non-inherited objects.'''),
     'css': textwrap.dedent(
         'The following built-in CSS stylesheets are available:\n' +
@@ -126,12 +126,12 @@ HELP_TOPICS = {
     #
     #    '''),
     }
-        
+
 
 HELP_TOPICS['topics'] = wordwrap(
     'Epydoc can provide additional help for the following topics: ' +
     ', '.join(['%r' % topic for topic in HELP_TOPICS.keys()]))
-    
+
 ######################################################################
 #{ Argument & Config File Parsing
 ######################################################################
@@ -142,7 +142,7 @@ DEFAULT_TARGET = dict(
 
 def option_defaults():
     return dict(
-        actions=[], show_frames=True, docformat=DEFAULT_DOCFORMAT, 
+        actions=[], show_frames=True, docformat=DEFAULT_DOCFORMAT,
         show_private=True, show_imports=False, inheritance="listed",
         verbose=0, quiet=0, load_pickle=False, parse=True, introspect=True,
         debug=epydoc.DEBUG, profile=False, graphs=[],
@@ -318,7 +318,7 @@ def parse_arguments():
         action='store_true', dest='show_submodule_list',
         help="Include a list of submodules on package documentation "
         "pages.  (default)")
-        
+
     generation_group.add_option('--no-submodule-list',
         action='store_false', dest='show_submodule_list',
         help="Do not include a list of submodules on package "
@@ -328,7 +328,7 @@ def parse_arguments():
         action='store_true', dest='inherit_from_object',
         help="Include methods & properties that are inherited from "
         "\"object\".")
-        
+
     generation_group.add_option('--no-inherit-from-object',
         action='store_false', dest='inherit_from_object',
         help="Do not include methods & properties that are inherited "
@@ -401,7 +401,7 @@ def parse_arguments():
     output_group.add_option('--suppress-timestamp',
         action='store_false', dest='include_timestamp',
         help=("Do not include a timestamp in the generated output."))
-    
+
     # The group of external API options.
     # Skip if the module couldn't be imported (usually missing docutils)
     if xlink is not None:
@@ -510,7 +510,7 @@ def parse_arguments():
     if 'version' in options.actions:
         print(version)
         sys.exit(0)
-    
+
     # Process any config files.
     if options.configfiles:
         try:
@@ -531,16 +531,16 @@ def parse_arguments():
                 optparser.error("When a pickle file is specified, no other "
                                "input files may be specified.")
             options.load_pickle = True
-    
+
     # Check to make sure all options are valid.
     if len(names) == 0:
         optparser.error("No names specified.")
-        
+
     # perform shell expansion.
     for i, name in reversed(list(enumerate(names[:]))):
         if '?' in name or '*' in name:
             names[i:i+1] = glob(name)
-        
+
     if options.inheritance not in INHERITANCE_STYLES:
         optparser.error("Bad inheritance style.  Valid options are " +
                         ",".join(INHERITANCE_STYLES))
@@ -756,7 +756,7 @@ def _str_to_bool(val, optname):
         return True
     else:
         raise ValueError('"%s" option expected a boolean' % optname)
-        
+
 def _str_to_int(val, optname):
     try:
         return int(val)
@@ -773,7 +773,7 @@ def _str_to_list(val):
 def main(options):
     """
     Perform all actions indicated by the given set of options.
-    
+
     @return: the L{epydoc.apidoc.DocIndex} object created while
         running epydoc (or None).
     """
@@ -815,7 +815,7 @@ def main(options):
         elif 'ps' in options.actions: stages += [40] # implied by pdf
         elif 'dvi' in options.actions: stages += [30] # implied by ps
         if 'text' in options.actions: stages += [30]
-        
+
         if options.parse and not options.introspect:
             del stages[1] # no merging
         if options.introspect and not options.parse:
@@ -987,7 +987,7 @@ def main(options):
 
     # Return the docindex, in case someone wants to use it programatically.
     return docindex
-            
+
 def write_html(docindex, options):
     from epydoc.docwriter.html import HTMLWriter
     html_writer = HTMLWriter(docindex, **options.__dict__)
@@ -1038,7 +1038,7 @@ def write_latex(docindex, options):
         latex_target = tempfile.mkdtemp()
 
     log.start_progress('Writing LaTeX docs')
-    
+
     # Choose a pdfdriver if we're generating pdf output.
     if options.pdfdriver=='auto' and ('latex' in options.actions or
                                       'dvi' in options.actions or
@@ -1053,7 +1053,7 @@ def write_latex(docindex, options):
             except (RunSubprocessError, FileNotFoundError):
                 options.pdfdriver = 'latex'
     log.info('%r pdfdriver selected' % options.pdfdriver)
-    
+
     from epydoc.docwriter.latex import LatexWriter, show_latex_warnings
     latex_writer = LatexWriter(docindex, **options.__dict__)
     try:
@@ -1087,7 +1087,7 @@ def write_latex(docindex, options):
         latex_commands = ['latex', 'pdflatex']
     else:
         latex_commands = ['pdflatex']
-        
+
     log.start_progress('Processing LaTeX docs')
     oldpath = os.path.abspath(os.curdir)
     running = None # keep track of what we're doing.
@@ -1108,26 +1108,26 @@ def write_latex(docindex, options):
                 log.progress(step/steps, '%s (First pass)' % LaTeX)
                 step += 1
                 run_subprocess('%s api.tex' % latex_command)
-                
+
                 # Build the index.
                 running = 'makeindex'
                 log.progress(step/steps, '%s (Build index)' % LaTeX)
                 step += 1
                 run_subprocess('makeindex api.idx')
-                
+
                 # The second pass generates our output.
                 running = latex_command
                 log.progress(step/steps, '%s (Second pass)' % LaTeX)
                 step += 1
                 out, err = run_subprocess('%s api.tex' % latex_command)
-                
+
                 # The third pass is only necessary if the second pass
                 # changed what page some things are on.
                 running = latex_command
                 if _RERUN_LATEX_RE.search(out):
                     log.progress(step/steps, '%s (Third pass)' % LaTeX)
                     out, err = run_subprocess('%s api.tex' % latex_command)
-                    
+
                 # A fourth path should (almost?) never be necessary.
                 running = latex_command
                 if _RERUN_LATEX_RE.search(out):
@@ -1178,7 +1178,7 @@ def write_latex(docindex, options):
             log.error("%s failed: %s" % (running, e))
     finally:
         os.chdir(oldpath)
-        
+
         if 'latex' not in options.actions:
             # The latex output went to a tempdir; clean it up.
             log.info('Cleaning up %s' % latex_target)
@@ -1189,7 +1189,7 @@ def write_latex(docindex, options):
             except Exception as e:
                 log.error("Error cleaning up tempdir %s: %s" %
                           (latex_target, e))
-                
+
         log.end_progress()
 
 def write_text(docindex, options):
@@ -1205,11 +1205,11 @@ def write_text(docindex, options):
 def check_docs(docindex, options):
     from epydoc.checker import DocChecker
     DocChecker(docindex).check()
-                
+
 def cli():
     """
     Perform all actions indicated by the options in sys.argv.
-    
+
     @return: the L{epydoc.apidoc.DocIndex} object created while
         running epydoc (or None).
     """
@@ -1238,7 +1238,7 @@ def cli():
         print('\nUNEXPECTED ERROR:\n%s\n' % (str(e) or e.__class__.__name__), file=sys.stderr)
         print('Use --debug to see trace information.', file=sys.stderr)
         sys.exit(3)
-    
+
 def _profile():
     # Hotshot profiler.
     if PROFILER == 'hotshot':
@@ -1289,12 +1289,12 @@ def _profile():
     else:
         print('Unknown profiler %s' % PROFILER, file=sys.stderr)
         return
-    
+
 ######################################################################
 #{ Logging
 ######################################################################
 # [xx] this should maybe move to util.py or log.py
-    
+
 class ConsoleLogger(log.Logger):
     def __init__(self, verbosity, progress_mode=None):
         self._verbosity = verbosity
@@ -1310,7 +1310,7 @@ class ConsoleLogger(log.Logger):
         """This set contains all the message levels (WARNING, ERROR,
         etc) that have been reported.  It is used by the options
         --fail-on-warning etc to determine the return value."""
-        
+
         self.suppressed_docstring_warning = 0
         """This variable will be incremented once every time a
         docstring warning is reported tothe logger, but the verbosity
@@ -1357,7 +1357,7 @@ class ConsoleLogger(log.Logger):
             # Put it all together:
             message = divider + '\n' + header + '\n' + body + '\n'
             self._report(message)
-            
+
     def _format(self, prefix, message, color):
         """
         Rewrap the message; but preserve newlines, and don't touch any
@@ -1390,12 +1390,12 @@ class ConsoleLogger(log.Logger):
             if level >= log.DOCSTRING_WARNING:
                 self.suppressed_docstring_warning += 1
             return
-            
+
         self._report(message)
 
     def _report(self, message):
         if not message.endswith('\n'): message += '\n'
-        
+
         if self._message_blocks:
             self._message_blocks[-1][-1].append(message)
         else:
@@ -1414,16 +1414,16 @@ class ConsoleLogger(log.Logger):
             # Display the message message.
             sys.stdout.write(message)
             sys.stdout.flush()
-                
+
     def progress(self, percent, message=''):
         percent = min(1.0, percent)
         message = '%s' % message
-        
+
         if self._progress_mode == 'list':
             if message:
                 print('[%3d%%] %s' % (100*percent, message))
                 sys.stdout.flush()
-                
+
         elif self._progress_mode == 'bar':
             dots = int((self.term.COLS/2-8)*percent)
             background = '-'*(self.term.COLS/2-8)
@@ -1439,7 +1439,7 @@ class ConsoleLogger(log.Logger):
         elif self._progress_mode == 'multiline-bar':
             dots = int((self.term.COLS-10)*percent)
             background = '-'*(self.term.COLS-10)
-            
+
             if len(message) > self.term.COLS-10:
                 message = message[:self.term.COLS-10-3]+'...'
             else:
@@ -1465,7 +1465,7 @@ class ConsoleLogger(log.Logger):
                 # Line 3:
                 self.term.CLEAR_EOL + '      ' + message + self.term.BOL +
                 self.term.UP + self.term.UP)
-            
+
             sys.stdout.flush()
             self._progress = percent
         elif self._progress_mode == 'simple-bar':
@@ -1528,7 +1528,7 @@ class UnifiedProgressConsoleLogger(ConsoleLogger):
         self.stages = stages
         self.task = None
         ConsoleLogger.__init__(self, verbosity, progress_mode)
-        
+
     def progress(self, percent, message=''):
         #p = float(self.stage-1+percent)/self.stages
         i = self.stage-1
@@ -1559,7 +1559,7 @@ class HTMLLogger(log.Logger):
     A logger used to generate a log of all warnings and messages to an
     HTML file.
     """
-    
+
     FILENAME = "epydoc-log.html"
     HEADER = textwrap.dedent('''\
         <?xml version="1.0" encoding="ascii"?>
@@ -1570,7 +1570,7 @@ class HTMLLogger(log.Logger):
           <title>Epydoc Log</title>
           <link rel="stylesheet" href="epydoc.css" type="text/css" />
         </head>
-        
+
         <body bgcolor="white" text="black" link="blue" vlink="#204080"
               alink="#204080">
         <h1 class="epydoc">Epydoc Log</h1>
@@ -1580,7 +1580,7 @@ class HTMLLogger(log.Logger):
                '%s</div>\n')
     END_BLOCK = '</div>'
     FOOTER = "</body>\n</html>\n"
-    
+
     def __init__(self, directory, options):
         self.start_time = time.time()
         self.out = open(os.path.join(directory, self.FILENAME), 'w')
@@ -1650,7 +1650,7 @@ class HTMLLogger(log.Logger):
             return '%d minutes, %d seconds' % (secs/60, secs%60)
         else:
             return '%d hours, %d minutes' % (secs/3600, secs%3600)
-            
+
 
 ######################################################################
 ## main

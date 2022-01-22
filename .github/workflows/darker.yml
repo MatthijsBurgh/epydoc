@@ -12,3 +12,4 @@ jobs:
       - uses: akaihola/darker@1.4.1
         with:
           options: "--check --diff -l 120"
+          src: "./src"

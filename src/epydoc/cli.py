@@ -142,11 +142,7 @@ DEFAULT_TARGET = dict(
 
 def option_defaults():
     return dict(
-        actions=[], show_frames=True, docformat=DEFAULT_DOCFORMAT,
-        show_private=True, show_imports=False, inheritance="listed",
-        verbose=0, quiet=0, load_pickle=False, parse=True, introspect=True,
-        debug=epydoc.DEBUG, profile=False, graphs=[],
-        list_classes_separately=False, graph_font=None, graph_font_size=None,
+        actions=[], show_frames=True, docformat=DEFAULT_DOCFORMAT, show_private=True, show_imports=False, inheritance="listed", verbose=0, quiet=0, load_pickle=False, parse=True, introspect=True, debug=epydoc.DEBUG, profile=False, graphs=[], list_classes_separately=False, graph_font=None, graph_font_size=None,
         include_source_code=True, pstat_files=[], simple_term=False,
         fail_on=None, exclude=[], exclude_parse=[], exclude_introspect=[],
         external_api=[], external_api_file=[], external_api_root=[],

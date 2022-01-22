@@ -546,10 +546,10 @@ class _SplitFieldsTranslator(NodeVisitor):
     def unknown_visit(self, node):
         'Ignore all unknown nodes'
 
-def latex_head_prefix():
+def latex_requirements():
     document = new_document('<fake>')
     translator = _EpydocLaTeXTranslator(document)
-    return translator.head_prefix
+    return translator.requirements
     
 _TARGET_RE = re.compile(r'^(.*?)\s*<(?:URI:|URL:)?([^<>]+)>$')
 

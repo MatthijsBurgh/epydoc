@@ -280,9 +280,8 @@ class LatexWriter:
         # the prefix to include LatexTranslator.head_prefix.
         if 'restructuredtext' in epydoc.markup.MARKUP_LANGUAGES_USED:
             from epydoc.markup import restructuredtext
-            rst_head = restructuredtext.latex_head_prefix()
-            rst_head = ''.join(rst_head).split('\n')
-            for line in rst_head[1:]:
+            requirements = restructuredtext.latex_requirements()
+            for line in requirements.values():
                 m = re.match(r'\\usepackage(\[.*?\])?{(.*?)}', line)
                 if m and m.group(2) in (
                     'babel', 'hyperref', 'color', 'alltt', 'parskip',

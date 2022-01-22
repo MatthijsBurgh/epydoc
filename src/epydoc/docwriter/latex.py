@@ -1295,12 +1295,12 @@ def show_latex_warnings(s):
             if not filestack: filestack.append('latex')
             if (filestack[-1] is not None and
                 block is not None and block != filestack[-1]):
-                epydoc.log.end_block()
-                epydoc.log.start_block(BLOCK % filestack[-1])
+                log.end_block()
+                log.start_block(BLOCK % filestack[-1])
 
     if block:
-        epydoc.log.end_block()
-            
+        log.end_block()
+
 #     if overfull or underfull:
 #         msgs = []
 #         if overfull == 1: msgs.append('1 overfull box')

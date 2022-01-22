@@ -1205,30 +1205,30 @@ def _dotted(name):
     if not name: return ''
     return '\\EpydocDottedName{%s}' % plaintext_to_latex('%s' % name)
 
-LATEX_WARNING_RE = re.compile('|'.join([
-    r'(?P<file>\([\.a-zA-Z_\-/\\0-9]+[.\n][a-z]{2,3}\b)',
-    (r'(?P<pkgwarn>^(Package|Latex) (?P<pkgname>[\w-]+) '+
-     r'Warning:[^\n]*\n(\((?P=pkgname)\)[^\n]*\n)*)'),
-    r'(?P<overfull>^(Overfull|Underfull)[^\n]*\n[^\n]*)',
-    r'(?P<latexwarn>^LaTeX\s+Warning:\s+[^\n]*)',
-    r'(?P<otherwarn>^[^\n]*Warning:[^\n]*)',
-    r'(?P<paren>[()])',
-    r'(?P<pageno>\[\d+({[^\}]+})?\])']),
+LATEX_WARNING_RE = re.compile(b'|'.join([
+    rb'(?P<file>\([\.a-zA-Z_\-/\\0-9]+[.\n][a-z]{2,3}\b)',
+    (rb'(?P<pkgwarn>^(Package|Latex) (?P<pkgname>[\w-]+) ' +
+     rb'Warning:[^\n]*\n(\((?P=pkgname)\)[^\n]*\n)*)'),
+    rb'(?P<overfull>^(Overfull|Underfull)[^\n]*\n[^\n]*)',
+    rb'(?P<latexwarn>^LaTeX\s+Warning:\s+[^\n]*)',
+    rb'(?P<otherwarn>^[^\n]*Warning:[^\n]*)',
+    rb'(?P<paren>[()])',
+    rb'(?P<pageno>\[\d+({[^\}]+})?\])']),
                               re.MULTILINE+re.IGNORECASE)
 
 OVERFULL_RE = re.compile(
-    r'(?P<typ>Underfull|Overfull)\s+\\(?P<boxtype>[vh]box)\s+'
-    r'\((?P<size>\d+)[^\n\)]+\)[^\n]+\s+lines\s+'
-    r'(?P<start>\d+)')
+    rb'(?P<typ>Underfull|Overfull)\s+\\(?P<boxtype>[vh]box)\s+'
+    rb'\((?P<size>\d+)[^\n\)]+\)[^\n]+\s+lines\s+'
+    rb'(?P<start>\d+)')
 
 IGNORE_WARNING_REGEXPS = [
-    re.compile(r'LaTeX\s+Font\s+Warning:\s+.*\n\(Font\)\s*using.*instead'),
-    re.compile(r'LaTeX\s+Font\s+Warning:\s+Some\s+font\s+shapes\s+'
-               r'were\s+not\s+available,\s+defaults\s+substituted.'),
+    re.compile(rb'LaTeX\s+Font\s+Warning:\s+.*\n\(Font\)\s*using.*instead'),
+    re.compile(rb'LaTeX\s+Font\s+Warning:\s+Some\s+font\s+shapes\s+'
+               rb'were\s+not\s+available,\s+defaults\s+substituted.'),
     ]
 
 def show_latex_warnings(s):
-    s = re.sub('(.{79,79})\n', r'\1', s)
+    s = re.sub(b'(.{79,79})\n', r'\1', s)
 
     #[xx] we should probably pay special attention to overfull \vboxes.
     overfull = underfull = 0
@@ -1245,25 +1245,29 @@ def show_latex_warnings(s):
         if m is None: continue
         # LaTeX started reading a new file:
         if m.group('file'):
-            filename = ''.join(m.group('file')[1:].split())
-            filename = re.sub(r'^\./', '', filename)
-            if filename == 'api.toc': filename = 'Table of contents (api.toc)'
-            if filename == 'api.ind': filename = 'Index (api.ind)'
+            filename = b''.join(m.group('file')[1:].split())
+            filename = re.sub(rb'^\./', b'', filename)
+            if filename == b'api.toc':
+                filename = 'Table of contents (api.toc)'
+            if filename == b'api.ind':
+                filename = 'Index (api.ind)'
             filestack.append(filename)
-            if block is not None: epydoc.log.end_block()
-            epydoc.log.start_block(BLOCK % filename)
+            if block is not None: log.end_block()
+            log.start_block(BLOCK % filename)
             block = filename
         # LaTeX started writing a new page
         elif m.group('pageno'):
-            if pageno == int(m.group()[1:-1].split('{')[0]):
+            if pageno == int(m.group()[1:-1].split(b'{')[0]):
                 pageno += 1
         # LateX reported an overfull/underfull warning:
         elif m.group('overfull'):
-            msg = m.group('overfull').strip().split('\n')[0]
-            msg = re.sub(r'(\d+)\.\d+', r'\1', msg)
-            msg = re.sub(r'(lines \d+)--(\d+)', r'\1-\2', msg)
-            if msg.lower().startswith('overfull'): overfull += 1
-            else: underfull += 1
+            msg = m.group('overfull').strip().split(b'\n')[0]
+            msg = re.sub(rb'(\d+)\.\d+', rb'\1', msg)
+            msg = re.sub(rb'(lines \d+)--(\d+)', rb'\1-\2', msg)
+            if msg.lower().startswith(b'overfull'):
+                overfull += 1
+            else:
+                underfull += 1
             log.warning(msg)#+' (page %d)' % pageno)
 #             m2 = OVERFULL_RE.match(msg)
 #             if m2:
@@ -1278,7 +1282,7 @@ def show_latex_warnings(s):
 #                 log.debug(msg)
         # Latex reported a warning:
         elif m.group('latexwarn'):
-            log.warning(m.group('latexwarn').strip()+' (page %d)' % pageno)
+            log.warning(m.group('latexwarn').strip() + b' (page %d)' % pageno)
         # A package reported a warning:
         elif m.group('pkgwarn'):
             log.warning(m.group('pkgwarn').strip())
@@ -1287,7 +1291,7 @@ def show_latex_warnings(s):
             if m.group('otherwarn'):
                 log.warning(m.group('otherwarn').strip())
             # Update to account for parens.
-            n = m.group().count('(') - m.group().count(')')
+            n = m.group().count(b'(') - m.group().count(b')')
             if n > 0: filestack += [None] * n
             if n < 0: del filestack[n:]
             # Don't let filestack become empty:

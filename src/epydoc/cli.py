@@ -1026,8 +1026,8 @@ def pickle_persistent_load(identifier):
     else:
         raise pickle.UnpicklingError('Invalid persistent id')
 
-_RERUN_LATEX_RE = re.compile(r'(?im)^LaTeX\s+Warning:\s+Label\(s\)\s+may'
-                             r'\s+have\s+changed.\s+Rerun')
+_RERUN_LATEX_RE = re.compile(rb'(?im)^LaTeX\s+Warning:\s+Label\(s\)\s+may'
+                             rb'\s+have\s+changed.\s+Rerun')
 
 def write_latex(docindex, options):
     # If latex is an intermediate target, then use a temporary

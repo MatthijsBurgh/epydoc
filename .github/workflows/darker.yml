@@ -11,5 +11,5 @@ jobs:
           fetch-depth: 0
       - uses: akaihola/darker@1.4.1
         with:
-          options: "--check --diff -l 120"
+          options: "--check --diff -l 120 --verbose"
           src: "./src"
